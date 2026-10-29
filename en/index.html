@@ -66,7 +66,9 @@ button:hover{border-color:var(--muted)}
 .kpi .k{font:600 11px/1.25 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .kpi .v{font:700 32px/1.05 var(--f-display);font-variant-numeric:tabular-nums}
 .kpi .s{font:400 12px/1.45 var(--f-mono);color:var(--muted);overflow-wrap:anywhere}
-.kpi.drain .v{color:var(--drain)}
+.kpi.move .v{color:var(--drain)}.kpi.frz .v{color:var(--in)}.kpi.laund .v{color:var(--mixer)}
+.kpi.total .v{color:var(--fg);font-size:26px;line-height:1.25}
+.badge.frz{background:var(--in);color:#04140c}
 @media (max-width:900px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:480px){.kpis{grid-template-columns:1fr}}
 .spark{margin-top:12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px 8px}
@@ -166,10 +168,10 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
 
 <main class="wrap">
   <section class="kpis" data-ta="a_kpis">
-    <div class="kpi drain"><span class="k" data-t="k_drained">Binance'ten çekilen · ETH + BTC</span><span class="v" id="kDrained">—</span><span class="s" id="kDrainedS" data-t="loading_lc">zincir verisi yükleniyor</span></div>
-    <div class="kpi"><span class="k" data-t="k_held">Saldırgan kümesinde şu an</span><span class="v" id="kHeld">—</span><span class="s" id="kHeldS"></span></div>
-    <div class="kpi"><span class="k" data-t="k_out">Kümeden çıkan · swap / köprü / borsa</span><span class="v" id="kOut">—</span><span class="s" id="kOutS"></span></div>
-    <div class="kpi"><span class="k" data-t="k_w">Takip edilen cüzdan</span><span class="v" id="kW">—</span><span class="s" id="kWS"></span></div>
+    <div class="kpi move"><span class="k" data-t="k_move">Saldırganın elinde · hareket ettirebilir</span><span class="v" id="kMove">—</span><span class="s" id="kMoveS" data-t="loading_lc">zincir verisi yükleniyor</span></div>
+    <div class="kpi frz"><span class="k" data-t="k_frz">Dondurulan / kurtarılan</span><span class="v" id="kFrz">—</span><span class="s" id="kFrzS"></span></div>
+    <div class="kpi laund"><span class="k" data-t="k_laund">Aklanan</span><span class="v" id="kLaund">—</span><span class="s" id="kLaundS"></span></div>
+    <div class="kpi total"><span class="k" data-t="k_total">Toplam çekilen · ETH + BTC</span><span class="v" id="kDrained">—</span><span class="s" id="kDrainedS"></span></div>
   </section>
 
   <section class="spark" data-ta="a_spark">
@@ -232,7 +234,6 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       min: 'Min. tutar', opt_all: 'Hepsi', opt_1k: '$1 bin', opt_10k: '$10 bin', opt_100k: '$100 bin', opt_1m: '$1 Mn',
       spam: 'Spam / toz', sound_off: 'Ses kapalı', sound_on: 'Ses açık · 1 Mn $ üstü', pause: 'Duraklat', resume: 'Devam et',
       lang_btn: 'EN', lang_aria: 'Switch to English',
-      k_drained: "Binance'ten çekilen · ETH + BTC", k_held: 'Saldırgan kümesinde şu an', k_out: 'Kümeden çıkan · swap / köprü / borsa', k_w: 'Takip edilen cüzdan',
       loading_lc: 'zincir verisi yükleniyor', loading: 'Zincir verisi yükleniyor…',
       spark_h: "Son 4 saat · 5 dk'lık dilimler · log ölçek", lg_drain: 'Binance → saldırgan', lg_hop: 'küme içi', lg_out: 'kümeden çıkış', lg_in: 'giriş', now: 'şimdi',
       alerts_h: 'Aklama adımları', alerts_hint: "mikser · THORChain · köprü · KYC'siz takas servisi · borsa",
@@ -242,24 +243,26 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       tl_more: ' + {0} varlık', tl_swapline: '{0} {1} swap işlemi yaptı · {2}', tl_burn: '{0} · {1} bakiyesinden yakıldı',
       feed_h: 'Canlı akış', wal_h: 'Cüzdan kümesi', add_ph: '0x… veya bc1… adres ekle', add_aria: 'Takibe adres ekle', add_btn: 'Ekle',
       add_invalid: 'Geçerli bir Ethereum (0x…) ya da Bitcoin (bc1… / 1… / 3…) adresi gir.',
-      footer: 'Bağımsız zincir takibi; Binance ile bağlantısı yoktur. Raporlara göre Tron\'da ~628 Mn $ ve Arbitrum, Optimism, Base\'de ~38 Mn $ daha çekildi; bunlar sayfada yok. Binance\'in Solana sıcak cüzdanı hack saatinde normal çalıştı. Veri: Blockscout açık API (Ethereum) ve mempool.space (Bitcoin); istekler doğrudan senin tarayıcından gider; sekme arka plandayken sorgu durur. USD değerleri güncel fiyatla hesaplanır, çekildiği anki fiyatla değil. "Parayı alan" cüzdanlar otomatik bulunur ve sahibinin saldırgan olduğu anlamına gelmez. Yatırım tavsiyesi değildir.',
+      footer: 'Bağımsız zincir takibi; Binance ile bağlantısı yoktur. Raporlara göre Tron\'da ~628 Mn $ ve Arbitrum, Optimism, Base\'de ~38 Mn $ daha çekildi; bunlar sayfada yok. Binance\'in Solana sıcak cüzdanı hack saatinde normal çalıştı. Veri: Blockscout açık API ve publicnode (Ethereum), mempool.space (Bitcoin); istekler doğrudan senin tarayıcından gider; sekme arka plandayken sorgu durur. "Dondurulan" tutar, cüzdanların Tether ve Circle kara listesinde olup olmadığına zincirden bakılarak hesaplanır; "Aklanan" yalnızca mikser, THORChain, köprü, KYC\'siz takas servisi ve borsaya gideni sayar, DEX swap\'larını saymaz. USD değerleri güncel fiyatla hesaplanır, çekildiği anki fiyatla değil. "Parayı alan" cüzdanlar otomatik bulunur ve sahibinin saldırgan olduğu anlamına gelmez. Yatırım tavsiyesi değildir.',
       role_initiator: 'başlatıcı', role_hacker: 'saldırgan', role_hop: 'kümeden para aldı', role_manual: 'elle eklendi', role_victim: 'Binance',
       cat_dex: 'Swap / DEX', cat_contract: 'Kontrata', cat_bridge: 'Köprü', cat_thor: 'THORChain', cat_swapsvc: 'Takas servisi', cat_cex: 'Borsaya', cat_mixer: 'Mikser', cat_burn: 'Yakıldı', cat_wallet: 'Yeni cüzdana',
       ch_drain: 'Binance → saldırgan', ch_hop: 'Küme içi', ch_call: 'Saldırgan çağrısı', ch_out: 'Çıkış', ch_mixin: 'Mikserden giriş', ch_swapin: 'Swap dönüşü', ch_in: 'Giriş', ch_vout: 'Binance çıkışı', ch_other: 'Diğer', ch_swap: 'Swap', ch_news: 'Haber', ch_launder: 'Aklama',
       st_paused: 'Duraklatıldı', st_hidden: 'Sekme arka planda, sorgular durdu', st_loading: 'Yükleniyor {0}/{1}', st_offline: 'Bağlantı yok', st_live: 'Canlı',
       last_data: 'son veri {0}', reqs: '{0} istek', errs: ' · {0} hata', queued: ' · sırada {0}',
-      assets_total: ' · toplam {0} varlık', held_sub: '{0} ETH · {1} BTC · USDT/USDC {2} (çoğu donduruldu) · hareket ettirilebilir ~{3}',
-      o_swap: 'swap/kontrat {0}', o_thor: 'THORChain {0}', o_bridge: 'köprü {0}', o_swapsvc: 'takas servisi {0}', o_cex: 'borsa {0}', o_mixer: 'mikser {0}', o_burn: 'yakılan {0}', none_yet: 'henüz yok',
-      auto_found: '+{0} otomatik bulundu · ', last10: 'son 10 dk {0} hareket', cap_hit: ' · otomatik takip sınırı doldu', spark_max: 'en yüksek dilim {0}',
+      o_thor: 'THORChain {0}', o_bridge: 'köprü {0}', o_swapsvc: 'takas servisi {0}', o_cex: 'borsa {0}', o_mixer: 'mikser {0}', cap_hit: ' · otomatik takip sınırı doldu', spark_max: 'en yüksek dilim {0}',
       feed_blocked: 'Bu pencere internete bağlanamıyor; büyük ihtimalle bir uygulamanın dosya önizlemesinde açıldı. Dosyayı indirip Chrome, Safari ya da Edge ile aç.',
       feed_none: "Bu filtreyle gösterilecek hareket yok. Min. tutarı düşür ya da spam/toz'u aç.", feed_hint: '{0} hareket', last250: ' · son 250 gösteriliyor', newest: ' · en yeni üstte',
       contract_creation: 'kontrat oluşturma', m_call: 'çağrı', m_create: 'kontrat oluşturdu',
       no_value: 'değer transferi yok', no_price: 'fiyat yok', unconfirmed: ' · onaysız', follow_btn: '+ takip', live_tag: 'canlı', followed_badge: 'takibe alındı',
       w_last: 'son hareket {0}', w_none: 'hareket yok', w_loading: 'yükleniyor…', w_err: ' · bağlantı hatası, yeniden deneniyor',
-      b_usdtc: 'USDT/USDC {0}', b_eth: 'ETH türevi {0}', b_stable: 'diğer stable {0}', b_other: 'diğer token {0}',
+      b_eth: 'ETH türevi {0}', b_stable: 'diğer stable {0}', b_other: 'diğer token {0}',
       new_badge: 'yeni', hop_n: ' · {0}. hop', copy: 'kopyala', copied: 'kopyalandı', remove: 'çıkar',
       grp_cluster: 'Saldırgan ve parayı alan cüzdanlar · {0}', grp_victim: 'Kaynak: Binance cüzdanları', w_auto: '{0} cüzdan otomatik bulundu', w_grows: 'para izlendikçe büyür',
       lbl_hop: 'Hop {0} · {1} {2} aldı', lbl_thor: 'THORChain çıkışı · {0}', lbl_followed: 'Takibe alındı', lbl_manual: 'Elle eklendi', lbl_manual_btc: 'BTC · elle eklendi',
+      k_move: 'Saldırganın elinde · hareket ettirebilir', k_frz: 'Dondurulan / kurtarılan', k_laund: 'Aklanan', k_total: 'Toplam çekilen · ETH + BTC',
+      move_sub: '{0} ETH · {1} BTC · diğer token {2}', frz_sub: 'USDT {0} · USDC {1} · Tether ve Circle kara listesinde', frz_ret: ' · Binance\'e dönen {0}', frz_pct: ' · çekilene oranı %{0}',
+      frz_wait: 'kara liste kontrol ediliyor…', frz_fail: 'kara liste şu an kontrol edilemedi, yeniden denenecek', laund_none: 'henüz yok · mikser, THORChain, köprü, takas servisi ve borsaya giden sayılır', laund_pct: ' · çekilene oranı %{0}', total_sub: '{0} · Tron ve L2 hariç',
+      ch_ret: 'Binance\'e geri döndü', frozen_badge: 'donduruldu', b_usdt: 'USDT {0}', b_usdc: 'USDC {0}', frz_tag: ' (donduruldu)',
       ago_now: 'şimdi', ago_min: '{0} dk önce', ago_h: '{0} sa {1} dk önce',
       u_b: ' Mr', u_m: ' Mn', u_k: ' bin'
     },
@@ -269,7 +272,6 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       min: 'Min. amount', opt_all: 'All', opt_1k: '$1K', opt_10k: '$10K', opt_100k: '$100K', opt_1m: '$1M',
       spam: 'Spam / dust', sound_off: 'Sound off', sound_on: 'Sound on · $1M+', pause: 'Pause', resume: 'Resume',
       lang_btn: 'TR', lang_aria: 'Türkçeye geç',
-      k_drained: 'Drained from Binance · ETH + BTC', k_held: 'Held by the attacker cluster now', k_out: 'Out of cluster · swap / bridge / exchange', k_w: 'Tracked wallets',
       loading_lc: 'loading on-chain data', loading: 'Loading on-chain data…',
       spark_h: 'Last 4 hours · 5-min buckets · log scale', lg_drain: 'Binance → attacker', lg_hop: 'within cluster', lg_out: 'out of cluster', lg_in: 'inflow', now: 'now',
       alerts_h: 'Laundering steps', alerts_hint: 'mixer · THORChain · bridge · no-KYC swap service · exchange',
@@ -279,25 +281,27 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       tl_more: ' + {0} more assets', tl_swapline: '{0} made {1} swaps · {2}', tl_burn: '{0} · burned from {1}',
       feed_h: 'Live feed', wal_h: 'Wallet cluster', add_ph: 'Add a 0x… or bc1… address', add_aria: 'Add an address to track', add_btn: 'Add',
       add_invalid: 'Enter a valid Ethereum (0x…) or Bitcoin (bc1… / 1… / 3…) address.',
-      footer: 'Independent on-chain tracking; not affiliated with Binance. Reports put another ~$628M drained on Tron and ~$38M on Arbitrum, Optimism and Base; those are not on this page. Binance\'s Solana hot wallet operated normally during the hack. Data: Blockscout public API (Ethereum) and mempool.space (Bitcoin); requests go straight from your browser and pause while the tab is in the background. USD values use current prices, not prices at the time of transfer. Wallets marked "received cluster funds" are found automatically and are not necessarily owned by the attacker. Not investment advice.',
+      footer: 'Independent on-chain tracking; not affiliated with Binance. Reports put another ~$628M drained on Tron and ~$38M on Arbitrum, Optimism and Base; those are not on this page. Binance\'s Solana hot wallet operated normally during the hack. Data: Blockscout public API and publicnode (Ethereum), mempool.space (Bitcoin); requests go straight from your browser and pause while the tab is in the background. "Frozen" is computed by checking on-chain whether each wallet is on the Tether and Circle blacklists; "Laundered" counts only funds sent to mixers, THORChain, bridges, no-KYC swap services and exchanges, not DEX swaps. USD values use current prices, not prices at the time of transfer. Wallets marked "received cluster funds" are found automatically and are not necessarily owned by the attacker. Not investment advice.',
       role_initiator: 'initiator', role_hacker: 'attacker', role_hop: 'received cluster funds', role_manual: 'added manually', role_victim: 'Binance',
       cat_dex: 'Swap / DEX', cat_contract: 'To contract', cat_bridge: 'Bridge', cat_thor: 'THORChain', cat_swapsvc: 'Swap service', cat_cex: 'To exchange', cat_mixer: 'Mixer', cat_burn: 'Burned', cat_wallet: 'To new wallet',
       ch_drain: 'Binance → attacker', ch_hop: 'Within cluster', ch_call: 'Attacker call', ch_out: 'Outflow', ch_mixin: 'From mixer', ch_swapin: 'Swap proceeds', ch_in: 'Inflow', ch_vout: 'Binance outflow', ch_other: 'Other', ch_swap: 'Swap', ch_news: 'News', ch_launder: 'Laundering',
       st_paused: 'Paused', st_hidden: 'Tab in background, polling paused', st_loading: 'Loading {0}/{1}', st_offline: 'No connection', st_live: 'Live',
       last_data: 'last data {0}', reqs: '{0} requests', errs: ' · {0} errors', queued: ' · {0} queued',
-      assets_total: ' · {0} assets total', held_sub: '{0} ETH · {1} BTC · USDT/USDC {2} (mostly frozen) · movable ~{3}',
-      o_swap: 'swap/contract {0}', o_thor: 'THORChain {0}', o_bridge: 'bridge {0}', o_swapsvc: 'swap service {0}', o_cex: 'exchange {0}', o_mixer: 'mixer {0}', o_burn: 'burned {0}', none_yet: 'none yet',
-      auto_found: '+{0} auto-discovered · ', last10: '{0} moves in the last 10 min', cap_hit: ' · auto-follow limit reached', spark_max: 'peak bucket {0}',
+      o_thor: 'THORChain {0}', o_bridge: 'bridge {0}', o_swapsvc: 'swap service {0}', o_cex: 'exchange {0}', o_mixer: 'mixer {0}', cap_hit: ' · auto-follow limit reached', spark_max: 'peak bucket {0}',
       feed_blocked: 'This window cannot reach the internet; it was probably opened in an app\'s file preview. Download the file and open it in Chrome, Safari or Edge.',
       feed_none: 'No moves match this filter. Lower the minimum amount or turn on spam/dust.', feed_hint: '{0} moves', last250: ' · showing last 250', newest: ' · newest first',
       contract_creation: 'contract creation', m_call: 'call', m_create: 'created contract',
       no_value: 'no value transfer', no_price: 'no price', unconfirmed: ' · unconfirmed', follow_btn: '+ track', live_tag: 'live', followed_badge: 'now tracked',
       w_last: 'last move {0}', w_none: 'no moves', w_loading: 'loading…', w_err: ' · connection error, retrying',
-      b_usdtc: 'USDT/USDC {0}', b_eth: 'ETH derivatives {0}', b_stable: 'other stables {0}', b_other: 'other tokens {0}',
+      b_eth: 'ETH derivatives {0}', b_stable: 'other stables {0}', b_other: 'other tokens {0}',
       new_badge: 'new', hop_n: ' · hop {0}', copy: 'copy', copied: 'copied', remove: 'remove',
       grp_cluster: 'Attacker and receiving wallets · {0}', grp_victim: 'Source: Binance wallets', w_auto: '{0} wallets auto-discovered', w_grows: 'grows as the money moves',
       lbl_hop: 'Hop {0} · received {1} {2}', lbl_thor: 'THORChain exit · {0}', lbl_followed: 'Tracked', lbl_manual: 'Added manually', lbl_manual_btc: 'BTC · added manually',
-      alerts_n_1: '1 step · total {1}', last10_1: '1 move in the last 10 min', feed_hint_1: '1 move', w_auto_1: '1 wallet auto-discovered', assets_total_1: ' · 1 asset total', tl_hint_1: 'built from on-chain data · 1 event · newest first · local time',
+      k_move: 'Still with the attacker · movable', k_frz: 'Frozen / recovered', k_laund: 'Laundered', k_total: 'Total drained · ETH + BTC',
+      move_sub: '{0} ETH · {1} BTC · other tokens {2}', frz_sub: 'USDT {0} · USDC {1} · blacklisted by Tether and Circle', frz_ret: ' · returned to Binance {0}', frz_pct: ' · {0}% of drained',
+      frz_wait: 'checking blacklists…', frz_fail: 'could not check blacklists right now, retrying', laund_none: 'none yet · counts funds sent to mixers, THORChain, bridges, swap services and exchanges', laund_pct: ' · {0}% of drained', total_sub: '{0} · excl. Tron and L2s',
+      ch_ret: 'Returned to Binance', frozen_badge: 'frozen', b_usdt: 'USDT {0}', b_usdc: 'USDC {0}', frz_tag: ' (frozen)',
+      alerts_n_1: '1 step · total {1}', feed_hint_1: '1 move', w_auto_1: '1 wallet auto-discovered', tl_hint_1: 'built from on-chain data · 1 event · newest first · local time',
       ago_now: 'just now', ago_min: '{0} min ago', ago_h: '{0}h {1}m ago',
       u_b: 'B', u_m: 'M', u_k: 'K'
     }
@@ -393,6 +397,8 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     if (a >= 1e3) return '$' + fmtN(v / 1e3, a >= 1e5 ? 0 : 1) + t('u_k');
     return '$' + fmtN(v, 0);
   }
+  /* büyük harfe çevrilen yerlerde marka adları Türkçe İ almasın */
+  function brand(v) { v = esc(v); return LANG === 'tr' ? v.replace(/THORChain|Binance|Tether|Circle|CoinJoin|Exploiter/g, '<span lang="en">$&</span>') : v; }
   function fmtAmt(v) { var a = Math.abs(v); return fmtN(v, a >= 1000 ? 0 : a >= 1 ? 2 : a >= 0.001 ? 4 : 6); }
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -484,6 +490,59 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       else { S.reqErr++; job.reject(e); }
     }).then(function () { mActive--; mpump(); });
   }
+  /* ---------- Tether / Circle kara liste kontrolü (eth_call) ---------- */
+  var USDT_C = '0xdac17f958d2ee523a2206206994597c13d831ec7', USDC_C = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48';
+  var RPC_MAIN = 'https://ethereum-rpc.publicnode.com', RPC_ALT = 'https://eth.blockscout.com/api/eth-rpc';
+  var FRZ = { at: 0, busy: false, ok: null, err: 0, dirty: true };
+  function pad32(a) { return '000000000000000000000000' + a.slice(2).toLowerCase(); }
+  function rpcPost(url, calls) {
+    var body = calls.map(function (c, i) { return { jsonrpc: '2.0', id: i, method: 'eth_call', params: [c, 'latest'] }; });
+    return fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (j) {
+        if (!Array.isArray(j)) throw new Error('rpc');
+        var out = [];
+        j.forEach(function (x) { if (x && typeof x.result === 'string' && x.result.length > 2) out[x.id] = x.result; });
+        S.reqOk++; S.lastOk = Date.now();
+        return out;
+      });
+  }
+  function rpcChunks(url, calls, size, gap) {
+    var out = [], i = 0;
+    function next() {
+      if (i >= calls.length) return Promise.resolve(out);
+      var part = calls.slice(i, i + size), at = i;
+      i += size;
+      return rpcPost(url, part).then(function (r) {
+        for (var k = 0; k < part.length; k++) out[at + k] = r[k];
+        return gap ? new Promise(function (res) { setTimeout(res, gap); }).then(next) : next();
+      });
+    }
+    return next();
+  }
+  function hexNum(h) { return h ? (parseInt(h.slice(2), 16) || 0) : 0; }
+  function checkFrozen() {
+    var ws = [], calls = [];
+    S.wallets.forEach(function (w) { if (w.chain === 'eth' && isCluster(w)) ws.push(w); });
+    FRZ.dirty = false;
+    if (!ws.length) { FRZ.at = Date.now(); return; }
+    ws.forEach(function (w) {
+      var p = pad32(w.addr);
+      calls.push({ to: USDT_C, data: '0x70a08231' + p }, { to: USDT_C, data: '0xe47d6060' + p }, { to: USDC_C, data: '0x70a08231' + p }, { to: USDC_C, data: '0xfe575a87' + p });
+    });
+    FRZ.busy = true;
+    rpcChunks(RPC_MAIN, calls, 60, 0).catch(function () { return rpcChunks(RPC_ALT, calls, 5, 400); }).then(function (res) {
+      var got = 0;
+      ws.forEach(function (w, i) {
+        for (var k = 0; k < 4; k++) if (res[i * 4 + k] == null) return;
+        w.rpc = { usdt: hexNum(res[i * 4]) / 1e6, usdtBL: hexNum(res[i * 4 + 1]) > 0, usdc: hexNum(res[i * 4 + 2]) / 1e6, usdcBL: hexNum(res[i * 4 + 3]) > 0, at: Date.now() };
+        got++;
+      });
+      if (!got) throw new Error('rpc empty');
+      FRZ.ok = true; FRZ.err = 0;
+    }).catch(function () { FRZ.err++; S.reqErr++; if (FRZ.ok !== true) FRZ.ok = false; })
+      .then(function () { FRZ.busy = false; FRZ.at = Date.now(); scheduleRender(); });
+  }
   function settle(list) {
     return Promise.all(list.map(function (p) { return p.then(function () { return true; }, function (e) { return e || new Error('err'); }); }))
       .then(function (rs) { var bad = rs.filter(function (r) { return r !== true; }); if (bad.length && bad.length === rs.length) throw bad[0]; return bad.length; });
@@ -502,6 +561,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       busy: false, ready: false, err: 0
     };
     S.wallets.set(key, w);
+    if (w.chain === 'eth' && w.role !== 'victim') FRZ.dirty = true;
     scheduleRender();
     return w;
   }
@@ -514,10 +574,13 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     if (l.k === 'manual') return t(w.chain === 'btc' ? 'lbl_manual_btc' : 'lbl_manual');
     return short(w.addr);
   }
+  function stab(w, k) { return w.rpc ? w.rpc[k] : (w.tokBreak ? w.tokBreak[k] : 0); }
+  function frozenOf(w) { return w.rpc ? (w.rpc.usdtBL ? w.rpc.usdt : 0) + (w.rpc.usdcBL ? w.rpc.usdc : 0) : 0; }
   function holdUsd(w) {
     if (w.chain === 'btc') return w.balBtc == null ? null : w.balBtc * (S.btcPrice || 0);
     if (w.balEth == null) return null;
-    return w.balEth * (S.ethPrice || 0) + (w.tokUsd || 0);
+    var b = w.tokBreak;
+    return w.balEth * (S.ethPrice || 0) + (b ? b.stable + b.eth + b.other : 0) + stab(w, 'usdt') + stab(w, 'usdc');
   }
 
   /* ---------- sınıflandırma ---------- */
@@ -552,6 +615,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     var fw = W(e.from), tw = W(e.to), fH = isCluster(fw), tH = isCluster(tw);
     if (fw && fw.role === 'victim' && tH) return 'drain';
     if (fH && tH) return 'hop';
+    if (fH && ((tw && tw.role === 'victim') || /binance/i.test(((e.toP && e.toP.tags) || []).join(' ') + ' ' + ((e.toP && e.toP.name) || '')))) return 'ret';
     if (fH) return 'out';
     if (tH) return 'in';
     if (fw && fw.role === 'victim') return 'vout';
@@ -569,6 +633,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       if (c === 'dex' || c === 'contract') return [t('ch_swapin'), 'var(--in)'];
       return [t('ch_in'), 'var(--in)'];
     }
+    if (f === 'ret') return [t('ch_ret'), 'var(--in)'];
     if (f === 'vout') return [t('ch_vout'), 'var(--burn)'];
     return [t('ch_other'), 'var(--faint)'];
   }
@@ -738,15 +803,16 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     if (j.exchange_rate) S.ethPrice = Number(j.exchange_rate) || S.ethPrice;
   }
   function applyHoldings(w, items) {
-    var b = { usdtc: 0, stable: 0, eth: 0, other: 0 }, tot = 0;
+    var b = { usdt: 0, usdc: 0, stable: 0, eth: 0, other: 0 }, tot = 0;
     items.forEach(function (x) {
       if (!x || !x.token || !x.token.exchange_rate || x.token.reputation === 'scam') return;
-      var sym = x.token.symbol || '';
+      var sym = x.token.symbol || '', ta = lc(x.token.address_hash || x.token.address);
       if (/[^\x20-\x7E]/.test(sym)) return;
       var u = units(x.value, x.token.decimals) * Number(x.token.exchange_rate);
       if (!isFinite(u) || u <= 0) return;
       tot += u;
-      if (STABLE.test(sym)) b.usdtc += u; else if (OTHERSTABLE.test(sym)) b.stable += u; else if (ETHISH.test(sym)) b.eth += u; else b.other += u;
+      if (ta === USDT_C) b.usdt += u; else if (ta === USDC_C) b.usdc += u;
+      else if (STABLE.test(sym) || OTHERSTABLE.test(sym)) b.stable += u; else if (ETHISH.test(sym)) b.eth += u; else b.other += u;
     });
     w.tokUsd = tot; w.tokBreak = b; w.tokAt = Date.now();
   }
@@ -851,6 +917,8 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       S.wallets.forEach(function (w) { if (w.busy) busy[w.chain]++; else if (w.nextPoll <= now) due.push(w); });
       due.sort(function (x, y) { return x.nextPoll - y.nextPoll; });
       due.forEach(function (w) { if (busy[w.chain] < cap[w.chain]) { busy[w.chain]++; poll(w); } });
+      var since = now - FRZ.at;
+      if (!FRZ.busy && (since > (FRZ.err ? Math.min(600000, 60000 * FRZ.err) : 300000) || (FRZ.dirty && since > 30000))) checkFrozen();
     }
     setTimeout(loop, 1000);
   }
@@ -899,10 +967,10 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
   var NEWS = [
     { ts: Date.parse('2026-10-28T21:00:00Z'), day: true, tr: 'Başlatıcı cüzdan, raporlara göre Tornado Cash\'ten gelen üç küçük girişle (~0,1 ETH) fonlandı.', en: 'Per reports, the initiator wallet was funded with three small Tornado Cash withdrawals (~0.1 ETH).' },
     { ts: Date.parse('2026-10-29T21:15:00Z'), tr: 'CZ hack\'i doğruladı ve kullanıcı fonlarının karşılanacağını söyledi; Binance inceleme başlattığını açıkladı.', en: 'CZ confirmed the hack and said user funds will be covered; Binance said it is investigating.' },
-    { ts: Date.parse('2026-10-29T21:20:00Z'), tr: 'Tether ~971 Mn USDT, Circle ~823 Mn USDC dondurdu. Dondurulan tokenlar bakiyede görünmeye devam eder ama hareket edemez.', en: 'Tether froze ~$971M USDT and Circle ~$823M USDC. Frozen tokens still show in the balance but cannot move.' }
+    { ts: Date.parse('2026-10-29T21:20:00Z'), tr: 'Tether ve Circle saldırgan cüzdanlarındaki USDT ve USDC\'yi dondurdu (ilk raporlar ~971 Mn USDT, ~823 Mn USDC). Zincirden doğrulanan güncel tutar üstteki "Dondurulan" kutusunda.', en: 'Tether and Circle froze the USDT and USDC in attacker wallets (initial reports: ~$971M USDT, ~$823M USDC). The on-chain verified amount is in the "Frozen" box above.' }
   ];
-  var TL_MIN = { call: 0, drain: 1e6, hop: 1e6, outw: 1e6, launder: 1e4, burn: 1e6, swap: 2.5e5 };
-  var TL_CHIP = { drain: ['ch_drain', 'var(--drain)'], hop: ['ch_hop', 'var(--hop)'], outw: ['cat_wallet', 'var(--out)'], burn: ['cat_burn', 'var(--burn)'], swap: ['ch_swap', 'var(--dex)'], call: ['ch_call', 'var(--mixer)'], news: ['ch_news', 'var(--signal)'] };
+  var TL_MIN = { call: 0, drain: 1e6, hop: 1e6, outw: 1e6, launder: 1e4, burn: 1e6, swap: 2.5e5, ret: 1e4 };
+  var TL_CHIP = { drain: ['ch_drain', 'var(--drain)'], hop: ['ch_hop', 'var(--hop)'], outw: ['cat_wallet', 'var(--out)'], burn: ['cat_burn', 'var(--burn)'], swap: ['ch_swap', 'var(--dex)'], call: ['ch_call', 'var(--mixer)'], news: ['ch_news', 'var(--signal)'], ret: ['ch_ret', 'var(--in)'] };
   function tlTime(ts, day) {
     if (day) return dayMon(ts);
     return new Date(ts).toDateString() === new Date().toDateString() ? hhmm(ts) : dayMon(ts) + ' ' + hhmm(ts);
@@ -915,6 +983,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       if (f === 'call') { key = 'c|' + e.tx; kind = 'call'; }
       else if (f === 'drain') { key = 'd|' + e.tx; kind = 'drain'; }
       else if (f === 'hop') { key = 'h|' + e.tx + '|' + lc(e.to); kind = 'hop'; }
+      else if (f === 'ret') { key = 'r|' + e.tx; kind = 'ret'; }
       else if (f === 'out') {
         c = category(e.toP);
         if (LAUNDER[c]) { key = 'l|' + e.tx + '|' + c; kind = 'launder'; }
@@ -941,7 +1010,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
   function renderTimeline() {
     var items = tlGroups().map(function (x) {
       var ch = x.kind === 'launder' ? (catChip(category(x.e.toP)) || [t('ch_launder'), 'var(--mixer)']) : [t(TL_CHIP[x.kind][0]), TL_CHIP[x.kind][1]];
-      return { ts: x.ts, html: '<span class="chip" style="--c:' + ch[1] + '">' + esc(ch[0]) + '</span>' + tlText(x) + (x.kind === 'call' ? '' : '<span class="usd">' + fmtUsd(x.usd) + '</span>') };
+      return { ts: x.ts, html: '<span class="chip" style="--c:' + ch[1] + '">' + brand(ch[0]) + '</span>' + tlText(x) + (x.kind === 'call' ? '' : '<span class="usd">' + fmtUsd(x.usd) + '</span>') };
     });
     NEWS.forEach(function (n) {
       items.push({ ts: n.ts, day: n.day, html: '<span class="chip" style="--c:' + TL_CHIP.news[1] + '">' + esc(t(TL_CHIP.news[0])) + '</span>' + esc(LANG === 'en' ? n.en : n.tr) });
@@ -979,48 +1048,38 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
   }
 
   function renderKpis() {
-    var drained = 0, dBy = {}, outBy = {}, outTot = 0, last10 = 0, now = Date.now();
+    var drained = 0, dBy = {}, laund = 0, lBy = {}, ret = 0;
     S.events.forEach(function (e) {
       if (e.spam) return;
       var f = flow(e), u = usdOf(e) || 0;
       if (f === 'drain') { drained += u; dBy[e.sym] = (dBy[e.sym] || 0) + u; }
-      else if (f === 'out') {
-        var c = category(e.toP);
-        if (c !== 'wallet') { outBy[c] = (outBy[c] || 0) + u; if (c !== 'burn') outTot += u; }
-      }
-      if ((f === 'out' || f === 'hop' || f === 'drain') && now - e.ts < 10 * 60000 && u >= 1000) last10++;
+      else if (f === 'ret') ret += u;
+      else if (isLaunder(e)) { var c = category(e.toP); laund += u; lBy[c] = (lBy[c] || 0) + u; }
     });
-    set('kDrained', drained ? fmtUsd(drained) : '—');
-    var keys = Object.keys(dBy).sort(function (x, y) { return dBy[y] - dBy[x]; });
-    set('kDrainedS', keys.length ? keys.slice(0, 3).map(function (k) { return k + ' ' + fmtUsd(dBy[k]); }).join(' · ') + tn('assets_total', keys.length) : t('loading_lc'));
-
-    var held = 0, usdtc = 0, ethBal = 0, btcBal = 0;
+    var held = 0, fT = 0, fC = 0, ethBal = 0, btcBal = 0, any = false, rpcAny = false;
     S.wallets.forEach(function (w) {
       if (!isCluster(w)) return;
-      var h = holdUsd(w); if (h != null) held += h;
-      if (w.tokBreak) usdtc += w.tokBreak.usdtc;
+      var h = holdUsd(w); if (h != null) { held += h; any = true; }
       if (w.balEth) ethBal += w.balEth;
       if (w.balBtc) btcBal += w.balBtc;
+      if (w.rpc) { rpcAny = true; if (w.rpc.usdtBL) fT += w.rpc.usdt; if (w.rpc.usdcBL) fC += w.rpc.usdc; }
     });
-    set('kHeld', held ? fmtUsd(held) : '—');
-    set('kHeldS', held ? t('held_sub', fmtAmt(ethBal), fmtAmt(btcBal), fmtUsd(usdtc), fmtUsd(Math.max(0, held - usdtc))) : '');
-
-    set('kOut', fmtUsd(outTot));
+    var fz = fT + fC, move = Math.max(0, held - fz);
+    var other = Math.max(0, move - ethBal * (S.ethPrice || 0) - btcBal * (S.btcPrice || 0));
+    function pct(v) { return drained > 0 ? Math.round(100 * v / drained) : 0; }
+    set('kMove', any ? fmtUsd(move) : '—');
+    set('kMoveS', any ? t('move_sub', fmtAmt(ethBal), fmtAmt(btcBal), fmtUsd(other)) : t('loading_lc'));
+    var hasF = rpcAny || ret > 0;
+    set('kFrz', hasF ? fmtUsd(fz + ret) : '—');
+    set('kFrzS', hasF ? t('frz_sub', fmtUsd(fT), fmtUsd(fC)) + (ret > 0 ? t('frz_ret', fmtUsd(ret)) : '') + (pct(fz + ret) >= 1 ? t('frz_pct', pct(fz + ret)) : '')
+      : (FRZ.ok === false ? t('frz_fail') : t('frz_wait')));
+    set('kLaund', fmtUsd(laund));
     var parts = [];
-    var sw = (outBy.dex || 0) + (outBy.contract || 0);
-    if (sw) parts.push(t('o_swap', fmtUsd(sw)));
-    if (outBy.thor) parts.push(t('o_thor', fmtUsd(outBy.thor)));
-    if (outBy.bridge) parts.push(t('o_bridge', fmtUsd(outBy.bridge)));
-    if (outBy.swapsvc) parts.push(t('o_swapsvc', fmtUsd(outBy.swapsvc)));
-    if (outBy.cex) parts.push(t('o_cex', fmtUsd(outBy.cex)));
-    if (outBy.mixer) parts.push(t('o_mixer', fmtUsd(outBy.mixer)));
-    if (outBy.burn) parts.push(t('o_burn', fmtUsd(outBy.burn)));
-    set('kOutS', parts.join(' · ') || t('none_yet'));
-
-    var cl = 0, au = 0;
-    S.wallets.forEach(function (w) { if (isCluster(w)) cl++; if (w.auto) au++; });
-    set('kW', String(cl));
-    set('kWS', (au ? t('auto_found', au) : '') + tn('last10', last10) + (S.capHit ? t('cap_hit') : ''));
+    ['thor', 'bridge', 'mixer', 'swapsvc', 'cex'].forEach(function (c) { if (lBy[c]) parts.push(t('o_' + c, fmtUsd(lBy[c]))); });
+    set('kLaundS', parts.length ? parts.join(' · ') + (pct(laund) >= 1 ? t('laund_pct', pct(laund)) : '') : t('laund_none'));
+    set('kDrained', drained ? fmtUsd(drained) : '—');
+    var keys = Object.keys(dBy).sort(function (x, y) { return dBy[y] - dBy[x]; });
+    set('kDrainedS', keys.length ? t('total_sub', keys.slice(0, 2).map(function (k) { return k + ' ' + fmtUsd(dBy[k]); }).join(' · ')) : t('loading_lc'));
   }
 
   function renderBars() {
@@ -1029,7 +1088,8 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     S.events.forEach(function (e) {
       if (e.spam || e.ts < start) return;
       var f = flow(e);
-      if (f !== 'drain' && f !== 'out' && f !== 'hop' && f !== 'in') return;
+      if (f !== 'drain' && f !== 'out' && f !== 'hop' && f !== 'in' && f !== 'ret') return;
+      if (f === 'ret') f = 'in';
       var u = usdOf(e) || 0; if (u < 1000) return;
       var k = Math.min(BUCKETS - 1, Math.floor((e.ts - start) / step));
       vol[k] += u; by[k][f] = (by[k][f] || 0) + u;
@@ -1080,7 +1140,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     var fresh = e.live && Date.now() - e.seenAt < 10 * 60000 ? '<span class="fresh">' + esc(t('live_tag')) + '</span>' : '';
     return '<div class="row' + (e.live && !lastRendered.has(e.id) ? ' new' : '') + '" style="--c:' + ch[1] + '">' +
       '<div class="t">' + esc(clock(e.ts)) + '<small>' + esc(ago(e.ts)) + '</small>' + fresh + '</div>' +
-      '<div><span class="chip">' + esc(ch[0]) + '</span></div>' +
+      '<div><span class="chip">' + brand(ch[0]) + '</span></div>' +
       '<div class="amt">' + amt + '</div>' +
       '<div class="route">' + who(e.from, e.fromP) + '<span class="arrow">→</span>' + who(e.to, e.toP) +
         (e.thorDest ? '<span class="arrow">⇒</span><span class="faint">' + esc(e.thorDest.asset) + '</span> ' + (e.thorDest.follow ? who(e.thorDest.addr, null) : '<span class="who">' + esc(short(e.thorDest.addr)) + '</span>') : '') +
@@ -1108,9 +1168,10 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       : '<a href="https://etherscan.io/address/' + esc(w.addr) + '" target="_blank" rel="noopener">Etherscan</a><a href="https://intel.arkm.com/explorer/address/' + esc(w.addr) + '" target="_blank" rel="noopener">Arkham</a><a href="https://eth.blockscout.com/address/' + esc(w.addr) + '" target="_blank" rel="noopener">Blockscout</a>';
     var sub = (w.lastAct ? t('w_last', ago(w.lastAct)) : (w.ready ? t('w_none') : t('w_loading'))) + (w.err ? t('w_err') : '');
     var brk = '';
-    if (!isV && w.tokBreak && w.tokUsd > 1e5) {
-      var b = w.tokBreak, parts = [];
-      if (b.usdtc > 1e5) parts.push(t('b_usdtc', fmtUsd(b.usdtc)));
+    if (!isV && (w.tokBreak || w.rpc)) {
+      var b = w.tokBreak || { stable: 0, eth: 0, other: 0 }, parts = [], ut = stab(w, 'usdt'), uc = stab(w, 'usdc');
+      if (ut > 1e5) parts.push(t('b_usdt', fmtUsd(ut)) + (w.rpc && w.rpc.usdtBL ? t('frz_tag') : ''));
+      if (uc > 1e5) parts.push(t('b_usdc', fmtUsd(uc)) + (w.rpc && w.rpc.usdcBL ? t('frz_tag') : ''));
       if (b.eth > 1e5) parts.push(t('b_eth', fmtUsd(b.eth)));
       if (b.stable > 1e5) parts.push(t('b_stable', fmtUsd(b.stable)));
       if (b.other > 1e5) parts.push(t('b_other', fmtUsd(b.other)));
@@ -1118,7 +1179,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     }
     var isNew = w.auto && Date.now() - w.addedAt < 15 * 60000;
     return '<div class="w" style="--c:' + c + '">' +
-      '<div><div class="nm">' + esc(wLabel(w)) + (isNew ? '<span class="badge">' + esc(t('new_badge')) + '</span>' : '') + '</div>' +
+      '<div><div class="nm">' + esc(wLabel(w)) + (isNew ? '<span class="badge">' + esc(t('new_badge')) + '</span>' : '') + (frozenOf(w) > 1e5 ? '<span class="badge frz">' + esc(t('frozen_badge')) + '</span>' : '') + '</div>' +
       '<div class="ad" title="' + esc(w.addr) + '">' + esc(short(w.addr)) + ' · ' + esc(t('role_' + w.role)) + (w.depth ? esc(t('hop_n', w.depth)) : '') + '</div></div>' +
       '<div><div class="val">' + (isV ? esc(bal) : esc(fmtUsd(h))) + '</div><div class="sub">' + (isV ? '' : esc(bal)) + '</div></div>' + brk +
       '<div class="lnk">' + links + '<button type="button" data-copy="' + esc(w.addr) + '">' + esc(t('copy')) + '</button>' +
@@ -1130,14 +1191,17 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     S.wallets.forEach(function (w) { (w.role === 'victim' ? vi : cl).push(w); if (w.auto) au++; });
     cl.sort(function (x, y) { return (holdUsd(y) || 0) - (holdUsd(x) || 0); });
     $('wallets').innerHTML = '<div class="grp">' + esc(t('grp_cluster', cl.length)) + '</div>' + cl.map(wHtml).join('') +
-      '<div class="grp">' + esc(t('grp_victim')) + '</div>' + vi.map(wHtml).join('');
-    set('wHint', au ? tn('w_auto', au) : t('w_grows'));
+      '<div class="grp">' + brand(t('grp_victim')) + '</div>' + vi.map(wHtml).join('');
+    set('wHint', (au ? tn('w_auto', au) : t('w_grows')) + (S.capHit ? t('cap_hit') : ''));
   }
 
   /* ---------- dil değiştirme ---------- */
   function applyStatic() {
     document.documentElement.lang = LANG;
-    Array.prototype.forEach.call(document.querySelectorAll('[data-t]'), function (el) { el.textContent = t(el.getAttribute('data-t')); });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-t]'), function (el) {
+      var v = t(el.getAttribute('data-t'));
+      if (el.tagName === 'OPTION' || el.tagName === 'FOOTER') el.textContent = v; else el.innerHTML = brand(v);
+    });
     Array.prototype.forEach.call(document.querySelectorAll('[data-tp]'), function (el) { el.setAttribute('placeholder', t(el.getAttribute('data-tp'))); });
     Array.prototype.forEach.call(document.querySelectorAll('[data-ta]'), function (el) { el.setAttribute('aria-label', t(el.getAttribute('data-ta'))); });
     var lb = $('langBtn');
