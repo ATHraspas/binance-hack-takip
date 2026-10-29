@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>Binance Hack Canlı Takip</title>
-<meta name="description" content="Binance sıcak cüzdanlarından çekilen fonların zincir üstündeki hareketini canlı izle: saldırgan cüzdanları, swaplar, köprüler ve yeni cüzdanlar.">
+<meta name="description" content="Binance sıcak cüzdanlarından çekilen fonların zincir üstündeki hareketini canlı izle: saldırgan cüzdanları, swaplar, köprüler ve yeni cüzdanlar. Ethereum ve Bitcoin.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://athraspas.github.io/binance-hack-takip/">
 <meta property="og:title" content="Binance Hack · Canlı Zincir Takibi">
@@ -152,7 +152,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
 
 <main class="wrap">
   <section class="kpis" aria-label="Özet">
-    <div class="kpi drain"><span class="k">Binance'ten çekilen · ETH ağı</span><span class="v" id="kDrained">—</span><span class="s" id="kDrainedS">zincir verisi yükleniyor</span></div>
+    <div class="kpi drain"><span class="k">Binance'ten çekilen · ETH + BTC</span><span class="v" id="kDrained">—</span><span class="s" id="kDrainedS">zincir verisi yükleniyor</span></div>
     <div class="kpi"><span class="k">Saldırgan kümesinde şu an</span><span class="v" id="kHeld">—</span><span class="s" id="kHeldS"></span></div>
     <div class="kpi"><span class="k">Kümeden çıkan · swap / köprü / borsa</span><span class="v" id="kOut">—</span><span class="s" id="kOutS"></span></div>
     <div class="kpi"><span class="k">Takip edilen cüzdan</span><span class="v" id="kW">—</span><span class="s" id="kWS"></span></div>
@@ -189,7 +189,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       <ol class="tl">
         <li><time>28 Eki</time><p>Başlatıcı cüzdan 0x7C86…5CA0, raporlara göre Tornado Cash'ten gelen üç küçük girişle (~0,1 ETH) fonlandı.</p></li>
         <li><time>18:59</time><p>Saldırgan yürütücü kontratı deploy etti; gün içinde başka adreslerde aynı "sweep" çağrısıyla deneme yaptı.</p></li>
-        <li><time>23:20</time><p>Binance 14, EIP-7702 ile saldırganın kontratına delege edildi.</p></li>
+        <li><time>23:20</time><p>Binance 14, EIP-7702 ile saldırganın kontratına delege edildi. Aynı dakikada Binance'in BTC sıcak cüzdanından 18.270 BTC yeni bir adrese çekildi ve aynı blokta 11 adrese bölündü.</p></li>
         <li><time>23:24</time><p>Tek işlemde 167.464 ETH ve 63 token (yaklaşık 1,6 Mr USDT dahil) Binance 14'ten 0x5227…2f8c'ye çekildi. 24 sn sonra Binance 16'dan 28.005 ETH ve 55,7 Mn USDT.</p></li>
         <li><time>23:30</time><p>500 Mn USDT 0x9749…C762'ye, 23:33'te 200 Mn USDT 0x0Ddf…697e'ye bölündü.</p></li>
         <li><time>23:34</time><p>0x9749…'dan USDT piyasa yapıcı ve aggregator kontratlarına akmaya başladı; yaklaşık 325 Mn $'lık kısmı ETH'ye dönmüş görünüyor (cüzdanda ~122 bin ETH).</p></li>
@@ -209,9 +209,10 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     <div class="panel">
       <div class="panel-h"><h2>Bağlam</h2></div>
       <div class="src">
-        <p><b>Rakam.</b> Raporlar Ethereum'da yaklaşık 3,3 Mr $, altı zincirde toplam 3,55 Mr $'a kadar çıkış diyor. 5,7 Mr'ı doğrulayan bir kaynak yok. Üstteki kırmızı rakam bu sayfanın zincirden kendi topladığı tutar, güncel fiyatla.</p>
+        <p><b>Rakam.</b> Zincir verisine dayanan raporlar toplamı yaklaşık 5,6 Mr $ veriyor: Ethereum ~3,53 Mr, Bitcoin ~1,45 Mr, Tron ~628 Mn, Arbitrum/Optimism/Base ~38 Mn. Üstteki kırmızı rakam bu sayfanın Ethereum ve Bitcoin'den kendi topladığı tutar, güncel fiyatla. Tron adresleri henüz bulunamadı.</p>
         <p><b>Dondurmalar.</b> Tether ve Circle'ın dondurduğu ~1,8 Mr $ ana alıcının bakiyesinde görünmeye devam eder; dondurulan token silinmez, sadece hareket edemez.</p>
-        <p><b>BTC.</b> Whale Alert, Binance'ten yeni cüzdanlara 7.636 BTC ve 2.946 BTC çıkışı yakaladı; hack ile bağı doğrulanmadı. Adresi Arkham ya da Whale Alert'te bulursan sağdaki kutuya ekle, BTC hareketleri de bu akışa düşer.</p>
+        <p><b>BTC.</b> 23:20'de Binance'in BTC sıcak cüzdanından 8 işlemle toplam 18.270 BTC tek bir yeni adrese gitti ve aynı blokta 11 adrese bölündü. Bu adreslerin hepsi sayfada canlı izleniyor.</p>
+        <p><b>Yeni adres eklemek.</b> Arkham ya da Whale Alert'te başka bir ETH veya BTC adresi görürsen sağdaki kutuya yapıştır, o da akışa düşer.</p>
         <p><b>Tuzak adresler.</b> Saldırgan cüzdanlarına benzeyen sahte adresler (ör. 0x9749…C762 taklitleri) toz ve sahte token transferleri gönderiyor. "Spam / toz" kapalıyken bunlar gizlenir.</p>
         <p><b>Otomatik takip.</b> Kümeden yeni bir cüzdana 250 bin $ üzeri ya da 0,2 ETH üzeri (gaz fonlama) çıkış olursa o cüzdan kendiliğinden takibe girer.</p>
         <ul>
@@ -226,7 +227,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     </div>
   </section>
 
-  <footer>Bağımsız zincir takibi; Binance ile bağlantısı yoktur. Veri: Blockscout açık API (Ethereum) ve mempool.space (Bitcoin), istekler doğrudan senin tarayıcından gider; sekme arka plandayken sorgu durur. USD değerleri güncel fiyatla hesaplanır, çekildiği anki fiyatla değil. "Parayı alan" cüzdanlar otomatik bulunur ve sahibinin saldırgan olduğu anlamına gelmez. Yatırım tavsiyesi değildir.</footer>
+  <footer>Bağımsız zincir takibi; Binance ile bağlantısı yoktur. Veri: Blockscout açık API (Ethereum) ve mempool.space (Bitcoin); istekler doğrudan senin tarayıcından gider; sekme arka plandayken sorgu durur. USD değerleri güncel fiyatla hesaplanır, çekildiği anki fiyatla değil. "Parayı alan" cüzdanlar otomatik bulunur ve sahibinin saldırgan olduğu anlamına gelmez. Yatırım tavsiyesi değildir.</footer>
 </main>
 
 <script>
@@ -262,6 +263,19 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     { a: '0x600d6F00eadAbDb514561Ceeb43730a7103e8298', role: 'hacker', label: 'PEPE alıcı · Uniswap\'te bozuyor' },
     { a: '0xE7024aB80143b1EF843EFE6a58368696Cb87958d', role: 'hacker', label: 'RLUSD alıcı · Curve\'de bozuyor' },
     { a: '0x54401f80Da97893a15D43566184635B6674BC942', role: 'hacker', label: '20.492 ETH (RLUSD\'den dönen)' },
+    { a: 'bc1q0mtc2f5agpkvlq6hhahmfr3hlr55kyfjhl2mnm', role: 'hacker', label: 'BTC ana alıcı (18.270 BTC)' },
+    { a: 'bc1qt8mrl9uchasf7pqhwlz6ezm9g44x7xj0vs6zqz', role: 'hacker', label: 'BTC parça · 6.636,8 BTC' },
+    { a: 'bc1qhuq4genel5cuj00p7ggn30dwnzzjsw8mz3z2je', role: 'hacker', label: 'BTC parça · 3.696,6 BTC' },
+    { a: 'bc1qn43ejagzgxgle394ynmv5sv3f9ydc48qme7t02', role: 'hacker', label: 'BTC parça · 1.946,9 BTC' },
+    { a: 'bc1qnq6jj9jmlf3945m3l8s0kxnqehrsga300k8t3s', role: 'hacker', label: 'BTC parça · 1.000 BTC (a)' },
+    { a: 'bc1qxrxujwxfnvz040jw76d26zhjdg5jura7hs968s', role: 'hacker', label: 'BTC parça · 1.000 BTC (b)' },
+    { a: 'bc1qs3aej5tmcdz0vctz8y9rjcxtxg8v5385577s56', role: 'hacker', label: 'BTC parça · 1.000 BTC (c)' },
+    { a: 'bc1qjwdw6vrzq4vf6hckutvx4ucj86awwv99mxnz7w', role: 'hacker', label: 'BTC parça · 1.000 BTC (d)' },
+    { a: 'bc1q0ts8gaf9ht0rr4u02hr56f8thndqsc4kmkmfv3', role: 'hacker', label: 'BTC parça · 1.000 BTC (e)' },
+    { a: 'bc1qxg0l4p6xc50zuv9cl5f0l0wmaxjpg8wcy7s9ra', role: 'hacker', label: 'BTC parça · 437,7 BTC' },
+    { a: 'bc1q96qkjsye5qruf9yksqdqg09lzdmur7wau2ga6u', role: 'hacker', label: 'BTC parça · 409,5 BTC' },
+    { a: 'bc1qrsrh56k4rpal88w0xpjuul0m78ud62akcwue5e', role: 'hacker', label: 'BTC parça · 142,7 BTC' },
+    { a: 'bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h', role: 'victim', label: 'Binance BTC sıcak cüzdanı' },
     { a: '0x28C6c06298d514Db089934071355E5743bf21d60', role: 'victim', label: 'Binance 14' },
     { a: '0xDFd5293D8e347dFe59E90eFd55b2956a1343963d', role: 'victim', label: 'Binance 16' },
     { a: '0xEe7aE85f2Fe2239E27D9c1E23fFFe168D63b4055', role: 'victim', label: 'Binance Hot Wallet 34' }
@@ -495,12 +509,16 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     return e;
   }
   function maybeFollow(e) {
-    if (e.chain !== 'eth' || e.spam || e.kind === 'call' || !e.to) return;
+    if (e.spam || e.kind === 'call' || !e.to) return;
     var fw = W(e.from);
     if (!isCluster(fw) || W(e.to) || S.blocked.has(lc(e.to))) return;
-    if (category(e.toP) !== 'wallet') return;
     var u = usdOf(e);
-    if (!((u != null && u >= FOLLOW_USD) || (e.kind === 'eth' && e.amount >= FOLLOW_ETH))) return;
+    if (e.chain === 'btc') {
+      if (!(u != null && u >= 1e6)) return;
+    } else {
+      if (category(e.toP) !== 'wallet') return;
+      if (!((u != null && u >= FOLLOW_USD) || (e.kind === 'eth' && e.amount >= FOLLOW_ETH))) return;
+    }
     if ((fw.depth || 0) >= MAX_DEPTH) return;
     var n = 0; S.wallets.forEach(function (x) { if (x.auto) n++; });
     if (n >= MAX_AUTO) { S.capHit = true; return; }
@@ -610,24 +628,30 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     ]);
   }
   function ingestBtc(w, tx) {
-    var a = w.addr, inS = 0, outS = 0, cpIn = '', cpOut = '', big = 0;
-    (tx.vout || []).forEach(function (o) {
-      if (o.scriptpubkey_address === a) inS += o.value;
-      else if (o.value > big) { big = o.value; cpOut = o.scriptpubkey_address || ''; }
-    });
-    (tx.vin || []).forEach(function (i) {
-      var p = i.prevout || {};
-      if (p.scriptpubkey_address === a) outS += p.value; else if (!cpIn) cpIn = p.scriptpubkey_address || '';
-    });
-    var net = inS - outS;
-    if (!net) return;
-    var conf = !!(tx.status && tx.status.confirmed);
-    var from = net < 0 ? a : cpIn, to = net < 0 ? cpOut : a;
-    addEvent({
-      id: 'btc:' + tx.txid + ':' + a, kind: 'btc', chain: 'btc', ts: conf && tx.status.block_time ? tx.status.block_time * 1000 : Date.now(),
-      tx: tx.txid, sym: 'BTC', amount: Math.abs(net) / 1e8, from: from, to: to,
-      fromP: { addr: from, tags: [] }, toP: { addr: to, tags: [] }, method: conf ? '' : 'mempool', spam: false
-    }, w);
+    var a = w.addr, conf = !!(tx.status && tx.status.confirmed);
+    var ts = conf && tx.status.block_time ? tx.status.block_time * 1000 : Date.now();
+    var spends = (tx.vin || []).some(function (i) { return i.prevout && i.prevout.scriptpubkey_address === a; });
+    var firstIn = '';
+    (tx.vin || []).forEach(function (i) { var p = i.prevout || {}; if (!firstIn && p.scriptpubkey_address && p.scriptpubkey_address !== a) firstIn = p.scriptpubkey_address; });
+    var base = { kind: 'btc', chain: 'btc', ts: ts, tx: tx.txid, sym: 'BTC', method: conf ? '' : 'mempool', spam: false };
+    if (spends) {
+      (tx.vout || []).forEach(function (o) {
+        var to = o.scriptpubkey_address;
+        if (!to || to === a || !(o.value > 0)) return;
+        var ev = Object.assign({}, base, { id: 'btc:' + tx.txid + ':' + a + '>' + to, amount: o.value / 1e8, from: a, to: to, fromP: { addr: a, tags: [] }, toP: { addr: to, tags: [] } });
+        if (w.role === 'victim' && !keepVictim(ev)) return;
+        addEvent(ev, w);
+      });
+      return;
+    }
+    var got = 0;
+    (tx.vout || []).forEach(function (o) { if (o.scriptpubkey_address === a) got += o.value; });
+    if (!got) return;
+    var from = firstIn || '?';
+    var ev2 = Object.assign({}, base, { id: 'btc:' + tx.txid + ':' + from + '>' + a, amount: got / 1e8, from: from, to: a, fromP: { addr: from, tags: [] }, toP: { addr: a, tags: [] } });
+    if (w.role === 'victim' && !keepVictim(ev2)) return;
+    ev2.spam = isDust(ev2);
+    addEvent(ev2, w);
   }
   function interval(w) {
     if (w.err) return Math.min(180000, 20000 * w.err);
@@ -712,15 +736,16 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     var keys = Object.keys(dBy).sort(function (x, y) { return dBy[y] - dBy[x]; });
     set('kDrainedS', keys.length ? keys.slice(0, 3).map(function (k) { return k + ' ' + fmtUsd(dBy[k]); }).join(' · ') + ' · toplam ' + keys.length + ' varlık' : 'zincir verisi yükleniyor');
 
-    var held = 0, usdtc = 0, ethBal = 0;
+    var held = 0, usdtc = 0, ethBal = 0, btcBal = 0;
     S.wallets.forEach(function (w) {
       if (!isCluster(w)) return;
       var h = holdUsd(w); if (h != null) held += h;
       if (w.tokBreak) usdtc += w.tokBreak.usdtc;
       if (w.balEth) ethBal += w.balEth;
+      if (w.balBtc) btcBal += w.balBtc;
     });
     set('kHeld', held ? fmtUsd(held) : '—');
-    set('kHeldS', held ? fmtAmt(ethBal) + ' ETH · USDT/USDC ' + fmtUsd(usdtc) + ' (çoğu donduruldu) · hareket ettirilebilir ~' + fmtUsd(Math.max(0, held - usdtc)) : '');
+    set('kHeldS', held ? fmtAmt(ethBal) + ' ETH · ' + fmtAmt(btcBal) + ' BTC · USDT/USDC ' + fmtUsd(usdtc) + ' (çoğu donduruldu) · hareket ettirilebilir ~' + fmtUsd(Math.max(0, held - usdtc)) : '');
 
     set('kOut', fmtUsd(outTot));
     var parts = [];
