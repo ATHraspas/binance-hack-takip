@@ -117,8 +117,12 @@ form.add{display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--li
 form.add input{flex:1;min-width:0;font-family:var(--f-mono)}
 .ctx{margin-top:16px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;align-items:start}
 @media (max-width:900px){.ctx{grid-template-columns:1fr}}
+.tlpanel{margin-top:12px}
+.tlpanel .tl{max-height:460px;overflow:auto}
+.tl .chip{margin-right:6px;vertical-align:1px}
+.tl .usd{color:var(--muted);font-family:var(--f-mono);font-size:12px;margin-left:6px}
 .tl{list-style:none;margin:0;padding:6px 14px 12px}
-.tl li{display:grid;grid-template-columns:62px minmax(0,1fr);gap:10px;padding:7px 0;border-bottom:1px dashed var(--line)}
+.tl li{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;padding:7px 0;border-bottom:1px dashed var(--line)}
 .tl li:last-child{border-bottom:0}
 .tl time{font:600 12px/1.45 var(--f-mono);color:var(--signal)}
 .tl p{margin:0;font-size:13px;line-height:1.5;max-width:72ch}
@@ -176,6 +180,11 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     <div id="alerts"><div class="empty">Zincir verisi yükleniyor…</div></div>
   </section>
 
+  <section class="panel tlpanel" aria-label="Olay akışı">
+    <div class="panel-h"><h2>Olay akışı</h2><span class="hint" id="tlHint">zincir verisinden otomatik · en yeni üstte · TR saati</span></div>
+    <ol class="tl" id="timeline"><li><time>…</time><p>Zincir verisi yükleniyor…</p></li></ol>
+  </section>
+
   <div class="grid">
     <section class="panel" aria-label="Canlı akış">
       <div class="panel-h"><h2>Canlı akış</h2><span class="hint" id="feedHint"></span></div>
@@ -191,53 +200,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     </aside>
   </div>
 
-  <section class="ctx">
-    <div class="panel">
-      <div class="panel-h"><h2>Olay akışı</h2><span class="hint">TR saati (UTC+3) · 30 Eki 01:45'e kadar · sonrası canlı akışta</span></div>
-      <ol class="tl">
-        <li><time>28 Eki</time><p>Başlatıcı cüzdan 0x7C86…5CA0, raporlara göre Tornado Cash'ten gelen üç küçük girişle (~0,1 ETH) fonlandı.</p></li>
-        <li><time>18:59</time><p>Saldırgan yürütücü kontratı deploy etti; gün içinde başka adreslerde aynı "sweep" çağrısıyla deneme yaptı.</p></li>
-        <li><time>23:20</time><p>Binance 14, EIP-7702 ile saldırganın kontratına delege edildi. Aynı dakikada Binance'in BTC sıcak cüzdanından 18.270 BTC yeni bir adrese çekildi ve aynı blokta 11 adrese bölündü.</p></li>
-        <li><time>23:24</time><p>Tek işlemde 167.464 ETH ve 63 token (yaklaşık 1,6 Mr USDT dahil) Binance 14'ten 0x5227…2f8c'ye çekildi. 24 sn sonra Binance 16'dan 28.005 ETH ve 55,7 Mn USDT.</p></li>
-        <li><time>23:30</time><p>500 Mn USDT 0x9749…C762'ye, 23:33'te 200 Mn USDT 0x0Ddf…697e'ye bölündü.</p></li>
-        <li><time>23:34</time><p>0x9749…'dan USDT piyasa yapıcı ve aggregator kontratlarına akmaya başladı; yaklaşık 325 Mn $'lık kısmı ETH'ye dönmüş görünüyor (cüzdanda ~122 bin ETH).</p></li>
-        <li><time>23:38</time><p>195.460 ETH 0x8532…43D4'e park edildi.</p></li>
-        <li><time>23:41</time><p>Binance Hot Wallet 34'ten 780 Mn USDC; 23:59'da 43 Mn USDC daha.</p></li>
-        <li><time>23:59</time><p>175 Mn USDT 0x811f…e84C'ye gönderildi.</p></li>
-        <li><time>00:04</time><p>Binance 14'ten son süpürme: yaklaşık 1.700 ETH ve kalan tokenlar.</p></li>
-        <li><time>~00:15</time><p>CZ hack'i doğruladı ve kullanıcı fonlarının karşılanacağını söyledi. Tether ~971 Mn USDT, Circle ~823 Mn USDC dondurdu.</p></li>
-        <li><time>00:22</time><p>88,5 Mn RLUSD iki yeni cüzdandan geçti; 00:31'de 0x3E2b…32d5 MetaMask Bridge ile küçük bir köprü testi yaptı.</p></li>
-        <li><time>00:44</time><p>Saldırı sürüyor: Binance 14'ten ikinci süpürme, yaklaşık 200 Mn USDT ve 370 ETH aynı ana alıcıya gitti.</p></li>
-        <li><time>00:47</time><p>Takas edilen 122.310 ETH yeni bir cüzdana (0xc887…286A) taşındı.</p></li>
-        <li><time>00:46</time><p>00:46–01:02 arası dondurulamayan tokenlar dağıtıldı: WBETH ve ENA 0x7f9D…15E3'e, UNI 0x42CD…7810'a, PEPE 0x600d…8298'e.</p></li>
-        <li><time>01:01</time><p>UNI ve PEPE Uniswap'te, RLUSD Curve'de parça parça ETH'ye çevrilmeye başladı.</p></li>
-        <li><time>01:08</time><p>RLUSD'den dönen 20.492 ETH 0x5440…C942'ye gönderildi.</p></li>
-      </ol>
-    </div>
-    <div class="panel">
-      <div class="panel-h"><h2>Bağlam</h2></div>
-      <div class="src">
-        <p><b>Rakam.</b> Zincir verisine dayanan raporlar toplamı yaklaşık 5,6 Mr $ veriyor: Ethereum ~3,53 Mr, Bitcoin ~1,45 Mr, Tron ~628 Mn, Arbitrum/Optimism/Base ~38 Mn. Üstteki kırmızı rakam bu sayfanın Ethereum ve Bitcoin'den kendi topladığı tutar, güncel fiyatla. Tron adresleri henüz bulunamadı.</p>
-        <p><b>Dondurmalar.</b> Tether ve Circle'ın dondurduğu ~1,8 Mr $ ana alıcının bakiyesinde görünmeye devam eder; dondurulan token silinmez, sadece hareket edemez.</p>
-        <p><b>BTC.</b> 23:20'de Binance'in BTC sıcak cüzdanından 8 işlemle toplam 18.270 BTC tek bir yeni adrese gitti ve aynı blokta 11 adrese bölündü. Bu adreslerin hepsi sayfada canlı izleniyor.</p>
-        <p><b>Yeni adres eklemek.</b> Arkham ya da Whale Alert'te başka bir ETH veya BTC adresi görürsen sağdaki kutuya yapıştır, o da akışa düşer.</p>
-        <p><b>Tuzak adresler.</b> Saldırgan cüzdanlarına benzeyen sahte adresler (ör. 0x9749…C762 taklitleri) toz ve sahte token transferleri gönderiyor. "Spam / toz" kapalıyken bunlar gizlenir.</p>
-        <p><b>Otomatik takip.</b> Kümeden yeni bir cüzdana 250 bin $ üzeri ya da 0,2 ETH üzeri (gaz fonlama) çıkış olursa o cüzdan kendiliğinden takibe girer. Bitcoin'de eşik 1 Mn $.</p>
-        <p><b>Aklama adımları.</b> Para mikserlere (Tornado, Railgun, CoinJoin), THORChain'e, köprülere, KYC'siz takas servislerine ya da borsalara girdiği an üstteki kutuya düşer. THORChain'e giren paranın diğer zincirdeki çıkış adresi işlemin notundan okunur ve otomatik takibe alınır. Mikserin içi zincirde izlenemez; sayfa paranın kapıya kadar geldiğini gösterir.</p>
-        <p><b>Solana.</b> Binance'in Solana sıcak cüzdanı (5tzF…uAi9) hack saatinde normal çalıştı ve ~1,15 Mr $ tutmaya devam ediyor. Solana'da çekim görünmüyor.</p>
-        <ul>
-          <li><a href="https://panews.io/articles/01a1896e-ed91-7224-8d9d-9d2d87e87522" target="_blank" rel="noopener">PANews: Binance 14'ten ~2,5 Mr $</a></li>
-          <li><a href="https://panews.io/articles/01a18972-52e5-7380-8250-c2f9eb6a07be" target="_blank" rel="noopener">PANews: +780 Mn USDC, ~3,3 Mr $</a></li>
-          <li><a href="https://financefeeds.com/binance-3-55b-wallet-transfers-spark-hack-fears-but-no-breach-is-confirmed/" target="_blank" rel="noopener">FinanceFeeds: EIP-7702, altı zincir</a></li>
-          <li><a href="https://cointelegraph.com/news/binance-linked-wallet-faces-possible-exploit-blockchain-researcher-warns" target="_blank" rel="noopener">Cointelegraph: Binance inceliyor, dondurmalar</a></li>
-          <li><a href="https://blockchainreporter.net/binance-hot-wallet-hack-2-5-billion/" target="_blank" rel="noopener">BlockchainReporter: CZ doğruladı</a></li>
-          <li><a href="https://vgtimes.com/tech-and-hardware/172880-was-binance-hacked-over-25-billion-has-left-the-wallets-of-the-largest-crypto-exchange-and-the-exchange-is-silent.html" target="_blank" rel="noopener">VGTimes: BTC çıkışları</a></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <footer>Bağımsız zincir takibi; Binance ile bağlantısı yoktur. Veri: Blockscout açık API (Ethereum) ve mempool.space (Bitcoin); istekler doğrudan senin tarayıcından gider; sekme arka plandayken sorgu durur. USD değerleri güncel fiyatla hesaplanır, çekildiği anki fiyatla değil. "Parayı alan" cüzdanlar otomatik bulunur ve sahibinin saldırgan olduğu anlamına gelmez. Yatırım tavsiyesi değildir.</footer>
+  <footer>Bağımsız zincir takibi; Binance ile bağlantısı yoktur. Raporlara göre Tron'da ~628 Mn $ ve Arbitrum, Optimism, Base'de ~38 Mn $ daha çekildi; bunlar sayfada yok. Binance'in Solana sıcak cüzdanı hack saatinde normal çalıştı. Veri: Blockscout açık API (Ethereum) ve mempool.space (Bitcoin); istekler doğrudan senin tarayıcından gider; sekme arka plandayken sorgu durur. USD değerleri güncel fiyatla hesaplanır, çekildiği anki fiyatla değil. "Parayı alan" cüzdanlar otomatik bulunur ve sahibinin saldırgan olduğu anlamına gelmez. Yatırım tavsiyesi değildir.</footer>
 </main>
 
 <script>
@@ -389,7 +352,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
   }
 
   /* ---------- istek kuyruğu (Blockscout'a nazik ol) ---------- */
-  var queue = [], active = 0, lastStart = 0, pumpTimer = null, MAX_ACTIVE = 2, GAP = 400;
+  var queue = [], active = 0, lastStart = 0, pumpTimer = null, MAX_ACTIVE = 2, GAP = 500;
   function bs(path) {
     return new Promise(function (resolve, reject) {
       queue.push({ url: API + path, resolve: resolve, reject: reject, tries: 0 });
@@ -411,12 +374,33 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       S.reqOk++; S.lastOk = Date.now(); job.resolve(j);
     }, function (e) {
       if ((e.retry || e.name === 'TypeError') && job.tries < 2) {
-        job.tries++; S.backoffUntil = Date.now() + 5000 * job.tries; queue.unshift(job);
+        job.tries++; S.backoffUntil = Date.now() + 15000 * job.tries; queue.unshift(job);
       } else { S.reqErr++; job.reject(e); }
     }).then(function () { active--; pump(); });
     pump();
   }
-  function mp(path) { return fetch(MEMPOOL + path).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }); }
+  /* mempool.space için ayrı ve daha yavaş kuyruk */
+  var mq = [], mActive = 0, mLast = 0, mTimer = null, mBackoff = 0;
+  function mp(path) {
+    return new Promise(function (resolve, reject) { mq.push({ url: MEMPOOL + path, resolve: resolve, reject: reject, tries: 0 }); mpump(); });
+  }
+  function mpump() {
+    if (mTimer || mActive >= 1 || !mq.length) return;
+    var now = Date.now(), wait = Math.max(mLast + 1100 - now, mBackoff - now, 0);
+    if (wait > 0) { mTimer = setTimeout(function () { mTimer = null; mpump(); }, wait); return; }
+    var job = mq.shift();
+    mActive++; mLast = now;
+    fetch(job.url).then(function (r) {
+      if (r.status === 429 || r.status === 403 || r.status >= 500) { var e = new Error('HTTP ' + r.status); e.retry = true; throw e; }
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    }).then(function (j) {
+      S.reqOk++; S.lastOk = Date.now(); job.resolve(j);
+    }, function (e) {
+      if ((e.retry || e.name === 'TypeError') && job.tries < 2) { job.tries++; mBackoff = Date.now() + 30000 * job.tries; mq.unshift(job); }
+      else { S.reqErr++; job.reject(e); }
+    }).then(function () { mActive--; mpump(); });
+  }
   function settle(list) {
     return Promise.all(list.map(function (p) { return p.then(function () { return true; }, function (e) { return e || new Error('hata'); }); }))
       .then(function (rs) { var bad = rs.filter(function (r) { return r !== true; }); if (bad.length && bad.length === rs.length) throw bad[0]; return bad.length; });
@@ -677,20 +661,24 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
 
   /* ---------- yoklama ---------- */
   function pollEth(w) {
-    var a = w.addr, first = !w.ready, jobs = [];
-    jobs.push(bs('/addresses/' + a).then(function (j) { applyInfo(w, j); }));
-    jobs.push(bs('/addresses/' + a + '/transactions').then(function (j) { ingestTxs(w, j.items || []); }));
-    jobs.push(bs('/addresses/' + a + '/token-transfers?type=ERC-20').then(function (j) {
-      ingestTokens(w, j.items || []);
-      if (first && w.deep) return deepTokens(w, j.next_page_params, 8);
-    }));
-    if (first || w.polls % 2 === 0 || Date.now() - w.lastAct < 20 * 60000) {
-      jobs.push(bs('/addresses/' + a + '/internal-transactions').then(function (j) { ingestInternal(w, j.items || []); }));
-    }
-    if (w.role !== 'victim' && (first || Date.now() - w.tokAt > 150000)) {
-      jobs.push(bs('/addresses/' + a + '/tokens?type=ERC-20').then(function (j) { applyHoldings(w, j.items || []); }));
-    }
-    return settle(jobs);
+    var a = w.addr, first = !w.ready, before = S.events.size;
+    return settle([
+      bs('/addresses/' + a + '/transactions').then(function (j) { ingestTxs(w, j.items || []); }),
+      bs('/addresses/' + a + '/token-transfers?type=ERC-20').then(function (j) {
+        ingestTokens(w, j.items || []);
+        if (first && w.deep) return deepTokens(w, j.next_page_params, 8);
+      })
+    ]).then(function () {
+      var changed = S.events.size > before, extra = [];
+      if (first || changed || w.polls % 5 === 0) {
+        extra.push(bs('/addresses/' + a).then(function (j) { applyInfo(w, j); }));
+        extra.push(bs('/addresses/' + a + '/internal-transactions').then(function (j) { ingestInternal(w, j.items || []); }));
+      }
+      if (w.role !== 'victim' && (first || (changed && Date.now() - w.tokAt > 60000) || Date.now() - w.tokAt > 300000)) {
+        extra.push(bs('/addresses/' + a + '/tokens?type=ERC-20').then(function (j) { applyHoldings(w, j.items || []); }));
+      }
+      return extra.length ? settle(extra) : 0;
+    });
   }
   function deepTokens(w, np, left) {
     if (!np || left <= 0) return null;
@@ -703,13 +691,14 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     });
   }
   function pollBtc(w) {
-    return settle([
-      mp('/address/' + w.addr).then(function (j) {
-        var cs = j.chain_stats || {}, ms = j.mempool_stats || {};
-        w.balBtc = ((cs.funded_txo_sum || 0) - (cs.spent_txo_sum || 0) + (ms.funded_txo_sum || 0) - (ms.spent_txo_sum || 0)) / 1e8;
-      }),
-      mp('/address/' + w.addr + '/txs').then(function (txs) { (txs || []).forEach(function (tx) { ingestBtc(w, tx); }); })
-    ]);
+    return mp('/address/' + w.addr).then(function (j) {
+      var cs = j.chain_stats || {}, ms = j.mempool_stats || {};
+      w.balBtc = ((cs.funded_txo_sum || 0) - (cs.spent_txo_sum || 0) + (ms.funded_txo_sum || 0) - (ms.spent_txo_sum || 0)) / 1e8;
+      var sig = (cs.tx_count || 0) + ':' + (ms.tx_count || 0);
+      if (sig === w.txSig) return null;
+      w.txSig = sig;
+      return mp('/address/' + w.addr + '/txs').then(function (txs) { (txs || []).forEach(function (tx) { ingestBtc(w, tx); }); });
+    });
   }
   function ingestBtc(w, tx) {
     var a = w.addr, conf = !!(tx.status && tx.status.confirmed);
@@ -750,11 +739,13 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     addEvent(ev2, w);
   }
   function interval(w) {
-    if (w.err) return Math.min(180000, 20000 * w.err);
-    if (w.chain === 'btc' || w.role === 'victim') return 45000;
-    if (Date.now() - (w.lastAct || 0) < 20 * 60000) return 30000;
-    if ((holdUsd(w) || 0) > 1e6) return 60000;
-    return 120000;
+    if (w.err) return Math.min(300000, 30000 * w.err);
+    var idle = Date.now() - (w.lastAct || 0);
+    if (w.role === 'victim') return w.chain === 'btc' ? 120000 : 45000;
+    if (w.chain === 'btc') return idle < 30 * 60000 ? 60000 : 180000;
+    if (idle < 20 * 60000) return 30000;
+    if (idle < 60 * 60000 || (holdUsd(w) || 0) > 1e7) return 60000;
+    return 180000;
   }
   function poll(w) {
     w.busy = true;
@@ -809,7 +800,68 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
   /* ---------- çizim ---------- */
   var renderTimer = null;
   function scheduleRender() { if (renderTimer) return; renderTimer = setTimeout(function () { renderTimer = null; render(); }, 350); }
-  function render() { renderMeta(); renderKpis(); renderBars(); renderAlerts(); renderFeed(); renderWallets(); }
+  function render() { renderMeta(); renderKpis(); renderBars(); renderAlerts(); renderTimeline(); renderFeed(); renderWallets(); }
+
+  /* ---------- olay akışı: zincir verisinden otomatik özet ---------- */
+  var NEWS = [
+    { ts: Date.parse('2026-10-28T21:00:00Z'), day: true, text: 'Başlatıcı cüzdan, raporlara göre Tornado Cash\'ten gelen üç küçük girişle (~0,1 ETH) fonlandı.' },
+    { ts: Date.parse('2026-10-29T21:15:00Z'), text: 'CZ hack\'i doğruladı ve kullanıcı fonlarının karşılanacağını söyledi; Binance inceleme başlattığını açıkladı.' },
+    { ts: Date.parse('2026-10-29T21:20:00Z'), text: 'Tether ~971 Mn USDT, Circle ~823 Mn USDC dondurdu. Dondurulan tokenlar bakiyede görünmeye devam eder ama hareket edemez.' }
+  ];
+  var TL_MIN = { call: 0, drain: 1e6, hop: 1e6, outw: 1e6, launder: 1e4, burn: 1e6, swap: 2.5e5 };
+  var TL_CHIP = { drain: ['Binance → saldırgan', 'var(--drain)'], hop: ['Küme içi', 'var(--hop)'], outw: ['Yeni cüzdana', 'var(--out)'], burn: ['Yakıldı', 'var(--burn)'], swap: ['Swap', 'var(--dex)'], call: ['Saldırgan çağrısı', 'var(--mixer)'], news: ['Haber', 'var(--signal)'] };
+  function tlTime(ts, day) {
+    var d = new Date(ts);
+    if (day) return d.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
+    var t = hhmm(ts);
+    return d.toDateString() === new Date().toDateString() ? t : d.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' }) + ' ' + t;
+  }
+  function tlGroups() {
+    var g = {}, step = 5 * 60000;
+    S.events.forEach(function (e) {
+      if (e.spam) return;
+      var f = flow(e), u = usdOf(e) || 0, c, key, kind;
+      if (f === 'call') { key = 'c|' + e.tx; kind = 'call'; }
+      else if (f === 'drain') { key = 'd|' + e.tx; kind = 'drain'; }
+      else if (f === 'hop') { key = 'h|' + e.tx + '|' + lc(e.to); kind = 'hop'; }
+      else if (f === 'out') {
+        c = category(e.toP);
+        if (LAUNDER[c]) { key = 'l|' + e.tx + '|' + c; kind = 'launder'; }
+        else if (c === 'wallet') { key = 'w|' + e.tx + '|' + lc(e.to); kind = 'outw'; }
+        else if (c === 'burn') { key = 'b|' + e.tx; kind = 'burn'; }
+        else { key = 's|' + Math.floor(e.ts / step) + '|' + lc(e.from); kind = 'swap'; }
+      } else return;
+      var x = g[key];
+      if (!x) x = g[key] = { kind: kind, ts: e.ts, usd: 0, n: 0, au: {}, amt: {}, e: e };
+      x.ts = Math.min(x.ts, e.ts); x.usd += u; x.n++;
+      if (e.kind !== 'call') { x.au[e.sym] = (x.au[e.sym] || 0) + u; x.amt[e.sym] = (x.amt[e.sym] || 0) + e.amount; }
+    });
+    return Object.keys(g).map(function (k) { return g[k]; }).filter(function (x) { return x.kind === 'call' || x.usd >= TL_MIN[x.kind]; });
+  }
+  function tlText(x) {
+    var e = x.e, keys = Object.keys(x.au).sort(function (a, b) { return x.au[b] - x.au[a]; });
+    var amt = keys.length ? fmtAmt(x.amt[keys[0]]) + ' ' + esc(keys[0]) + (keys.length > 1 ? ' + ' + (keys.length - 1) + ' varlık' : '') : '';
+    if (x.kind === 'call') return who(e.from, e.fromP) + ' → ' + who(e.to, e.toP) + ' · ' + esc(e.method || 'çağrı');
+    if (x.kind === 'swap') return who(e.from, e.fromP) + ' ' + x.n + ' swap işlemi yaptı · ' + amt;
+    if (x.kind === 'burn') return amt + ' · ' + who(e.from, e.fromP) + ' bakiyesinden yakıldı';
+    var tail = e.thorDest ? ' ⇒ ' + esc(e.thorDest.asset) + ' ' + (e.thorDest.follow ? who(e.thorDest.addr, null) : esc(short(e.thorDest.addr))) : '';
+    return amt + ' · ' + who(e.from, e.fromP) + ' → ' + who(e.to, e.toP) + tail;
+  }
+  function renderTimeline() {
+    var items = tlGroups().map(function (x) {
+      var ch = x.kind === 'launder' ? (CAT[category(x.e.toP)] || ['Aklama', 'var(--mixer)']) : TL_CHIP[x.kind];
+      return { ts: x.ts, html: '<span class="chip" style="--c:' + ch[1] + '">' + esc(ch[0]) + '</span>' + tlText(x) + (x.kind === 'call' ? '' : '<span class="usd">' + fmtUsd(x.usd) + '</span>') };
+    });
+    NEWS.forEach(function (n) {
+      items.push({ ts: n.ts, day: n.day, html: '<span class="chip" style="--c:' + TL_CHIP.news[1] + '">' + TL_CHIP.news[0] + '</span>' + esc(n.text) });
+    });
+    items.sort(function (a, b) { return b.ts - a.ts; });
+    var ready = false; S.wallets.forEach(function (w) { if (w.ready) ready = true; });
+    $('timeline').innerHTML = items.slice(0, 60).map(function (it) {
+      return '<li><time>' + esc(tlTime(it.ts, it.day)) + '</time><p>' + it.html + '</p></li>';
+    }).join('') + (ready ? '' : '<li><time>…</time><p>Zincir verisi yükleniyor; olaylar geldikçe buraya eklenecek.</p></li>');
+    set('tlHint', 'zincir verisinden otomatik · ' + items.length + ' olay · en yeni üstte · TR saati');
+  }
   function renderAlerts() {
     var list = [], total = 0, ready = false;
     S.events.forEach(function (e) { if (isLaunder(e)) { list.push(e); total += usdOf(e) || 0; } });
