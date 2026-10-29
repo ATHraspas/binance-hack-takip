@@ -1286,7 +1286,10 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     var forced = document.documentElement.getAttribute('data-lang');
     if (forced === 'en' || forced === 'tr') return forced;
     if (st.lang === 'en' || st.lang === 'tr') return st.lang;
-    return /^tr/i.test(navigator.language || '') ? 'tr' : 'en';
+    var langs = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || '']).join(',');
+    var tz = '';
+    try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (x) { tz = ''; }
+    return /(^|,)tr/i.test(langs) || tz === 'Europe/Istanbul' ? 'tr' : 'en';
   }
   function boot() {
     var st = load();
