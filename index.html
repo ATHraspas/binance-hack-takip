@@ -352,7 +352,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
   }
 
   /* ---------- istek kuyruğu (Blockscout'a nazik ol) ---------- */
-  var queue = [], active = 0, lastStart = 0, pumpTimer = null, MAX_ACTIVE = 2, GAP = 500;
+  var queue = [], active = 0, lastStart = 0, pumpTimer = null, MAX_ACTIVE = 2, GAP = 350;
   function bs(path) {
     return new Promise(function (resolve, reject) {
       queue.push({ url: API + path, resolve: resolve, reject: reject, tries: 0 });
@@ -386,7 +386,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
   }
   function mpump() {
     if (mTimer || mActive >= 1 || !mq.length) return;
-    var now = Date.now(), wait = Math.max(mLast + 1100 - now, mBackoff - now, 0);
+    var now = Date.now(), wait = Math.max(mLast + 900 - now, mBackoff - now, 0);
     if (wait > 0) { mTimer = setTimeout(function () { mTimer = null; mpump(); }, wait); return; }
     var job = mq.shift();
     mActive++; mLast = now;
@@ -755,10 +755,10 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
   }
   function loop() {
     if (!S.paused && !document.hidden) {
-      var now = Date.now(), due = [], busy = 0;
-      S.wallets.forEach(function (w) { if (w.busy) busy++; else if (w.nextPoll <= now) due.push(w); });
+      var now = Date.now(), due = [], busy = { eth: 0, btc: 0 }, cap = { eth: 3, btc: 2 };
+      S.wallets.forEach(function (w) { if (w.busy) busy[w.chain]++; else if (w.nextPoll <= now) due.push(w); });
       due.sort(function (x, y) { return x.nextPoll - y.nextPoll; });
-      for (var i = 0; i < due.length && busy < 3; i++, busy++) poll(due[i]);
+      due.forEach(function (w) { if (busy[w.chain] < cap[w.chain]) { busy[w.chain]++; poll(w); } });
     }
     setTimeout(loop, 1000);
   }
@@ -879,7 +879,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     var ok = S.lastOk && Date.now() - S.lastOk < 60000;
     $('live').className = 'live' + (S.paused ? '' : ok ? ' on' : (S.reqErr ? ' err' : ''));
     var pending = 0; S.wallets.forEach(function (w) { if (!w.ready) pending++; });
-    var status = S.paused ? 'Duraklatıldı' : pending ? 'Yükleniyor ' + (S.wallets.size - pending) + '/' + S.wallets.size : (!S.reqOk && S.reqErr ? 'Bağlantı yok' : 'Canlı');
+    var status = S.paused ? 'Duraklatıldı' : document.hidden ? 'Sekme arka planda, sorgular durdu' : pending ? 'Yükleniyor ' + (S.wallets.size - pending) + '/' + S.wallets.size : (!S.reqOk && S.reqErr ? 'Bağlantı yok' : 'Canlı');
     var parts = ['<span>' + status + '</span>'];
     if (S.ethPrice) parts.push('<span>ETH <b>$' + fmtN(S.ethPrice, 0) + '</b></span>');
     if (S.btcPrice) parts.push('<span>BTC <b>$' + fmtN(S.btcPrice, 0) + '</b></span>');
@@ -1097,7 +1097,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       S.wallets.delete(key); S.blocked.add(key); save(); render();
     }
   });
-  document.addEventListener('visibilitychange', function () { if (!document.hidden) { S.unseen = 0; setTitle(); } });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) { S.unseen = 0; setTitle(); } scheduleRender(); });
 
   /* ---------- başlat ---------- */
   function boot() {
