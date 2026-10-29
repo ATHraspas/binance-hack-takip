@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <title>Binance Hack Canlı Takip</title>
-<meta name="description" content="Binance sıcak cüzdanlarından çekilen fonların zincir üstündeki hareketini canlı izle: saldırgan cüzdanları, swaplar, köprüler ve yeni cüzdanlar. Ethereum ve Bitcoin.">
+<meta name="description" content="Binance sıcak cüzdanlarından çekilen fonların zincir üstündeki hareketini canlı izle: saldırgan cüzdanları, swaplar, THORChain, mikserler ve yeni cüzdanlar. Ethereum ve Bitcoin.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://athraspas.github.io/binance-hack-takip/">
 <meta property="og:title" content="Binance Hack · Canlı Zincir Takibi">
-<meta property="og:description" content="Çekilen fonlar nereye gidiyor? Saldırgan cüzdanları, swap, köprü ve yeni cüzdanlar anlık olarak.">
+<meta property="og:description" content="Çekilen fonlar nereye gidiyor? Saldırgan cüzdanları, swap, THORChain, mikser ve yeni cüzdanlar anlık olarak.">
 <meta property="og:image" content="https://athraspas.github.io/binance-hack-takip/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -72,6 +72,9 @@ button:hover{border-color:var(--muted)}
 .axis{display:flex;justify-content:space-between;font:400 11px/1.4 var(--f-mono);color:var(--faint);margin-top:4px}
 .legend{display:flex;flex-wrap:wrap;gap:4px 12px}
 .legend span:before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;background:var(--c)}
+.alerts{margin-top:12px;border-color:color-mix(in srgb,var(--mixer) 30%,var(--line))}
+.alerts h2{color:var(--mixer)}
+.alerts.hot{border-color:var(--mixer);box-shadow:0 0 0 1px color-mix(in srgb,var(--mixer) 35%,transparent)}
 .grid{display:grid;grid-template-columns:minmax(0,1fr) 410px;gap:16px;margin-top:16px;align-items:start}
 @media (max-width:1100px){.grid{grid-template-columns:minmax(0,1fr)}}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;min-width:0;overflow:hidden}
@@ -168,6 +171,11 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     <div class="axis"><span id="ax0"></span><span id="ax1"></span><span>şimdi</span></div>
   </section>
 
+  <section class="panel alerts" aria-label="Aklama adımları">
+    <div class="panel-h"><h2>Aklama adımları</h2><span class="hint" id="alertHint">mikser · THORChain · köprü · KYC'siz takas servisi · borsa</span></div>
+    <div id="alerts"><div class="empty">Zincir verisi yükleniyor…</div></div>
+  </section>
+
   <div class="grid">
     <section class="panel" aria-label="Canlı akış">
       <div class="panel-h"><h2>Canlı akış</h2><span class="hint" id="feedHint"></span></div>
@@ -185,7 +193,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
 
   <section class="ctx">
     <div class="panel">
-      <div class="panel-h"><h2>Olay akışı</h2><span class="hint">TR saati (UTC+3) · 30 Eki 01:25'e kadar · sonrası canlı akışta</span></div>
+      <div class="panel-h"><h2>Olay akışı</h2><span class="hint">TR saati (UTC+3) · 30 Eki 01:45'e kadar · sonrası canlı akışta</span></div>
       <ol class="tl">
         <li><time>28 Eki</time><p>Başlatıcı cüzdan 0x7C86…5CA0, raporlara göre Tornado Cash'ten gelen üç küçük girişle (~0,1 ETH) fonlandı.</p></li>
         <li><time>18:59</time><p>Saldırgan yürütücü kontratı deploy etti; gün içinde başka adreslerde aynı "sweep" çağrısıyla deneme yaptı.</p></li>
@@ -214,7 +222,9 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
         <p><b>BTC.</b> 23:20'de Binance'in BTC sıcak cüzdanından 8 işlemle toplam 18.270 BTC tek bir yeni adrese gitti ve aynı blokta 11 adrese bölündü. Bu adreslerin hepsi sayfada canlı izleniyor.</p>
         <p><b>Yeni adres eklemek.</b> Arkham ya da Whale Alert'te başka bir ETH veya BTC adresi görürsen sağdaki kutuya yapıştır, o da akışa düşer.</p>
         <p><b>Tuzak adresler.</b> Saldırgan cüzdanlarına benzeyen sahte adresler (ör. 0x9749…C762 taklitleri) toz ve sahte token transferleri gönderiyor. "Spam / toz" kapalıyken bunlar gizlenir.</p>
-        <p><b>Otomatik takip.</b> Kümeden yeni bir cüzdana 250 bin $ üzeri ya da 0,2 ETH üzeri (gaz fonlama) çıkış olursa o cüzdan kendiliğinden takibe girer.</p>
+        <p><b>Otomatik takip.</b> Kümeden yeni bir cüzdana 250 bin $ üzeri ya da 0,2 ETH üzeri (gaz fonlama) çıkış olursa o cüzdan kendiliğinden takibe girer. Bitcoin'de eşik 1 Mn $.</p>
+        <p><b>Aklama adımları.</b> Para mikserlere (Tornado, Railgun, CoinJoin), THORChain'e, köprülere, KYC'siz takas servislerine ya da borsalara girdiği an üstteki kutuya düşer. THORChain'e giren paranın diğer zincirdeki çıkış adresi işlemin notundan okunur ve otomatik takibe alınır. Mikserin içi zincirde izlenemez; sayfa paranın kapıya kadar geldiğini gösterir.</p>
+        <p><b>Solana.</b> Binance'in Solana sıcak cüzdanı (5tzF…uAi9) hack saatinde normal çalıştı ve ~1,15 Mr $ tutmaya devam ediyor. Solana'da çekim görünmüyor.</p>
         <ul>
           <li><a href="https://panews.io/articles/01a1896e-ed91-7224-8d9d-9d2d87e87522" target="_blank" rel="noopener">PANews: Binance 14'ten ~2,5 Mr $</a></li>
           <li><a href="https://panews.io/articles/01a18972-52e5-7380-8250-c2f9eb6a07be" target="_blank" rel="noopener">PANews: +780 Mn USDC, ~3,3 Mr $</a></li>
@@ -293,18 +303,24 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     dex: ['Swap / DEX', 'var(--dex)'],
     contract: ['Kontrata', 'var(--dex)'],
     bridge: ['Köprü', 'var(--bridge)'],
+    thor: ['THORChain', 'var(--bridge)'],
+    swapsvc: ['Takas servisi', 'var(--mixer)'],
     cex: ['Borsaya', 'var(--cex)'],
     mixer: ['Mikser', 'var(--mixer)'],
     burn: ['Yakıldı', 'var(--burn)'],
     wallet: ['Yeni cüzdana', 'var(--out)']
   };
+  var LAUNDER = { mixer: 1, swapsvc: 1, thor: 1, bridge: 1, cex: 1 };
 
   var RX = {
-    mixer: /tornado|mixer|railgun|privacy pool/i,
-    bridge: /bridge|wormhole|stargate|layerzero|across|synapse|thorchain|chainflip|relay\.link|orbiter|debridge|socket|li\.fi|lifi|multichain|celer|hyperlane|axelar/i,
-    cex: /exchange|binance|coinbase|okx|bybit|kraken|kucoin|htx|huobi|gate\.io|bitget|mexc|bitfinex|crypto\.com|upbit|bithumb|gemini|deposit/i,
-    dex: /uniswap|sushi|curve|balancer|1inch|paraswap|kyber|router|liquidity pool|dex|pancake|odos|bebop|fluid|swap|cow protocol|aggregator|settlement|market maker/i
+    mixer: /tornado|mixer|railgun|privacy pool|wasabi|coinjoin|jambler|sinbad|blender|samourai|whirlpool/i,
+    swapsvc: /\bexch\b|exch\.cx|fixedfloat|changenow|sideshift|simpleswap|stealthex|swapzone|exolix|godex|changelly/i,
+    thor: /thorchain|thorswap|mayachain|maya protocol/i,
+    bridge: /bridge|wormhole|stargate|layerzero|across|synapse|chainflip|relay\.link|orbiter|debridge|socket|li\.fi|lifi|multichain|celer|hyperlane|axelar/i,
+    dex: /uniswap|sushi|curve|balancer|1inch|paraswap|kyber|router|liquidity pool|\bdex\b|pancake|odos|bebop|fluid|swap|cow protocol|aggregator|settlement|market maker/i,
+    cex: /exchange|binance|coinbase|okx|bybit|kraken|kucoin|htx|huobi|gate\.io|bitget|mexc|bitfinex|crypto\.com|upbit|bithumb|gemini|deposit/i
   };
+  var ADDR_RX = /^(0x[0-9a-fA-F]{40}|bc1[a-z0-9]{11,71}|[13][1-9A-HJ-NP-Za-km-z]{25,34})$/;
   var STABLE = /^(USDT|USDC)$/i;
   var OTHERSTABLE = /^(RLUSD|USD1|USDE|USDS|DAI|FDUSD|PYUSD|TUSD|USDP|GUSD|LUSD|CRVUSD|GHO)$/i;
   var ETHISH = /^(WETH|WBETH|STETH|WSTETH|CBETH|RETH|WEETH|EZETH|METH|OETH)$/i;
@@ -441,9 +457,11 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     if (/^0x0{40}$/i.test(p.addr)) return 'burn';
     var t = (p.tags || []).join(' ') + ' ' + (p.name || '');
     if (RX.mixer.test(t)) return 'mixer';
+    if (RX.swapsvc.test(t)) return 'swapsvc';
+    if (RX.thor.test(t)) return 'thor';
     if (RX.bridge.test(t)) return 'bridge';
-    if (RX.cex.test(t)) return 'cex';
     if (RX.dex.test(t)) return 'dex';
+    if (RX.cex.test(t)) return 'cex';
     if (p.contract) return 'contract';
     return 'wallet';
   }
@@ -492,6 +510,71 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     return u != null && u >= VICTIM_SHOW_USD;
   }
 
+  /* ---------- THORChain / Maya notu ve CoinJoin ---------- */
+  var THOR_SHORT = { B: 'BTC.BTC', E: 'ETH.ETH', A: 'AVAX.AVAX', C: 'BCH.BCH', D: 'DOGE.DOGE', L: 'LTC.LTC', G: 'GAIA.ATOM', N: 'BNB.BNB', F: 'BASE.ETH', X: 'XRP.XRP', R: 'THOR.RUNE' };
+  function memoIn(s) {
+    var m = String(s || '').match(/(?:=|SWAP|swap|s)[:~][A-Za-z0-9.\-]+[:~][A-Za-z0-9]{20,}[^\s\x00]*/);
+    return m ? m[0] : '';
+  }
+  function parseMemo(memo) {
+    var parts = String(memo).split(/[:~]/);
+    if (parts.length < 3) return null;
+    var asset = parts[1].toUpperCase();
+    if (THOR_SHORT[asset]) asset = THOR_SHORT[asset];
+    var chain = asset.split('.')[0], addr = parts[2];
+    var ok = (chain === 'BTC' && /^(bc1[a-z0-9]{11,71}|[13][1-9A-HJ-NP-Za-km-z]{25,34})$/.test(addr)) || (chain === 'ETH' && /^0x[0-9a-fA-F]{40}$/.test(addr));
+    return { chain: chain, asset: asset, addr: addr, follow: ok };
+  }
+  function findMemo(t) {
+    var di = t && t.decoded_input, i, p, m;
+    if (di && di.parameters) {
+      for (i = 0; i < di.parameters.length; i++) {
+        p = di.parameters[i];
+        if (p && typeof p.value === 'string' && (m = memoIn(p.value))) return m;
+      }
+    }
+    var raw = String((t && t.raw_input) || ''), run = '';
+    for (i = 2; i + 1 < raw.length; i += 2) {
+      var c = parseInt(raw.substr(i, 2), 16);
+      if (c >= 32 && c < 127) { run += String.fromCharCode(c); continue; }
+      if (run.length >= 8 && (m = memoIn(run))) return m;
+      run = '';
+    }
+    return run.length >= 8 ? memoIn(run) : '';
+  }
+  function btcMemo(tx) {
+    var o = (tx.vout || []).filter(function (v) { return v.scriptpubkey_type === 'op_return'; })[0];
+    if (!o) return '';
+    var parts = String(o.scriptpubkey_asm || '').split(' '), hex = parts[parts.length - 1] || '', s = '';
+    for (var i = 0; i + 1 < hex.length; i += 2) { var c = parseInt(hex.substr(i, 2), 16); s += c >= 32 && c < 127 ? String.fromCharCode(c) : ' '; }
+    return memoIn(s);
+  }
+  function isCoinJoin(tx) {
+    var vo = tx.vout || [], vi = tx.vin || [], cnt = {}, max = 0;
+    if (vo.length < 10 || vi.length < 5) return false;
+    vo.forEach(function (o) { cnt[o.value] = (cnt[o.value] || 0) + 1; if (cnt[o.value] > max) max = cnt[o.value]; });
+    return max >= 5;
+  }
+  function followThor(e, w) {
+    var d = e.thorDest;
+    if (!d || !d.follow || !isCluster(w) || W(d.addr) || S.blocked.has(lc(d.addr))) return;
+    addWallet({ a: d.addr, role: 'hop', label: 'THORChain çıkışı · ' + d.chain, parent: w.key, depth: (w.depth || 0) + 1, auto: true });
+    e.followed = true;
+  }
+  var thorChecked = new Set();
+  function checkThor(e) {
+    if (!e.tx || thorChecked.has(e.tx)) return;
+    thorChecked.add(e.tx);
+    bs('/transactions/' + e.tx).then(function (t) {
+      var memo = findMemo(t);
+      if (!memo) return;
+      e.thorMemo = memo;
+      e.thorDest = parseMemo(memo);
+      followThor(e, W(e.from));
+      scheduleRender();
+    }, function () { thorChecked.delete(e.tx); });
+  }
+
   /* ---------- olaylar ---------- */
   function addEvent(e, w) {
     if (S.events.has(e.id)) return null;
@@ -504,12 +587,13 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       if (tw) tw.lastAct = Math.max(tw.lastAct, e.ts);
     }
     maybeFollow(e);
+    if (e.chain === 'eth' && e.to && category(e.toP) === 'thor' && isCluster(W(e.from))) checkThor(e);
     if (e.live) notify(e);
     scheduleRender();
     return e;
   }
   function maybeFollow(e) {
-    if (e.spam || e.kind === 'call' || !e.to) return;
+    if (e.spam || e.kind === 'call' || !e.to || !ADDR_RX.test(e.to)) return;
     var fw = W(e.from);
     if (!isCluster(fw) || W(e.to) || S.blocked.has(lc(e.to))) return;
     var u = usdOf(e);
@@ -634,6 +718,18 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     var firstIn = '';
     (tx.vin || []).forEach(function (i) { var p = i.prevout || {}; if (!firstIn && p.scriptpubkey_address && p.scriptpubkey_address !== a) firstIn = p.scriptpubkey_address; });
     var base = { kind: 'btc', chain: 'btc', ts: ts, tx: tx.txid, sym: 'BTC', method: conf ? '' : 'mempool', spam: false };
+    if (spends && isCluster(w)) {
+      var memo = btcMemo(tx), cj = !memo && isCoinJoin(tx);
+      if (memo || cj) {
+        var spent = 0, back = 0, lbl = memo ? 'THORChain' : 'CoinJoin';
+        (tx.vin || []).forEach(function (i) { var p = i.prevout || {}; if (p.scriptpubkey_address === a) spent += p.value; });
+        (tx.vout || []).forEach(function (o) { if (o.scriptpubkey_address === a) back += o.value; });
+        var evx = Object.assign({}, base, { id: 'btc:' + tx.txid + ':' + a + '>' + lbl, amount: Math.max(0, spent - back) / 1e8, from: a, to: lbl, fromP: { addr: a, tags: [] }, toP: { addr: lbl, tags: [lbl] } });
+        if (memo) { evx.thorMemo = memo; evx.thorDest = parseMemo(memo); followThor(evx, w); }
+        addEvent(evx, w);
+        return;
+      }
+    }
     if (spends) {
       (tx.vout || []).forEach(function (o) {
         var to = o.scriptpubkey_address;
@@ -683,11 +779,20 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
 
   /* ---------- bildirim ---------- */
   function setTitle() { document.title = (S.unseen ? '(' + S.unseen + ') ' : '') + 'Binance Hack Canlı Takip'; }
+  function isLaunder(e) {
+    if (e.spam || flow(e) !== 'out' || !LAUNDER[category(e.toP)]) return false;
+    var u = usdOf(e);
+    return u == null || u >= 1000;
+  }
   function notify(e) {
-    if (!visible(e)) return;
+    var laund = isLaunder(e);
+    if (!laund && !visible(e)) return;
     if (document.hidden) { S.unseen++; setTitle(); }
     var u = usdOf(e) || 0;
-    if (S.sound && u >= 1e6) beep(flow(e) === 'out' ? 880 : 620);
+    if (S.sound && (laund || u >= 1e6)) {
+      beep(laund ? 980 : (flow(e) === 'out' ? 880 : 620));
+      if (laund) setTimeout(function () { beep(980); }, 250);
+    }
   }
   function beep(freq) {
     try {
@@ -704,7 +809,18 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
   /* ---------- çizim ---------- */
   var renderTimer = null;
   function scheduleRender() { if (renderTimer) return; renderTimer = setTimeout(function () { renderTimer = null; render(); }, 350); }
-  function render() { renderMeta(); renderKpis(); renderBars(); renderFeed(); renderWallets(); }
+  function render() { renderMeta(); renderKpis(); renderBars(); renderAlerts(); renderFeed(); renderWallets(); }
+  function renderAlerts() {
+    var list = [], total = 0, ready = false;
+    S.events.forEach(function (e) { if (isLaunder(e)) { list.push(e); total += usdOf(e) || 0; } });
+    S.wallets.forEach(function (w) { if (w.ready) ready = true; });
+    list.sort(function (x, y) { return y.ts - x.ts; });
+    var el = $('alerts');
+    el.parentNode.classList.toggle('hot', list.length > 0);
+    el.innerHTML = list.length ? list.slice(0, 8).map(rowHtml).join('')
+      : '<div class="empty">' + (ready ? 'Henüz yok. Saldırgan parayı mikser, THORChain, köprü, KYC\'siz takas servisi ya da borsaya soktuğu an burada görünür' + (S.sound ? '.' : '; sesi açarsan ayrıca duyarsın.') : 'Zincir verisi yükleniyor…') + '</div>';
+    set('alertHint', list.length ? list.length + ' adım · toplam ' + fmtUsd(total) + (list.length > 8 ? ' · son 8 gösteriliyor' : '') : 'mikser · THORChain · köprü · KYC\'siz takas servisi · borsa');
+  }
   function set(id, txt) { var el = $(id); if (el && el.textContent !== txt) el.textContent = txt; }
 
   function renderMeta() {
@@ -751,7 +867,9 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     var parts = [];
     var sw = (outBy.dex || 0) + (outBy.contract || 0);
     if (sw) parts.push('swap/kontrat ' + fmtUsd(sw));
+    if (outBy.thor) parts.push('THORChain ' + fmtUsd(outBy.thor));
     if (outBy.bridge) parts.push('köprü ' + fmtUsd(outBy.bridge));
+    if (outBy.swapsvc) parts.push('takas servisi ' + fmtUsd(outBy.swapsvc));
     if (outBy.cex) parts.push('borsa ' + fmtUsd(outBy.cex));
     if (outBy.mixer) parts.push('mikser ' + fmtUsd(outBy.mixer));
     if (outBy.burn) parts.push('yakılan ' + fmtUsd(outBy.burn));
@@ -799,6 +917,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
   }
   function who(addr, p) {
     if (!addr) return '<span class="who">kontrat oluşturma</span>';
+    if (!ADDR_RX.test(addr)) return '<span class="who">' + esc(addr) + '</span>';
     var w = W(addr), isEth = /^0x/i.test(addr);
     var link = isEth ? 'https://etherscan.io/address/' + addr : 'https://mempool.space/address/' + addr;
     var txt, style = '', tail = '';
@@ -815,13 +934,15 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     var txUrl = e.chain === 'btc' ? 'https://mempool.space/tx/' + e.tx : 'https://etherscan.io/tx/' + e.tx;
     var cp = f === 'out' || f === 'vout' ? e.to : (f === 'in' ? e.from : '');
     var cpP = f === 'in' ? e.fromP : e.toP;
-    var follow = cp && !W(cp) && (e.chain === 'btc' || category(cpP) === 'wallet') ? '<button type="button" data-follow="' + esc(cp) + '">+ takip</button>' : '';
+    var follow = cp && ADDR_RX.test(cp) && !W(cp) && (e.chain === 'btc' || category(cpP) === 'wallet') ? '<button type="button" data-follow="' + esc(cp) + '">+ takip</button>' : '';
     var fresh = e.live && Date.now() - e.seenAt < 10 * 60000 ? '<span class="fresh">canlı</span>' : '';
     return '<div class="row' + (e.live && !lastRendered.has(e.id) ? ' new' : '') + '" style="--c:' + ch[1] + '">' +
       '<div class="t">' + esc(clock(e.ts)) + '<small>' + esc(ago(e.ts)) + '</small>' + fresh + '</div>' +
       '<div><span class="chip">' + esc(ch[0]) + '</span></div>' +
       '<div class="amt">' + amt + '</div>' +
-      '<div class="route">' + who(e.from, e.fromP) + '<span class="arrow">→</span>' + who(e.to, e.toP) + (e.followed ? '<span class="badge">takibe alındı</span>' : '') + '</div>' +
+      '<div class="route">' + who(e.from, e.fromP) + '<span class="arrow">→</span>' + who(e.to, e.toP) +
+        (e.thorDest ? '<span class="arrow">⇒</span><span class="faint">' + esc(e.thorDest.asset) + '</span> ' + (e.thorDest.follow ? who(e.thorDest.addr, null) : '<span class="who">' + esc(short(e.thorDest.addr)) + '</span>') : '') +
+        (e.followed ? '<span class="badge">takibe alındı</span>' : '') + '</div>' +
       '<div class="acts"><a href="' + esc(txUrl) + '" target="_blank" rel="noopener">tx ↗</a>' + follow + '</div></div>';
   }
   function renderFeed() {
