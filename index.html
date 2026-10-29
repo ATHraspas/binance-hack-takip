@@ -185,7 +185,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
 
   <section class="ctx">
     <div class="panel">
-      <div class="panel-h"><h2>Olay akışı</h2><span class="hint">TR saati (UTC+3) · 30 Eki 01:00'e kadar · sonrası canlı akışta</span></div>
+      <div class="panel-h"><h2>Olay akışı</h2><span class="hint">TR saati (UTC+3) · 30 Eki 01:25'e kadar · sonrası canlı akışta</span></div>
       <ol class="tl">
         <li><time>28 Eki</time><p>Başlatıcı cüzdan 0x7C86…5CA0, raporlara göre Tornado Cash'ten gelen üç küçük girişle (~0,1 ETH) fonlandı.</p></li>
         <li><time>18:59</time><p>Saldırgan yürütücü kontratı deploy etti; gün içinde başka adreslerde aynı "sweep" çağrısıyla deneme yaptı.</p></li>
@@ -199,6 +199,11 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
         <li><time>00:04</time><p>Binance 14'ten son süpürme: yaklaşık 1.700 ETH ve kalan tokenlar.</p></li>
         <li><time>~00:15</time><p>CZ hack'i doğruladı ve kullanıcı fonlarının karşılanacağını söyledi. Tether ~971 Mn USDT, Circle ~823 Mn USDC dondurdu.</p></li>
         <li><time>00:22</time><p>88,5 Mn RLUSD iki yeni cüzdandan geçti; 00:31'de 0x3E2b…32d5 MetaMask Bridge ile küçük bir köprü testi yaptı.</p></li>
+        <li><time>00:44</time><p>Saldırı sürüyor: Binance 14'ten ikinci süpürme, yaklaşık 200 Mn USDT ve 370 ETH aynı ana alıcıya gitti.</p></li>
+        <li><time>00:47</time><p>Takas edilen 122.310 ETH yeni bir cüzdana (0xc887…286A) taşındı.</p></li>
+        <li><time>00:46</time><p>00:46–01:02 arası dondurulamayan tokenlar dağıtıldı: WBETH ve ENA 0x7f9D…15E3'e, UNI 0x42CD…7810'a, PEPE 0x600d…8298'e.</p></li>
+        <li><time>01:01</time><p>UNI ve PEPE Uniswap'te, RLUSD Curve'de parça parça ETH'ye çevrilmeye başladı.</p></li>
+        <li><time>01:08</time><p>RLUSD'den dönen 20.492 ETH 0x5440…C942'ye gönderildi.</p></li>
       </ol>
     </div>
     <div class="panel">
@@ -251,6 +256,12 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     { a: '0xAa246BF639586a6Ba46762D378CE50cA4fc654a0', role: 'hacker', label: 'ETH dağıtım 1' },
     { a: '0x470B3F37e4afaBbb0CBf02024b171DA89Fa5f0A4', role: 'hacker', label: 'ETH dağıtım 2' },
     { a: '0x3E2bf1ac6bf0934BBba6456C341c2EcbCED632d5', role: 'hacker', label: 'Köprü testi (MetaMask Bridge)' },
+    { a: '0xc887aF690E0301CD4edBbCe8F8d31b4EC65B286A', role: 'hacker', label: '122.310 ETH deposu (takas edilen USDT)' },
+    { a: '0x7f9DC988B46336aD536828fAD50fa8fA1E5415E3', role: 'hacker', label: 'WBETH + ENA alıcı' },
+    { a: '0x42CDF00c85005630CC8605731B9364F712077810', role: 'hacker', label: 'UNI alıcı · Uniswap\'te bozuyor' },
+    { a: '0x600d6F00eadAbDb514561Ceeb43730a7103e8298', role: 'hacker', label: 'PEPE alıcı · Uniswap\'te bozuyor' },
+    { a: '0xE7024aB80143b1EF843EFE6a58368696Cb87958d', role: 'hacker', label: 'RLUSD alıcı · Curve\'de bozuyor' },
+    { a: '0x54401f80Da97893a15D43566184635B6674BC942', role: 'hacker', label: '20.492 ETH (RLUSD\'den dönen)' },
     { a: '0x28C6c06298d514Db089934071355E5743bf21d60', role: 'victim', label: 'Binance 14' },
     { a: '0xDFd5293D8e347dFe59E90eFd55b2956a1343963d', role: 'victim', label: 'Binance 16' },
     { a: '0xEe7aE85f2Fe2239E27D9c1E23fFFe168D63b4055', role: 'victim', label: 'Binance Hot Wallet 34' }
