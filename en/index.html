@@ -1,0 +1,1248 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<title>Binance Hack Live Tracker</title>
+<meta name="description" content="Watch the funds drained from Binance hot wallets move on-chain in real time: attacker wallets, swaps, THORChain, mixers and new wallets. Ethereum and Bitcoin.">
+<link rel="canonical" href="https://athraspas.github.io/binance-hack-takip/en/">
+<link rel="alternate" hreflang="tr" href="https://athraspas.github.io/binance-hack-takip/">
+<link rel="alternate" hreflang="en" href="https://athraspas.github.io/binance-hack-takip/en/">
+<link rel="alternate" hreflang="x-default" href="https://athraspas.github.io/binance-hack-takip/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://athraspas.github.io/binance-hack-takip/en/">
+<meta property="og:title" content="Binance Hack · Live On-Chain Tracker">
+<meta property="og:description" content="Where are the drained funds going? Attacker wallets, swaps, THORChain, mixers and new wallets, live.">
+<meta property="og:image" content="https://athraspas.github.io/binance-hack-takip/og-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Binance Hack · Live On-Chain Tracker">
+<meta name="twitter:description" content="The on-chain trail of the drained funds, live.">
+<meta name="twitter:image" content="https://athraspas.github.io/binance-hack-takip/og-en.png">
+<meta name="theme-color" content="#0d1015">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Yerleşim: yapışkan durum çubuğu → 4'lü özet şeridi → 5 dk'lık hacim şeridi → canlı akış (geniş) + cüzdan kümesi (dar) → olay akışı ve bağlam. Tek, koyu izleme ekranı teması. */
+:root{
+  --bg:#0d1015; --panel:#141920; --panel-2:#1a2029; --line:#252d38; --line-2:#323b48;
+  --fg:#e8ebf0; --muted:#8c96a6; --faint:#5f6878;
+  --signal:#f3b43c;
+  --drain:#ff5b5f; --out:#ff8f4d; --hop:#f3b43c; --in:#3fd08f; --dex:#5aa9ff; --bridge:#a78bfa; --cex:#ffd166; --mixer:#ff62b0; --burn:#9aa3b2;
+  --f-display:"Barlow Semi Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font:14px/1.45 var(--f-body);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1500px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+h1{font:700 21px/1.1 var(--f-display);letter-spacing:.01em;margin:0;text-wrap:balance}
+.live{width:10px;height:10px;border-radius:50%;background:var(--faint);flex:none}
+.live.on{background:var(--in);animation:pulse 2s infinite}
+.live.err{background:var(--drain)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(63,208,143,.55)}70%{box-shadow:0 0 0 9px rgba(63,208,143,0)}100%{box-shadow:0 0 0 0 rgba(63,208,143,0)}}
+.meta{font:500 12px/1.3 var(--f-mono);color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 14px}
+.meta b{color:var(--fg);font-weight:600}
+.ctrls{margin-left:auto;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+select,button,input{font:500 12px/1 var(--f-body);color:var(--fg);background:var(--panel-2);border:1px solid var(--line-2);border-radius:6px;padding:7px 10px}
+button{cursor:pointer}
+button:hover{border-color:var(--muted)}
+:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.chk{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);cursor:pointer}
+.chk input{padding:0;margin:0}
+.lbl{font-size:12px;color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:16px}
+.kpi{background:var(--panel);padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.kpi .k{font:600 11px/1.25 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font:700 32px/1.05 var(--f-display);font-variant-numeric:tabular-nums}
+.kpi .s{font:400 12px/1.45 var(--f-mono);color:var(--muted);overflow-wrap:anywhere}
+.kpi.drain .v{color:var(--drain)}
+@media (max-width:900px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.kpis{grid-template-columns:1fr}}
+.spark{margin-top:12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px 8px}
+.spark-h{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--muted);margin-bottom:8px;flex-wrap:wrap}
+.bars{display:flex;align-items:flex-end;gap:2px;height:56px}
+.bars i{flex:1;min-width:2px;background:var(--line-2);border-radius:2px 2px 0 0;height:2px}
+.bars i.drain{background:var(--drain)}.bars i.out{background:var(--out)}.bars i.hop{background:var(--hop)}.bars i.in{background:var(--in)}
+.axis{display:flex;justify-content:space-between;font:400 11px/1.4 var(--f-mono);color:var(--faint);margin-top:4px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px}
+.legend span:before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;background:var(--c)}
+.alerts{margin-top:12px;border-color:color-mix(in srgb,var(--mixer) 30%,var(--line))}
+.alerts h2{color:var(--mixer)}
+.alerts.hot{border-color:var(--mixer);box-shadow:0 0 0 1px color-mix(in srgb,var(--mixer) 35%,transparent)}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 410px;gap:16px;margin-top:16px;align-items:start}
+@media (max-width:1100px){.grid{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;min-width:0;overflow:hidden}
+.panel-h{display:flex;align-items:baseline;justify-content:space-between;gap:6px 10px;padding:12px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+h2{font:700 15px/1.2 var(--f-display);letter-spacing:.05em;text-transform:uppercase;margin:0}
+.hint{font-size:12px;color:var(--muted)}
+.row{display:grid;grid-template-columns:84px 150px minmax(120px,200px) minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 14px 9px 16px;border-bottom:1px solid var(--line);position:relative}
+.row:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c,var(--line-2))}
+.row.new{animation:flash 2.6s ease-out}
+@keyframes flash{from{background:rgba(243,180,60,.2)}to{background:transparent}}
+.t{font:500 12px/1.25 var(--f-mono)}
+.t small{display:block;color:var(--faint);font-size:11px}
+.fresh{display:inline-block;margin-top:3px;font:600 10px/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--signal)}
+.chip{display:inline-block;font:600 10.5px/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;padding:5px 7px;border-radius:4px;color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);border:1px solid color-mix(in srgb,var(--c) 40%,transparent);white-space:nowrap}
+.amt{font:600 13px/1.3 var(--f-mono);font-variant-numeric:tabular-nums;min-width:0;overflow-wrap:anywhere}
+.amt small{display:block;font-weight:500;color:var(--muted)}
+.route{font:400 12px/1.4 var(--f-mono);color:var(--muted);min-width:0;overflow-wrap:anywhere}
+.route .who{color:var(--fg)}
+.route .arrow{color:var(--faint);padding:0 5px}
+.faint{color:var(--faint)}
+.badge{font:600 10px/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;padding:3px 5px;border-radius:3px;margin-left:6px;vertical-align:1px;background:var(--signal);color:#1a1300;white-space:nowrap}
+.acts{display:flex;gap:6px;align-items:center;justify-self:end}
+.acts a,.acts button{font:500 11px/1 var(--f-body);padding:6px 8px;border-radius:5px;border:1px solid var(--line-2);background:transparent;color:var(--muted);white-space:nowrap}
+.acts a:hover,.acts button:hover{color:var(--fg);border-color:var(--muted);text-decoration:none}
+@media (max-width:760px){.row{grid-template-columns:72px minmax(0,1fr)}.row .route,.row .acts{grid-column:1 / -1}.row .acts{justify-self:start}}
+.empty{padding:28px 14px;color:var(--muted);font-size:13px}
+.w{padding:10px 14px 10px 16px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;position:relative}
+.w:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c)}
+.w .nm{font:600 13px/1.3 var(--f-body);min-width:0;overflow-wrap:anywhere}
+.w .ad{font:400 11.5px/1.35 var(--f-mono);color:var(--muted)}
+.w .val{font:600 13px/1.3 var(--f-mono);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.w .sub{font:400 11px/1.35 var(--f-mono);color:var(--faint);text-align:right;white-space:nowrap}
+.w .full{grid-column:1 / -1;font:400 11px/1.4 var(--f-mono);color:var(--muted)}
+.w .lnk{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11.5px;color:var(--muted);margin-top:4px}
+.w .lnk a,.w .lnk button{color:var(--muted);background:none;border:0;padding:0;font:inherit;cursor:pointer}
+.w .lnk a:hover,.w .lnk button:hover{color:var(--fg)}
+.w .when{margin-left:auto;color:var(--faint)}
+.grp{padding:8px 14px;font:600 11px/1.2 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--faint);background:var(--panel-2);border-bottom:1px solid var(--line)}
+form.add{display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line)}
+form.add input{flex:1;min-width:0;font-family:var(--f-mono)}
+.ctx{margin-top:16px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.ctx{grid-template-columns:1fr}}
+.tlpanel{margin-top:12px}
+.tlpanel .tl{max-height:460px;overflow:auto}
+.tl .chip{margin-right:6px;vertical-align:1px}
+.tl .usd{color:var(--muted);font-family:var(--f-mono);font-size:12px;margin-left:6px}
+.tl{list-style:none;margin:0;padding:6px 14px 12px}
+.tl li{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;padding:7px 0;border-bottom:1px dashed var(--line)}
+.tl li:last-child{border-bottom:0}
+.tl time{font:600 12px/1.45 var(--f-mono);color:var(--signal)}
+.tl p{margin:0;font-size:13px;line-height:1.5;max-width:72ch}
+.src{padding:6px 14px 14px;font-size:13px;line-height:1.55}
+.src p{margin:8px 0;max-width:68ch}
+.src b{color:var(--fg)}
+.src ul{margin:6px 0 0;padding-left:18px}
+.src li{margin:3px 0}
+.src a{color:var(--dex)}
+.mono{font-family:var(--f-mono)}
+footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
+@media (prefers-reduced-motion:reduce){.live.on,.row.new{animation:none}}
+.ctrls .lang{font-weight:600;letter-spacing:.06em;min-width:42px}
+</style>
+</head>
+<body>
+
+<header class="bar"><div class="wrap">
+  <div class="brand"><span class="live" id="live" aria-hidden="true"></span><h1 data-t="h1">Binance Hack · Canlı Zincir Takibi</h1></div>
+  <div class="meta" id="meta"><span data-t="connecting">Bağlanıyor…</span></div>
+  <div class="ctrls">
+    <label class="lbl" for="minUsd" data-t="min">Min. tutar</label>
+    <select id="minUsd">
+      <option value="0" data-t="opt_all">Hepsi</option>
+      <option value="1000" data-t="opt_1k">$1 bin</option>
+      <option value="10000" data-t="opt_10k">$10 bin</option>
+      <option value="100000" data-t="opt_100k">$100 bin</option>
+      <option value="1000000" data-t="opt_1m">$1 Mn</option>
+    </select>
+    <label class="chk" for="showSpam"><input type="checkbox" id="showSpam"> <span data-t="spam">Spam / toz</span></label>
+    <button type="button" id="soundBtn" aria-pressed="false">Ses kapalı</button>
+    <button type="button" id="pauseBtn" aria-pressed="false" data-t="pause">Duraklat</button>
+    <button type="button" id="langBtn" class="lang" lang="en">EN</button>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <section class="kpis" data-ta="a_kpis">
+    <div class="kpi drain"><span class="k" data-t="k_drained">Binance'ten çekilen · ETH + BTC</span><span class="v" id="kDrained">—</span><span class="s" id="kDrainedS" data-t="loading_lc">zincir verisi yükleniyor</span></div>
+    <div class="kpi"><span class="k" data-t="k_held">Saldırgan kümesinde şu an</span><span class="v" id="kHeld">—</span><span class="s" id="kHeldS"></span></div>
+    <div class="kpi"><span class="k" data-t="k_out">Kümeden çıkan · swap / köprü / borsa</span><span class="v" id="kOut">—</span><span class="s" id="kOutS"></span></div>
+    <div class="kpi"><span class="k" data-t="k_w">Takip edilen cüzdan</span><span class="v" id="kW">—</span><span class="s" id="kWS"></span></div>
+  </section>
+
+  <section class="spark" data-ta="a_spark">
+    <div class="spark-h">
+      <span data-t="spark_h">Son 4 saat · 5 dk'lık dilimler · log ölçek</span>
+      <span class="legend"><span style="--c:var(--drain)" data-t="lg_drain">Binance → saldırgan</span><span style="--c:var(--hop)" data-t="lg_hop">küme içi</span><span style="--c:var(--out)" data-t="lg_out">kümeden çıkış</span><span style="--c:var(--in)" data-t="lg_in">giriş</span></span>
+      <span id="sparkMax"></span>
+    </div>
+    <div class="bars" id="bars"></div>
+    <div class="axis"><span id="ax0"></span><span id="ax1"></span><span data-t="now">şimdi</span></div>
+  </section>
+
+  <section class="panel alerts" data-ta="alerts_h">
+    <div class="panel-h"><h2 data-t="alerts_h">Aklama adımları</h2><span class="hint" id="alertHint">mikser · THORChain · köprü · KYC'siz takas servisi · borsa</span></div>
+    <div id="alerts"><div class="empty" data-t="loading">Zincir verisi yükleniyor…</div></div>
+  </section>
+
+  <section class="panel tlpanel" data-ta="tl_h">
+    <div class="panel-h"><h2 data-t="tl_h">Olay akışı</h2><span class="hint" id="tlHint">zincir verisinden otomatik · en yeni üstte · yerel saat</span></div>
+    <ol class="tl" id="timeline"><li><time>…</time><p data-t="tl_loading">Zincir verisi yükleniyor; olaylar geldikçe buraya eklenecek.</p></li></ol>
+  </section>
+
+  <div class="grid">
+    <section class="panel" data-ta="feed_h">
+      <div class="panel-h"><h2 data-t="feed_h">Canlı akış</h2><span class="hint" id="feedHint"></span></div>
+      <div id="feed"><div class="empty" data-t="loading">Zincir verisi yükleniyor…</div></div>
+    </section>
+    <aside class="panel" data-ta="wal_h">
+      <div class="panel-h"><h2 data-t="wal_h">Cüzdan kümesi</h2><span class="hint" id="wHint"></span></div>
+      <form class="add" id="addForm" autocomplete="off">
+        <input id="addInput" placeholder="0x… veya bc1… adres ekle" aria-label="Takibe adres ekle" data-tp="add_ph" data-ta="add_aria">
+        <button type="submit" data-t="add_btn">Ekle</button>
+      </form>
+      <div id="wallets"></div>
+    </aside>
+  </div>
+
+  <footer data-t="footer">Bağımsız zincir takibi; Binance ile bağlantısı yoktur.</footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var API = 'https://eth.blockscout.com/api/v2';
+  var MEMPOOL = 'https://mempool.space/api';
+  var HACK_START = Date.parse('2026-10-29T20:00:00Z');
+  var FOLLOW_USD = 250000;
+  var FOLLOW_ETH = 0.2;
+  var MAX_AUTO = 60;
+  var MAX_DEPTH = 5;
+  var VICTIM_SHOW_USD = 5e6;
+  var STORE_KEY = 'bh-canli-takip-v1';
+  var BUCKETS = 48;
+
+  /* ---------- dil ---------- */
+  var I18N = {
+    tr: {
+      a_kpis: 'Özet', a_spark: 'Hacim şeridi',
+      title: 'Binance Hack Canlı Takip', h1: 'Binance Hack · Canlı Zincir Takibi', connecting: 'Bağlanıyor…',
+      min: 'Min. tutar', opt_all: 'Hepsi', opt_1k: '$1 bin', opt_10k: '$10 bin', opt_100k: '$100 bin', opt_1m: '$1 Mn',
+      spam: 'Spam / toz', sound_off: 'Ses kapalı', sound_on: 'Ses açık · 1 Mn $ üstü', pause: 'Duraklat', resume: 'Devam et',
+      lang_btn: 'EN', lang_aria: 'Switch to English',
+      k_drained: "Binance'ten çekilen · ETH + BTC", k_held: 'Saldırgan kümesinde şu an', k_out: 'Kümeden çıkan · swap / köprü / borsa', k_w: 'Takip edilen cüzdan',
+      loading_lc: 'zincir verisi yükleniyor', loading: 'Zincir verisi yükleniyor…',
+      spark_h: "Son 4 saat · 5 dk'lık dilimler · log ölçek", lg_drain: 'Binance → saldırgan', lg_hop: 'küme içi', lg_out: 'kümeden çıkış', lg_in: 'giriş', now: 'şimdi',
+      alerts_h: 'Aklama adımları', alerts_hint: "mikser · THORChain · köprü · KYC'siz takas servisi · borsa",
+      alerts_empty: "Henüz yok. Saldırgan parayı mikser, THORChain, köprü, KYC'siz takas servisi ya da borsaya soktuğu an burada görünür",
+      alerts_sound: '; sesi açarsan ayrıca duyarsın.', alerts_n: '{0} adım · toplam {1}', last8: ' · son 8 gösteriliyor',
+      tl_h: 'Olay akışı', tl_hint: 'zincir verisinden otomatik · {0} olay · en yeni üstte · yerel saat', tl_loading: 'Zincir verisi yükleniyor; olaylar geldikçe buraya eklenecek.',
+      tl_more: ' + {0} varlık', tl_swapline: '{0} {1} swap işlemi yaptı · {2}', tl_burn: '{0} · {1} bakiyesinden yakıldı',
+      feed_h: 'Canlı akış', wal_h: 'Cüzdan kümesi', add_ph: '0x… veya bc1… adres ekle', add_aria: 'Takibe adres ekle', add_btn: 'Ekle',
+      add_invalid: 'Geçerli bir Ethereum (0x…) ya da Bitcoin (bc1… / 1… / 3…) adresi gir.',
+      footer: 'Bağımsız zincir takibi; Binance ile bağlantısı yoktur. Raporlara göre Tron\'da ~628 Mn $ ve Arbitrum, Optimism, Base\'de ~38 Mn $ daha çekildi; bunlar sayfada yok. Binance\'in Solana sıcak cüzdanı hack saatinde normal çalıştı. Veri: Blockscout açık API (Ethereum) ve mempool.space (Bitcoin); istekler doğrudan senin tarayıcından gider; sekme arka plandayken sorgu durur. USD değerleri güncel fiyatla hesaplanır, çekildiği anki fiyatla değil. "Parayı alan" cüzdanlar otomatik bulunur ve sahibinin saldırgan olduğu anlamına gelmez. Yatırım tavsiyesi değildir.',
+      role_initiator: 'başlatıcı', role_hacker: 'saldırgan', role_hop: 'kümeden para aldı', role_manual: 'elle eklendi', role_victim: 'Binance',
+      cat_dex: 'Swap / DEX', cat_contract: 'Kontrata', cat_bridge: 'Köprü', cat_thor: 'THORChain', cat_swapsvc: 'Takas servisi', cat_cex: 'Borsaya', cat_mixer: 'Mikser', cat_burn: 'Yakıldı', cat_wallet: 'Yeni cüzdana',
+      ch_drain: 'Binance → saldırgan', ch_hop: 'Küme içi', ch_call: 'Saldırgan çağrısı', ch_out: 'Çıkış', ch_mixin: 'Mikserden giriş', ch_swapin: 'Swap dönüşü', ch_in: 'Giriş', ch_vout: 'Binance çıkışı', ch_other: 'Diğer', ch_swap: 'Swap', ch_news: 'Haber', ch_launder: 'Aklama',
+      st_paused: 'Duraklatıldı', st_hidden: 'Sekme arka planda, sorgular durdu', st_loading: 'Yükleniyor {0}/{1}', st_offline: 'Bağlantı yok', st_live: 'Canlı',
+      last_data: 'son veri {0}', reqs: '{0} istek', errs: ' · {0} hata', queued: ' · sırada {0}',
+      assets_total: ' · toplam {0} varlık', held_sub: '{0} ETH · {1} BTC · USDT/USDC {2} (çoğu donduruldu) · hareket ettirilebilir ~{3}',
+      o_swap: 'swap/kontrat {0}', o_thor: 'THORChain {0}', o_bridge: 'köprü {0}', o_swapsvc: 'takas servisi {0}', o_cex: 'borsa {0}', o_mixer: 'mikser {0}', o_burn: 'yakılan {0}', none_yet: 'henüz yok',
+      auto_found: '+{0} otomatik bulundu · ', last10: 'son 10 dk {0} hareket', cap_hit: ' · otomatik takip sınırı doldu', spark_max: 'en yüksek dilim {0}',
+      feed_blocked: 'Bu pencere internete bağlanamıyor; büyük ihtimalle bir uygulamanın dosya önizlemesinde açıldı. Dosyayı indirip Chrome, Safari ya da Edge ile aç.',
+      feed_none: "Bu filtreyle gösterilecek hareket yok. Min. tutarı düşür ya da spam/toz'u aç.", feed_hint: '{0} hareket', last250: ' · son 250 gösteriliyor', newest: ' · en yeni üstte',
+      contract_creation: 'kontrat oluşturma', m_call: 'çağrı', m_create: 'kontrat oluşturdu',
+      no_value: 'değer transferi yok', no_price: 'fiyat yok', unconfirmed: ' · onaysız', follow_btn: '+ takip', live_tag: 'canlı', followed_badge: 'takibe alındı',
+      w_last: 'son hareket {0}', w_none: 'hareket yok', w_loading: 'yükleniyor…', w_err: ' · bağlantı hatası, yeniden deneniyor',
+      b_usdtc: 'USDT/USDC {0}', b_eth: 'ETH türevi {0}', b_stable: 'diğer stable {0}', b_other: 'diğer token {0}',
+      new_badge: 'yeni', hop_n: ' · {0}. hop', copy: 'kopyala', copied: 'kopyalandı', remove: 'çıkar',
+      grp_cluster: 'Saldırgan ve parayı alan cüzdanlar · {0}', grp_victim: 'Kaynak: Binance cüzdanları', w_auto: '{0} cüzdan otomatik bulundu', w_grows: 'para izlendikçe büyür',
+      lbl_hop: 'Hop {0} · {1} {2} aldı', lbl_thor: 'THORChain çıkışı · {0}', lbl_followed: 'Takibe alındı', lbl_manual: 'Elle eklendi', lbl_manual_btc: 'BTC · elle eklendi',
+      ago_now: 'şimdi', ago_min: '{0} dk önce', ago_h: '{0} sa {1} dk önce',
+      u_b: ' Mr', u_m: ' Mn', u_k: ' bin'
+    },
+    en: {
+      a_kpis: 'Summary', a_spark: 'Volume strip',
+      title: 'Binance Hack Live Tracker', h1: 'Binance Hack · Live On-Chain Tracker', connecting: 'Connecting…',
+      min: 'Min. amount', opt_all: 'All', opt_1k: '$1K', opt_10k: '$10K', opt_100k: '$100K', opt_1m: '$1M',
+      spam: 'Spam / dust', sound_off: 'Sound off', sound_on: 'Sound on · $1M+', pause: 'Pause', resume: 'Resume',
+      lang_btn: 'TR', lang_aria: 'Türkçeye geç',
+      k_drained: 'Drained from Binance · ETH + BTC', k_held: 'Held by the attacker cluster now', k_out: 'Out of cluster · swap / bridge / exchange', k_w: 'Tracked wallets',
+      loading_lc: 'loading on-chain data', loading: 'Loading on-chain data…',
+      spark_h: 'Last 4 hours · 5-min buckets · log scale', lg_drain: 'Binance → attacker', lg_hop: 'within cluster', lg_out: 'out of cluster', lg_in: 'inflow', now: 'now',
+      alerts_h: 'Laundering steps', alerts_hint: 'mixer · THORChain · bridge · no-KYC swap service · exchange',
+      alerts_empty: 'None yet. The moment the attacker sends funds to a mixer, THORChain, a bridge, a no-KYC swap service or an exchange, it shows up here',
+      alerts_sound: '; turn on sound to hear it too.', alerts_n: '{0} steps · total {1}', last8: ' · showing last 8',
+      tl_h: 'Timeline', tl_hint: 'built from on-chain data · {0} events · newest first · local time', tl_loading: 'Loading on-chain data; events will appear here as they arrive.',
+      tl_more: ' + {0} more assets', tl_swapline: '{0} made {1} swaps · {2}', tl_burn: '{0} · burned from {1}',
+      feed_h: 'Live feed', wal_h: 'Wallet cluster', add_ph: 'Add a 0x… or bc1… address', add_aria: 'Add an address to track', add_btn: 'Add',
+      add_invalid: 'Enter a valid Ethereum (0x…) or Bitcoin (bc1… / 1… / 3…) address.',
+      footer: 'Independent on-chain tracking; not affiliated with Binance. Reports put another ~$628M drained on Tron and ~$38M on Arbitrum, Optimism and Base; those are not on this page. Binance\'s Solana hot wallet operated normally during the hack. Data: Blockscout public API (Ethereum) and mempool.space (Bitcoin); requests go straight from your browser and pause while the tab is in the background. USD values use current prices, not prices at the time of transfer. Wallets marked "received cluster funds" are found automatically and are not necessarily owned by the attacker. Not investment advice.',
+      role_initiator: 'initiator', role_hacker: 'attacker', role_hop: 'received cluster funds', role_manual: 'added manually', role_victim: 'Binance',
+      cat_dex: 'Swap / DEX', cat_contract: 'To contract', cat_bridge: 'Bridge', cat_thor: 'THORChain', cat_swapsvc: 'Swap service', cat_cex: 'To exchange', cat_mixer: 'Mixer', cat_burn: 'Burned', cat_wallet: 'To new wallet',
+      ch_drain: 'Binance → attacker', ch_hop: 'Within cluster', ch_call: 'Attacker call', ch_out: 'Outflow', ch_mixin: 'From mixer', ch_swapin: 'Swap proceeds', ch_in: 'Inflow', ch_vout: 'Binance outflow', ch_other: 'Other', ch_swap: 'Swap', ch_news: 'News', ch_launder: 'Laundering',
+      st_paused: 'Paused', st_hidden: 'Tab in background, polling paused', st_loading: 'Loading {0}/{1}', st_offline: 'No connection', st_live: 'Live',
+      last_data: 'last data {0}', reqs: '{0} requests', errs: ' · {0} errors', queued: ' · {0} queued',
+      assets_total: ' · {0} assets total', held_sub: '{0} ETH · {1} BTC · USDT/USDC {2} (mostly frozen) · movable ~{3}',
+      o_swap: 'swap/contract {0}', o_thor: 'THORChain {0}', o_bridge: 'bridge {0}', o_swapsvc: 'swap service {0}', o_cex: 'exchange {0}', o_mixer: 'mixer {0}', o_burn: 'burned {0}', none_yet: 'none yet',
+      auto_found: '+{0} auto-discovered · ', last10: '{0} moves in the last 10 min', cap_hit: ' · auto-follow limit reached', spark_max: 'peak bucket {0}',
+      feed_blocked: 'This window cannot reach the internet; it was probably opened in an app\'s file preview. Download the file and open it in Chrome, Safari or Edge.',
+      feed_none: 'No moves match this filter. Lower the minimum amount or turn on spam/dust.', feed_hint: '{0} moves', last250: ' · showing last 250', newest: ' · newest first',
+      contract_creation: 'contract creation', m_call: 'call', m_create: 'created contract',
+      no_value: 'no value transfer', no_price: 'no price', unconfirmed: ' · unconfirmed', follow_btn: '+ track', live_tag: 'live', followed_badge: 'now tracked',
+      w_last: 'last move {0}', w_none: 'no moves', w_loading: 'loading…', w_err: ' · connection error, retrying',
+      b_usdtc: 'USDT/USDC {0}', b_eth: 'ETH derivatives {0}', b_stable: 'other stables {0}', b_other: 'other tokens {0}',
+      new_badge: 'new', hop_n: ' · hop {0}', copy: 'copy', copied: 'copied', remove: 'remove',
+      grp_cluster: 'Attacker and receiving wallets · {0}', grp_victim: 'Source: Binance wallets', w_auto: '{0} wallets auto-discovered', w_grows: 'grows as the money moves',
+      lbl_hop: 'Hop {0} · received {1} {2}', lbl_thor: 'THORChain exit · {0}', lbl_followed: 'Tracked', lbl_manual: 'Added manually', lbl_manual_btc: 'BTC · added manually',
+      alerts_n_1: '1 step · total {1}', last10_1: '1 move in the last 10 min', feed_hint_1: '1 move', w_auto_1: '1 wallet auto-discovered', assets_total_1: ' · 1 asset total', tl_hint_1: 'built from on-chain data · 1 event · newest first · local time',
+      ago_now: 'just now', ago_min: '{0} min ago', ago_h: '{0}h {1}m ago',
+      u_b: 'B', u_m: 'M', u_k: 'K'
+    }
+  };
+  var LANG = 'tr', LOCALE = 'tr-TR';
+  function t(k) {
+    var s = I18N[LANG][k];
+    if (s == null) s = I18N.tr[k];
+    if (s == null) s = k;
+    var args = arguments;
+    return String(s).replace(/\{(\d)\}/g, function (m, i) { var v = args[Number(i) + 1]; return v == null ? '' : v; });
+  }
+  function tn(k, n) {
+    var a = Array.prototype.slice.call(arguments);
+    if (n === 1 && I18N[LANG][k + '_1'] != null) a[0] = k + '_1';
+    return t.apply(null, a);
+  }
+
+  var SEED = [
+    { a: '0x7C8601d4645b93cea45F71e118A729332e6B5CA0', role: 'initiator', tr: 'Başlatıcı (Tornado fonlu)', en: 'Initiator (Tornado-funded)' },
+    { a: '0x5227f603C1eE34CE3C06eFe6477003BDfCCB2f8c', role: 'hacker', tr: 'Ana alıcı · Exploiter 2', en: 'Main receiver · Exploiter 2', deep: true },
+    { a: '0x8532FA14ACAf483729C449b8458aedDb900543D4', role: 'hacker', tr: '195.460 ETH deposu', en: '195,460 ETH holding' },
+    { a: '0x9749292D74Fd460982d0912eA9515EA24736C762', role: 'hacker', tr: '500 Mn USDT → ETH takas', en: '500M USDT → ETH swapper' },
+    { a: '0x0Ddf0480016e6bCb2C1F5d190D221FBA1320697e', role: 'hacker', tr: '200 Mn USDT cüzdanı', en: '200M USDT wallet' },
+    { a: '0x8d53903625b8e839b9DF4bd28B0EFb1CD6b8639A', role: 'hacker', tr: '190 Mn USDT + 3.552 ETH', en: '190M USDT + 3,552 ETH' },
+    { a: '0x811f15855476156Ebf86ba3b84faFb8Ceaa4e84C', role: 'hacker', tr: '175 Mn USDT alıcı', en: '175M USDT receiver' },
+    { a: '0x5C23023Ca6633F91DeD909b4a753a3cA00Fea4FC', role: 'hacker', tr: 'RLUSD ara durak', en: 'RLUSD relay' },
+    { a: '0x008f06F04b72dA2621a4f37F5531CC7352187Dcd', role: 'hacker', tr: '88,5 Mn RLUSD', en: '88.5M RLUSD' },
+    { a: '0xAa246BF639586a6Ba46762D378CE50cA4fc654a0', role: 'hacker', tr: 'ETH dağıtım 1', en: 'ETH distribution 1' },
+    { a: '0x470B3F37e4afaBbb0CBf02024b171DA89Fa5f0A4', role: 'hacker', tr: 'ETH dağıtım 2', en: 'ETH distribution 2' },
+    { a: '0x3E2bf1ac6bf0934BBba6456C341c2EcbCED632d5', role: 'hacker', tr: 'Köprü testi (MetaMask Bridge)', en: 'Bridge test (MetaMask Bridge)' },
+    { a: '0xc887aF690E0301CD4edBbCe8F8d31b4EC65B286A', role: 'hacker', tr: '122.310 ETH deposu (takas edilen USDT)', en: '122,310 ETH holding (swapped USDT)' },
+    { a: '0x7f9DC988B46336aD536828fAD50fa8fA1E5415E3', role: 'hacker', tr: 'WBETH + ENA alıcı', en: 'WBETH + ENA receiver' },
+    { a: '0x42CDF00c85005630CC8605731B9364F712077810', role: 'hacker', tr: "UNI alıcı · Uniswap'te bozuyor", en: 'UNI receiver · selling on Uniswap' },
+    { a: '0x600d6F00eadAbDb514561Ceeb43730a7103e8298', role: 'hacker', tr: "PEPE alıcı · Uniswap'te bozuyor", en: 'PEPE receiver · selling on Uniswap' },
+    { a: '0xE7024aB80143b1EF843EFE6a58368696Cb87958d', role: 'hacker', tr: "RLUSD alıcı · Curve'de bozuyor", en: 'RLUSD receiver · selling on Curve' },
+    { a: '0x54401f80Da97893a15D43566184635B6674BC942', role: 'hacker', tr: "20.492 ETH (RLUSD'den dönen)", en: '20,492 ETH (from RLUSD)' },
+    { a: 'bc1q0mtc2f5agpkvlq6hhahmfr3hlr55kyfjhl2mnm', role: 'hacker', tr: 'BTC ana alıcı (18.270 BTC)', en: 'BTC main receiver (18,270 BTC)' },
+    { a: 'bc1qt8mrl9uchasf7pqhwlz6ezm9g44x7xj0vs6zqz', role: 'hacker', tr: 'BTC parça · 6.636,8 BTC', en: 'BTC split · 6,636.8 BTC' },
+    { a: 'bc1qhuq4genel5cuj00p7ggn30dwnzzjsw8mz3z2je', role: 'hacker', tr: 'BTC parça · 3.696,6 BTC', en: 'BTC split · 3,696.6 BTC' },
+    { a: 'bc1qn43ejagzgxgle394ynmv5sv3f9ydc48qme7t02', role: 'hacker', tr: 'BTC parça · 1.946,9 BTC', en: 'BTC split · 1,946.9 BTC' },
+    { a: 'bc1qnq6jj9jmlf3945m3l8s0kxnqehrsga300k8t3s', role: 'hacker', tr: 'BTC parça · 1.000 BTC (a)', en: 'BTC split · 1,000 BTC (a)' },
+    { a: 'bc1qxrxujwxfnvz040jw76d26zhjdg5jura7hs968s', role: 'hacker', tr: 'BTC parça · 1.000 BTC (b)', en: 'BTC split · 1,000 BTC (b)' },
+    { a: 'bc1qs3aej5tmcdz0vctz8y9rjcxtxg8v5385577s56', role: 'hacker', tr: 'BTC parça · 1.000 BTC (c)', en: 'BTC split · 1,000 BTC (c)' },
+    { a: 'bc1qjwdw6vrzq4vf6hckutvx4ucj86awwv99mxnz7w', role: 'hacker', tr: 'BTC parça · 1.000 BTC (d)', en: 'BTC split · 1,000 BTC (d)' },
+    { a: 'bc1q0ts8gaf9ht0rr4u02hr56f8thndqsc4kmkmfv3', role: 'hacker', tr: 'BTC parça · 1.000 BTC (e)', en: 'BTC split · 1,000 BTC (e)' },
+    { a: 'bc1qxg0l4p6xc50zuv9cl5f0l0wmaxjpg8wcy7s9ra', role: 'hacker', tr: 'BTC parça · 437,7 BTC', en: 'BTC split · 437.7 BTC' },
+    { a: 'bc1q96qkjsye5qruf9yksqdqg09lzdmur7wau2ga6u', role: 'hacker', tr: 'BTC parça · 409,5 BTC', en: 'BTC split · 409.5 BTC' },
+    { a: 'bc1qrsrh56k4rpal88w0xpjuul0m78ud62akcwue5e', role: 'hacker', tr: 'BTC parça · 142,7 BTC', en: 'BTC split · 142.7 BTC' },
+    { a: 'bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h', role: 'victim', tr: 'Binance BTC sıcak cüzdanı', en: 'Binance BTC hot wallet' },
+    { a: '0x28C6c06298d514Db089934071355E5743bf21d60', role: 'victim', tr: 'Binance 14', en: 'Binance 14' },
+    { a: '0xDFd5293D8e347dFe59E90eFd55b2956a1343963d', role: 'victim', tr: 'Binance 16', en: 'Binance 16' },
+    { a: '0xEe7aE85f2Fe2239E27D9c1E23fFFe168D63b4055', role: 'victim', tr: 'Binance Hot Wallet 34', en: 'Binance Hot Wallet 34' }
+  ];
+
+  var ROLE_C = { initiator: 'var(--mixer)', hacker: 'var(--drain)', hop: 'var(--out)', manual: 'var(--bridge)', victim: 'var(--cex)' };
+  var CAT_C = { dex: 'var(--dex)', contract: 'var(--dex)', bridge: 'var(--bridge)', thor: 'var(--bridge)', swapsvc: 'var(--mixer)', cex: 'var(--cex)', mixer: 'var(--mixer)', burn: 'var(--burn)', wallet: 'var(--out)' };
+  function catChip(c) { return CAT_C[c] ? [t('cat_' + c), CAT_C[c]] : null; }
+  var LAUNDER = { mixer: 1, swapsvc: 1, thor: 1, bridge: 1, cex: 1 };
+
+  var RX = {
+    mixer: /tornado|mixer|railgun|privacy pool|wasabi|coinjoin|jambler|sinbad|blender|samourai|whirlpool/i,
+    swapsvc: /\bexch\b|exch\.cx|fixedfloat|changenow|sideshift|simpleswap|stealthex|swapzone|exolix|godex|changelly/i,
+    thor: /thorchain|thorswap|mayachain|maya protocol/i,
+    bridge: /bridge|wormhole|stargate|layerzero|across|synapse|chainflip|relay\.link|orbiter|debridge|socket|li\.fi|lifi|multichain|celer|hyperlane|axelar/i,
+    dex: /uniswap|sushi|curve|balancer|1inch|paraswap|kyber|router|liquidity pool|\bdex\b|pancake|odos|bebop|fluid|swap|cow protocol|aggregator|settlement|market maker/i,
+    cex: /exchange|binance|coinbase|okx|bybit|kraken|kucoin|htx|huobi|gate\.io|bitget|mexc|bitfinex|crypto\.com|upbit|bithumb|gemini|deposit/i
+  };
+  var ADDR_RX = /^(0x[0-9a-fA-F]{40}|bc1[a-z0-9]{11,71}|[13][1-9A-HJ-NP-Za-km-z]{25,34})$/;
+  var STABLE = /^(USDT|USDC)$/i;
+  var OTHERSTABLE = /^(RLUSD|USD1|USDE|USDS|DAI|FDUSD|PYUSD|TUSD|USDP|GUSD|LUSD|CRVUSD|GHO)$/i;
+  var ETHISH = /^(WETH|WBETH|STETH|WSTETH|CBETH|RETH|WEETH|EZETH|METH|OETH)$/i;
+
+  var S = {
+    wallets: new Map(), events: new Map(), blocked: new Set(),
+    ethPrice: 0, btcPrice: 0, paused: false, sound: false, audio: null,
+    minUsd: 10000, showSpam: false,
+    reqOk: 0, reqErr: 0, lastOk: 0, backoffUntil: 0, unseen: 0, capHit: false
+  };
+  var lastRendered = new Set();
+
+  /* ---------- yardımcılar ---------- */
+  function $(id) { return document.getElementById(id); }
+  function lc(s) { return String(s || '').toLowerCase(); }
+  function short(a) { a = String(a || ''); return a.length > 14 ? a.slice(0, 6) + '…' + a.slice(-4) : a; }
+  var NF = {};
+  function fmtN(v, d) { var k = LOCALE + d; if (!NF[k]) NF[k] = new Intl.NumberFormat(LOCALE, { minimumFractionDigits: 0, maximumFractionDigits: d }); return NF[k].format(v); }
+  function fmtUsd(v) {
+    if (v == null || !isFinite(v)) return '—';
+    var a = Math.abs(v);
+    if (a >= 1e9) return '$' + fmtN(v / 1e9, 2) + t('u_b');
+    if (a >= 1e6) return '$' + fmtN(v / 1e6, a >= 1e8 ? 0 : 1) + t('u_m');
+    if (a >= 1e3) return '$' + fmtN(v / 1e3, a >= 1e5 ? 0 : 1) + t('u_k');
+    return '$' + fmtN(v, 0);
+  }
+  function fmtAmt(v) { var a = Math.abs(v); return fmtN(v, a >= 1000 ? 0 : a >= 1 ? 2 : a >= 0.001 ? 4 : 6); }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function units(v, d) {
+    if (v == null) return 0;
+    d = parseInt(d, 10) || 0;
+    var s = String(v);
+    if (!/^\d+$/.test(s)) return (Number(s) / Math.pow(10, d)) || 0;
+    if (d === 0) return Number(s);
+    if (s.length <= d) s = '0'.repeat(d - s.length + 1) + s;
+    return Number(s.slice(0, s.length - d) + '.' + s.slice(s.length - d, s.length - d + 10));
+  }
+  function hhmm(ts) { return new Date(ts).toLocaleTimeString(LOCALE, { hour: '2-digit', minute: '2-digit', hour12: false }); }
+  function dayMon(ts) { return new Date(ts).toLocaleDateString(LOCALE, { day: 'numeric', month: 'short' }); }
+  function clock(ts) {
+    var d = new Date(ts);
+    var s = d.toLocaleTimeString(LOCALE, { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+    if (d.toDateString() !== new Date().toDateString()) s = dayMon(ts) + ' ' + hhmm(ts);
+    return s;
+  }
+  function ago(ts) {
+    var s = Math.max(0, Math.round((Date.now() - ts) / 1000));
+    if (s < 45) return t('ago_now');
+    if (s < 3600) return t('ago_min', Math.round(s / 60));
+    return t('ago_h', Math.floor(s / 3600), Math.round((s % 3600) / 60));
+  }
+  function qs(p) { return Object.keys(p).map(function (k) { return encodeURIComponent(k) + '=' + encodeURIComponent(p[k]); }).join('&'); }
+
+  /* ---------- kayıt (tarayıcıda) ---------- */
+  function load() { try { return JSON.parse(localStorage.getItem(STORE_KEY) || 'null') || {}; } catch (e) { return {}; } }
+  function save() {
+    try {
+      var manual = [];
+      S.wallets.forEach(function (w) { if (w.role === 'manual') manual.push({ a: w.addr, k: w.lbl.k }); });
+      localStorage.setItem(STORE_KEY, JSON.stringify({ manual: manual, minUsd: S.minUsd, showSpam: S.showSpam, lang: LANG }));
+    } catch (e) { /* depolama yoksa sorun değil */ }
+  }
+
+  /* ---------- istek kuyruğu (Blockscout'a nazik ol) ---------- */
+  var queue = [], active = 0, lastStart = 0, pumpTimer = null, MAX_ACTIVE = 2, GAP = 350;
+  function bs(path) {
+    return new Promise(function (resolve, reject) {
+      queue.push({ url: API + path, resolve: resolve, reject: reject, tries: 0 });
+      pump();
+    });
+  }
+  function pump() {
+    if (pumpTimer || active >= MAX_ACTIVE || !queue.length) return;
+    var now = Date.now();
+    var wait = Math.max(lastStart + GAP - now, S.backoffUntil - now, 0);
+    if (wait > 0) { pumpTimer = setTimeout(function () { pumpTimer = null; pump(); }, wait); return; }
+    var job = queue.shift();
+    active++; lastStart = now;
+    fetch(job.url).then(function (r) {
+      if (r.status === 429 || r.status >= 500) { var e = new Error('HTTP ' + r.status); e.retry = true; throw e; }
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    }).then(function (j) {
+      S.reqOk++; S.lastOk = Date.now(); job.resolve(j);
+    }, function (e) {
+      if ((e.retry || e.name === 'TypeError') && job.tries < 2) {
+        job.tries++; S.backoffUntil = Date.now() + 15000 * job.tries; queue.unshift(job);
+      } else { S.reqErr++; job.reject(e); }
+    }).then(function () { active--; pump(); });
+    pump();
+  }
+  /* mempool.space için ayrı ve daha yavaş kuyruk */
+  var mq = [], mActive = 0, mLast = 0, mTimer = null, mBackoff = 0;
+  function mp(path) {
+    return new Promise(function (resolve, reject) { mq.push({ url: MEMPOOL + path, resolve: resolve, reject: reject, tries: 0 }); mpump(); });
+  }
+  function mpump() {
+    if (mTimer || mActive >= 1 || !mq.length) return;
+    var now = Date.now(), wait = Math.max(mLast + 900 - now, mBackoff - now, 0);
+    if (wait > 0) { mTimer = setTimeout(function () { mTimer = null; mpump(); }, wait); return; }
+    var job = mq.shift();
+    mActive++; mLast = now;
+    fetch(job.url).then(function (r) {
+      if (r.status === 429 || r.status === 403 || r.status >= 500) { var e = new Error('HTTP ' + r.status); e.retry = true; throw e; }
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    }).then(function (j) {
+      S.reqOk++; S.lastOk = Date.now(); job.resolve(j);
+    }, function (e) {
+      if ((e.retry || e.name === 'TypeError') && job.tries < 2) { job.tries++; mBackoff = Date.now() + 30000 * job.tries; mq.unshift(job); }
+      else { S.reqErr++; job.reject(e); }
+    }).then(function () { mActive--; mpump(); });
+  }
+  function settle(list) {
+    return Promise.all(list.map(function (p) { return p.then(function () { return true; }, function (e) { return e || new Error('err'); }); }))
+      .then(function (rs) { var bad = rs.filter(function (r) { return r !== true; }); if (bad.length && bad.length === rs.length) throw bad[0]; return bad.length; });
+  }
+
+  /* ---------- cüzdanlar ---------- */
+  function W(addr) { return addr ? S.wallets.get(lc(addr)) : undefined; }
+  function isCluster(w) { return !!w && w.role !== 'victim'; }
+  function addWallet(o) {
+    var key = lc(o.a);
+    if (S.wallets.has(key)) return S.wallets.get(key);
+    var w = {
+      addr: o.a, key: key, chain: /^0x[0-9a-f]{40}$/i.test(o.a) ? 'eth' : 'btc', role: o.role, lbl: o.lbl || { k: 'addr' },
+      deep: !!o.deep, parent: o.parent || null, depth: o.depth || 0, auto: !!o.auto, addedAt: Date.now(),
+      balEth: null, balBtc: null, tokUsd: 0, tokBreak: null, tokAt: 0, lastAct: 0, nextPoll: 0, polls: 0,
+      busy: false, ready: false, err: 0
+    };
+    S.wallets.set(key, w);
+    scheduleRender();
+    return w;
+  }
+  function wLabel(w) {
+    var l = w.lbl || {};
+    if (l.k === 'seed') return LANG === 'en' ? (l.en || l.tr) : l.tr;
+    if (l.k === 'hop') return t('lbl_hop', l.d, fmtAmt(l.amt), l.sym);
+    if (l.k === 'thor') return t('lbl_thor', l.chain);
+    if (l.k === 'followed') return t('lbl_followed');
+    if (l.k === 'manual') return t(w.chain === 'btc' ? 'lbl_manual_btc' : 'lbl_manual');
+    return short(w.addr);
+  }
+  function holdUsd(w) {
+    if (w.chain === 'btc') return w.balBtc == null ? null : w.balBtc * (S.btcPrice || 0);
+    if (w.balEth == null) return null;
+    return w.balEth * (S.ethPrice || 0) + (w.tokUsd || 0);
+  }
+
+  /* ---------- sınıflandırma ---------- */
+  function party(p) {
+    if (!p || !p.hash) return null;
+    var tags = [];
+    if (p.metadata && p.metadata.tags) p.metadata.tags.forEach(function (x) { if (x && x.name) tags.push(x.name); });
+    if (p.public_tags) p.public_tags.forEach(function (x) { var n = x && (x.display_name || x.label); if (n) tags.push(n); });
+    return { addr: p.hash, name: p.name || p.ens_domain_name || '', contract: !!p.is_contract, tags: tags };
+  }
+  function category(p) {
+    if (!p || !p.addr) return 'contract';
+    if (/^0x0{40}$/i.test(p.addr)) return 'burn';
+    var s = (p.tags || []).join(' ') + ' ' + (p.name || '');
+    if (RX.mixer.test(s)) return 'mixer';
+    if (RX.swapsvc.test(s)) return 'swapsvc';
+    if (RX.thor.test(s)) return 'thor';
+    if (RX.bridge.test(s)) return 'bridge';
+    if (RX.dex.test(s)) return 'dex';
+    if (RX.cex.test(s)) return 'cex';
+    if (p.contract) return 'contract';
+    return 'wallet';
+  }
+  function usdOf(e) {
+    if (e.kind === 'call') return 0;
+    if (e.kind === 'btc') return e.amount * (S.btcPrice || 0);
+    if (e.kind === 'token') return e.rate ? e.amount * e.rate : null;
+    return e.amount * (S.ethPrice || 0);
+  }
+  function flow(e) {
+    if (e.kind === 'call') return 'call';
+    var fw = W(e.from), tw = W(e.to), fH = isCluster(fw), tH = isCluster(tw);
+    if (fw && fw.role === 'victim' && tH) return 'drain';
+    if (fH && tH) return 'hop';
+    if (fH) return 'out';
+    if (tH) return 'in';
+    if (fw && fw.role === 'victim') return 'vout';
+    if (tw && tw.role === 'victim') return 'vin';
+    return 'other';
+  }
+  function chipOf(e, f) {
+    if (f === 'drain') return [t('ch_drain'), 'var(--drain)'];
+    if (f === 'hop') return [t('ch_hop'), 'var(--hop)'];
+    if (f === 'call') return [t('ch_call'), 'var(--mixer)'];
+    if (f === 'out') return catChip(category(e.toP)) || [t('ch_out'), 'var(--out)'];
+    if (f === 'in') {
+      var c = category(e.fromP);
+      if (c === 'mixer') return [t('ch_mixin'), 'var(--mixer)'];
+      if (c === 'dex' || c === 'contract') return [t('ch_swapin'), 'var(--in)'];
+      return [t('ch_in'), 'var(--in)'];
+    }
+    if (f === 'vout') return [t('ch_vout'), 'var(--burn)'];
+    return [t('ch_other'), 'var(--faint)'];
+  }
+  function isDust(ev) {
+    if (!(ev.amount > 0)) return true;
+    if (ev.kind === 'token' && (!ev.rate || ev.scam || /[^\x20-\x7E]/.test(ev.sym || ''))) return true;
+    var fw = W(ev.from), tw = W(ev.to);
+    if (!fw && tw && tw.role !== 'victim') { var u = usdOf(ev); if (u != null && u < 1000) return true; }
+    return false;
+  }
+  function keepVictim(ev) {
+    var fw = W(ev.from), tw = W(ev.to);
+    if (isCluster(fw) || isCluster(tw)) return true;
+    var u = usdOf(ev);
+    return u != null && u >= VICTIM_SHOW_USD;
+  }
+
+  /* ---------- THORChain / Maya notu ve CoinJoin ---------- */
+  var THOR_SHORT = { B: 'BTC.BTC', E: 'ETH.ETH', A: 'AVAX.AVAX', C: 'BCH.BCH', D: 'DOGE.DOGE', L: 'LTC.LTC', G: 'GAIA.ATOM', N: 'BNB.BNB', F: 'BASE.ETH', X: 'XRP.XRP', R: 'THOR.RUNE' };
+  function memoIn(s) {
+    var m = String(s || '').match(/(?:=|SWAP|swap|s)[:~][A-Za-z0-9.\-]+[:~][A-Za-z0-9]{20,}[^\s\x00]*/);
+    return m ? m[0] : '';
+  }
+  function parseMemo(memo) {
+    var parts = String(memo).split(/[:~]/);
+    if (parts.length < 3) return null;
+    var asset = parts[1].toUpperCase();
+    if (THOR_SHORT[asset]) asset = THOR_SHORT[asset];
+    var chain = asset.split('.')[0], addr = parts[2];
+    var ok = (chain === 'BTC' && /^(bc1[a-z0-9]{11,71}|[13][1-9A-HJ-NP-Za-km-z]{25,34})$/.test(addr)) || (chain === 'ETH' && /^0x[0-9a-fA-F]{40}$/.test(addr));
+    return { chain: chain, asset: asset, addr: addr, follow: ok };
+  }
+  function findMemo(tx) {
+    var di = tx && tx.decoded_input, i, p, m;
+    if (di && di.parameters) {
+      for (i = 0; i < di.parameters.length; i++) {
+        p = di.parameters[i];
+        if (p && typeof p.value === 'string' && (m = memoIn(p.value))) return m;
+      }
+    }
+    var raw = String((tx && tx.raw_input) || ''), run = '';
+    for (i = 2; i + 1 < raw.length; i += 2) {
+      var c = parseInt(raw.substr(i, 2), 16);
+      if (c >= 32 && c < 127) { run += String.fromCharCode(c); continue; }
+      if (run.length >= 8 && (m = memoIn(run))) return m;
+      run = '';
+    }
+    return run.length >= 8 ? memoIn(run) : '';
+  }
+  function btcMemo(tx) {
+    var o = (tx.vout || []).filter(function (v) { return v.scriptpubkey_type === 'op_return'; })[0];
+    if (!o) return '';
+    var parts = String(o.scriptpubkey_asm || '').split(' '), hex = parts[parts.length - 1] || '', s = '';
+    for (var i = 0; i + 1 < hex.length; i += 2) { var c = parseInt(hex.substr(i, 2), 16); s += c >= 32 && c < 127 ? String.fromCharCode(c) : ' '; }
+    return memoIn(s);
+  }
+  function isCoinJoin(tx) {
+    var vo = tx.vout || [], vi = tx.vin || [], cnt = {}, max = 0;
+    if (vo.length < 10 || vi.length < 5) return false;
+    vo.forEach(function (o) { cnt[o.value] = (cnt[o.value] || 0) + 1; if (cnt[o.value] > max) max = cnt[o.value]; });
+    return max >= 5;
+  }
+  function followThor(e, w) {
+    var d = e.thorDest;
+    if (!d || !d.follow || !isCluster(w) || W(d.addr) || S.blocked.has(lc(d.addr))) return;
+    addWallet({ a: d.addr, role: 'hop', lbl: { k: 'thor', chain: d.chain }, parent: w.key, depth: (w.depth || 0) + 1, auto: true });
+    e.followed = true;
+  }
+  var thorChecked = new Set();
+  function checkThor(e) {
+    if (!e.tx || thorChecked.has(e.tx)) return;
+    thorChecked.add(e.tx);
+    bs('/transactions/' + e.tx).then(function (tx) {
+      var memo = findMemo(tx);
+      if (!memo) return;
+      e.thorMemo = memo;
+      e.thorDest = parseMemo(memo);
+      followThor(e, W(e.from));
+      scheduleRender();
+    }, function () { thorChecked.delete(e.tx); });
+  }
+
+  /* ---------- olaylar ---------- */
+  function addEvent(e, w) {
+    if (S.events.has(e.id)) return null;
+    e.seenAt = Date.now();
+    e.live = !!(w && w.ready);
+    S.events.set(e.id, e);
+    if (!e.spam && (e.kind === 'call' || (usdOf(e) || 0) >= 100)) {
+      var fw = W(e.from), tw = W(e.to);
+      if (fw) fw.lastAct = Math.max(fw.lastAct, e.ts);
+      if (tw) tw.lastAct = Math.max(tw.lastAct, e.ts);
+    }
+    maybeFollow(e);
+    if (e.chain === 'eth' && e.to && category(e.toP) === 'thor' && isCluster(W(e.from))) checkThor(e);
+    if (e.live) notify(e);
+    scheduleRender();
+    return e;
+  }
+  function maybeFollow(e) {
+    if (e.spam || e.kind === 'call' || !e.to || !ADDR_RX.test(e.to)) return;
+    var fw = W(e.from);
+    if (!isCluster(fw) || W(e.to) || S.blocked.has(lc(e.to))) return;
+    var u = usdOf(e);
+    if (e.chain === 'btc') {
+      if (!(u != null && u >= 1e6)) return;
+    } else {
+      if (category(e.toP) !== 'wallet') return;
+      if (!((u != null && u >= FOLLOW_USD) || (e.kind === 'eth' && e.amount >= FOLLOW_ETH))) return;
+    }
+    if ((fw.depth || 0) >= MAX_DEPTH) return;
+    var n = 0; S.wallets.forEach(function (x) { if (x.auto) n++; });
+    if (n >= MAX_AUTO) { S.capHit = true; return; }
+    var d = (fw.depth || 0) + 1;
+    addWallet({ a: e.to, role: 'hop', lbl: { k: 'hop', d: d, amt: e.amount, sym: e.sym }, parent: fw.key, depth: d, auto: true });
+    e.followed = true;
+  }
+  function ingestTxs(w, items) {
+    items.forEach(function (x) {
+      if (!x || x.status === 'error') return;
+      var fromP = party(x.from); if (!fromP) return;
+      var toP = party(x.to) || (x.created_contract ? party(x.created_contract) : null);
+      var ts = Date.parse(x.timestamp) || Date.now();
+      var val = units(x.value, 18);
+      if (val > 0) {
+        var ev = { id: 'tx:' + x.hash, kind: 'eth', chain: 'eth', ts: ts, tx: x.hash, sym: 'ETH', amount: val, from: fromP.addr, to: toP ? toP.addr : '', fromP: fromP, toP: toP, method: x.method || '' };
+        if (w.role === 'victim' && !keepVictim(ev)) return;
+        ev.spam = isDust(ev);
+        addEvent(ev, w);
+      } else if (w.role === 'initiator' && lc(fromP.addr) === w.key) {
+        addEvent({ id: 'tx:' + x.hash, kind: 'call', chain: 'eth', ts: ts, tx: x.hash, sym: '', amount: 0, from: fromP.addr, to: toP ? toP.addr : '', fromP: fromP, toP: toP, method: x.method || '', mkey: x.to ? 'm_call' : 'm_create', spam: false }, w);
+      }
+    });
+  }
+  function ingestTokens(w, items) {
+    items.forEach(function (x) {
+      if (!x || !x.token) return;
+      if (x.token.type && x.token.type !== 'ERC-20') return;
+      var fromP = party(x.from), toP = party(x.to);
+      if (!fromP || !toP) return;
+      var dec = (x.total && x.total.decimals != null) ? x.total.decimals : x.token.decimals;
+      var ev = {
+        id: 'tt:' + x.transaction_hash + ':' + x.log_index, kind: 'token', chain: 'eth', ts: Date.parse(x.timestamp) || Date.now(),
+        tx: x.transaction_hash, sym: x.token.symbol || '?', rate: x.token.exchange_rate ? Number(x.token.exchange_rate) : 0,
+        scam: x.token.reputation === 'scam', amount: units(x.total && x.total.value, dec),
+        from: fromP.addr, to: toP.addr, fromP: fromP, toP: toP, method: x.method || ''
+      };
+      if (w.role === 'victim' && !keepVictim(ev)) return;
+      ev.spam = isDust(ev);
+      addEvent(ev, w);
+    });
+  }
+  function ingestInternal(w, items) {
+    items.forEach(function (x) {
+      if (!x || x.success === false) return;
+      var val = units(x.value, 18); if (!(val > 0)) return;
+      var fromP = party(x.from), toP = party(x.to); if (!fromP || !toP) return;
+      var ev = { id: 'it:' + x.transaction_hash + ':' + x.index, kind: 'eth', chain: 'eth', ts: Date.parse(x.timestamp) || Date.now(), tx: x.transaction_hash, sym: 'ETH', amount: val, from: fromP.addr, to: toP.addr, fromP: fromP, toP: toP, method: 'internal' };
+      if (w.role === 'victim' && !keepVictim(ev)) return;
+      ev.spam = isDust(ev);
+      addEvent(ev, w);
+    });
+  }
+  function applyInfo(w, j) {
+    if (!j) return;
+    w.balEth = units(j.coin_balance || '0', 18);
+    if (j.exchange_rate) S.ethPrice = Number(j.exchange_rate) || S.ethPrice;
+  }
+  function applyHoldings(w, items) {
+    var b = { usdtc: 0, stable: 0, eth: 0, other: 0 }, tot = 0;
+    items.forEach(function (x) {
+      if (!x || !x.token || !x.token.exchange_rate || x.token.reputation === 'scam') return;
+      var sym = x.token.symbol || '';
+      if (/[^\x20-\x7E]/.test(sym)) return;
+      var u = units(x.value, x.token.decimals) * Number(x.token.exchange_rate);
+      if (!isFinite(u) || u <= 0) return;
+      tot += u;
+      if (STABLE.test(sym)) b.usdtc += u; else if (OTHERSTABLE.test(sym)) b.stable += u; else if (ETHISH.test(sym)) b.eth += u; else b.other += u;
+    });
+    w.tokUsd = tot; w.tokBreak = b; w.tokAt = Date.now();
+  }
+
+  /* ---------- yoklama ---------- */
+  function pollEth(w) {
+    var a = w.addr, first = !w.ready, before = S.events.size;
+    return settle([
+      bs('/addresses/' + a + '/transactions').then(function (j) { ingestTxs(w, j.items || []); }),
+      bs('/addresses/' + a + '/token-transfers?type=ERC-20').then(function (j) {
+        ingestTokens(w, j.items || []);
+        if (first && w.deep) return deepTokens(w, j.next_page_params, 8);
+      })
+    ]).then(function () {
+      var changed = S.events.size > before, extra = [];
+      if (first || changed || w.polls % 5 === 0) {
+        extra.push(bs('/addresses/' + a).then(function (j) { applyInfo(w, j); }));
+        extra.push(bs('/addresses/' + a + '/internal-transactions').then(function (j) { ingestInternal(w, j.items || []); }));
+      }
+      if (w.role !== 'victim' && (first || (changed && Date.now() - w.tokAt > 60000) || Date.now() - w.tokAt > 300000)) {
+        extra.push(bs('/addresses/' + a + '/tokens?type=ERC-20').then(function (j) { applyHoldings(w, j.items || []); }));
+      }
+      return extra.length ? settle(extra) : 0;
+    });
+  }
+  function deepTokens(w, np, left) {
+    if (!np || left <= 0) return null;
+    return bs('/addresses/' + w.addr + '/token-transfers?type=ERC-20&' + qs(np)).then(function (j) {
+      var items = j.items || [];
+      ingestTokens(w, items);
+      var oldest = items.length ? Date.parse(items[items.length - 1].timestamp) : 0;
+      if (oldest && oldest < HACK_START) return null;
+      return deepTokens(w, j.next_page_params, left - 1);
+    });
+  }
+  function pollBtc(w) {
+    return mp('/address/' + w.addr).then(function (j) {
+      var cs = j.chain_stats || {}, ms = j.mempool_stats || {};
+      w.balBtc = ((cs.funded_txo_sum || 0) - (cs.spent_txo_sum || 0) + (ms.funded_txo_sum || 0) - (ms.spent_txo_sum || 0)) / 1e8;
+      var sig = (cs.tx_count || 0) + ':' + (ms.tx_count || 0);
+      if (sig === w.txSig) return null;
+      w.txSig = sig;
+      return mp('/address/' + w.addr + '/txs').then(function (txs) { (txs || []).forEach(function (tx) { ingestBtc(w, tx); }); });
+    });
+  }
+  function ingestBtc(w, tx) {
+    var a = w.addr, conf = !!(tx.status && tx.status.confirmed);
+    var ts = conf && tx.status.block_time ? tx.status.block_time * 1000 : Date.now();
+    var spends = (tx.vin || []).some(function (i) { return i.prevout && i.prevout.scriptpubkey_address === a; });
+    var firstIn = '';
+    (tx.vin || []).forEach(function (i) { var p = i.prevout || {}; if (!firstIn && p.scriptpubkey_address && p.scriptpubkey_address !== a) firstIn = p.scriptpubkey_address; });
+    var base = { kind: 'btc', chain: 'btc', ts: ts, tx: tx.txid, sym: 'BTC', method: conf ? '' : 'mempool', spam: false };
+    if (spends && isCluster(w)) {
+      var memo = btcMemo(tx), cj = !memo && isCoinJoin(tx);
+      if (memo || cj) {
+        var spent = 0, back = 0, lbl = memo ? 'THORChain' : 'CoinJoin';
+        (tx.vin || []).forEach(function (i) { var p = i.prevout || {}; if (p.scriptpubkey_address === a) spent += p.value; });
+        (tx.vout || []).forEach(function (o) { if (o.scriptpubkey_address === a) back += o.value; });
+        var evx = Object.assign({}, base, { id: 'btc:' + tx.txid + ':' + a + '>' + lbl, amount: Math.max(0, spent - back) / 1e8, from: a, to: lbl, fromP: { addr: a, tags: [] }, toP: { addr: lbl, tags: [lbl] } });
+        if (memo) { evx.thorMemo = memo; evx.thorDest = parseMemo(memo); followThor(evx, w); }
+        addEvent(evx, w);
+        return;
+      }
+    }
+    if (spends) {
+      (tx.vout || []).forEach(function (o) {
+        var to = o.scriptpubkey_address;
+        if (!to || to === a || !(o.value > 0)) return;
+        var ev = Object.assign({}, base, { id: 'btc:' + tx.txid + ':' + a + '>' + to, amount: o.value / 1e8, from: a, to: to, fromP: { addr: a, tags: [] }, toP: { addr: to, tags: [] } });
+        if (w.role === 'victim' && !keepVictim(ev)) return;
+        addEvent(ev, w);
+      });
+      return;
+    }
+    var got = 0;
+    (tx.vout || []).forEach(function (o) { if (o.scriptpubkey_address === a) got += o.value; });
+    if (!got) return;
+    var from = firstIn || '?';
+    var ev2 = Object.assign({}, base, { id: 'btc:' + tx.txid + ':' + from + '>' + a, amount: got / 1e8, from: from, to: a, fromP: { addr: from, tags: [] }, toP: { addr: a, tags: [] } });
+    if (w.role === 'victim' && !keepVictim(ev2)) return;
+    ev2.spam = isDust(ev2);
+    addEvent(ev2, w);
+  }
+  function interval(w) {
+    if (w.err) return Math.min(300000, 30000 * w.err);
+    var idle = Date.now() - (w.lastAct || 0);
+    if (w.role === 'victim') return w.chain === 'btc' ? 120000 : 45000;
+    if (w.chain === 'btc') return idle < 30 * 60000 ? 60000 : 180000;
+    if (idle < 20 * 60000) return 30000;
+    if (idle < 60 * 60000 || (holdUsd(w) || 0) > 1e7) return 60000;
+    return 180000;
+  }
+  function poll(w) {
+    w.busy = true;
+    var p = w.chain === 'btc' ? pollBtc(w) : pollEth(w);
+    p.then(function () { w.err = 0; }, function (e) { w.err++; w.lastErr = String((e && e.message) || e); })
+      .then(function () { w.busy = false; w.ready = true; w.polls++; w.nextPoll = Date.now() + interval(w); scheduleRender(); });
+  }
+  function loop() {
+    if (!S.paused && !document.hidden) {
+      var now = Date.now(), due = [], busy = { eth: 0, btc: 0 }, cap = { eth: 3, btc: 2 };
+      S.wallets.forEach(function (w) { if (w.busy) busy[w.chain]++; else if (w.nextPoll <= now) due.push(w); });
+      due.sort(function (x, y) { return x.nextPoll - y.nextPoll; });
+      due.forEach(function (w) { if (busy[w.chain] < cap[w.chain]) { busy[w.chain]++; poll(w); } });
+    }
+    setTimeout(loop, 1000);
+  }
+  function prices() {
+    var p1 = bs('/stats').then(function (j) { if (j && j.coin_price) S.ethPrice = Number(j.coin_price); }).catch(function () {});
+    var p2 = mp('/v1/prices').then(function (j) { if (j && j.USD) S.btcPrice = Number(j.USD); }).catch(function () {});
+    return Promise.all([p1, p2]).then(scheduleRender);
+  }
+
+  /* ---------- bildirim ---------- */
+  function setTitle() { document.title = (S.unseen ? '(' + S.unseen + ') ' : '') + t('title'); }
+  function isLaunder(e) {
+    if (e.spam || flow(e) !== 'out' || !LAUNDER[category(e.toP)]) return false;
+    var u = usdOf(e);
+    return u == null || u >= 1000;
+  }
+  function notify(e) {
+    var laund = isLaunder(e);
+    if (!laund && !visible(e)) return;
+    if (document.hidden) { S.unseen++; setTitle(); }
+    var u = usdOf(e) || 0;
+    if (S.sound && (laund || u >= 1e6)) {
+      beep(laund ? 980 : (flow(e) === 'out' ? 880 : 620));
+      if (laund) setTimeout(function () { beep(980); }, 250);
+    }
+  }
+  function beep(freq) {
+    try {
+      var ctx = S.audio; if (!ctx) return;
+      var o = ctx.createOscillator(), g = ctx.createGain(), tt = ctx.currentTime;
+      o.type = 'sine'; o.frequency.value = freq;
+      g.gain.setValueAtTime(0.0001, tt);
+      g.gain.exponentialRampToValueAtTime(0.18, tt + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, tt + 0.35);
+      o.connect(g); g.connect(ctx.destination); o.start(tt); o.stop(tt + 0.4);
+    } catch (x) { /* ses yoksa geç */ }
+  }
+
+  /* ---------- çizim ---------- */
+  var renderTimer = null;
+  function scheduleRender() { if (renderTimer) return; renderTimer = setTimeout(function () { renderTimer = null; render(); }, 350); }
+  function render() { renderMeta(); renderKpis(); renderBars(); renderAlerts(); renderTimeline(); renderFeed(); renderWallets(); }
+  function set(id, txt) { var el = $(id); if (el && el.textContent !== txt) el.textContent = txt; }
+
+  /* ---------- olay akışı: zincir verisinden otomatik özet ---------- */
+  var NEWS = [
+    { ts: Date.parse('2026-10-28T21:00:00Z'), day: true, tr: 'Başlatıcı cüzdan, raporlara göre Tornado Cash\'ten gelen üç küçük girişle (~0,1 ETH) fonlandı.', en: 'Per reports, the initiator wallet was funded with three small Tornado Cash withdrawals (~0.1 ETH).' },
+    { ts: Date.parse('2026-10-29T21:15:00Z'), tr: 'CZ hack\'i doğruladı ve kullanıcı fonlarının karşılanacağını söyledi; Binance inceleme başlattığını açıkladı.', en: 'CZ confirmed the hack and said user funds will be covered; Binance said it is investigating.' },
+    { ts: Date.parse('2026-10-29T21:20:00Z'), tr: 'Tether ~971 Mn USDT, Circle ~823 Mn USDC dondurdu. Dondurulan tokenlar bakiyede görünmeye devam eder ama hareket edemez.', en: 'Tether froze ~$971M USDT and Circle ~$823M USDC. Frozen tokens still show in the balance but cannot move.' }
+  ];
+  var TL_MIN = { call: 0, drain: 1e6, hop: 1e6, outw: 1e6, launder: 1e4, burn: 1e6, swap: 2.5e5 };
+  var TL_CHIP = { drain: ['ch_drain', 'var(--drain)'], hop: ['ch_hop', 'var(--hop)'], outw: ['cat_wallet', 'var(--out)'], burn: ['cat_burn', 'var(--burn)'], swap: ['ch_swap', 'var(--dex)'], call: ['ch_call', 'var(--mixer)'], news: ['ch_news', 'var(--signal)'] };
+  function tlTime(ts, day) {
+    if (day) return dayMon(ts);
+    return new Date(ts).toDateString() === new Date().toDateString() ? hhmm(ts) : dayMon(ts) + ' ' + hhmm(ts);
+  }
+  function tlGroups() {
+    var g = {}, step = 5 * 60000;
+    S.events.forEach(function (e) {
+      if (e.spam) return;
+      var f = flow(e), u = usdOf(e) || 0, c, key, kind;
+      if (f === 'call') { key = 'c|' + e.tx; kind = 'call'; }
+      else if (f === 'drain') { key = 'd|' + e.tx; kind = 'drain'; }
+      else if (f === 'hop') { key = 'h|' + e.tx + '|' + lc(e.to); kind = 'hop'; }
+      else if (f === 'out') {
+        c = category(e.toP);
+        if (LAUNDER[c]) { key = 'l|' + e.tx + '|' + c; kind = 'launder'; }
+        else if (c === 'wallet') { key = 'w|' + e.tx + '|' + lc(e.to); kind = 'outw'; }
+        else if (c === 'burn') { key = 'b|' + e.tx; kind = 'burn'; }
+        else { key = 's|' + Math.floor(e.ts / step) + '|' + lc(e.from); kind = 'swap'; }
+      } else return;
+      var x = g[key];
+      if (!x) x = g[key] = { kind: kind, ts: e.ts, usd: 0, n: 0, au: {}, amt: {}, e: e };
+      x.ts = Math.min(x.ts, e.ts); x.usd += u; x.n++;
+      if (e.kind !== 'call') { x.au[e.sym] = (x.au[e.sym] || 0) + u; x.amt[e.sym] = (x.amt[e.sym] || 0) + e.amount; }
+    });
+    return Object.keys(g).map(function (k) { return g[k]; }).filter(function (x) { return x.kind === 'call' || x.usd >= TL_MIN[x.kind]; });
+  }
+  function tlText(x) {
+    var e = x.e, keys = Object.keys(x.au).sort(function (a, b) { return x.au[b] - x.au[a]; });
+    var amt = keys.length ? fmtAmt(x.amt[keys[0]]) + ' ' + esc(keys[0]) + (keys.length > 1 ? t('tl_more', keys.length - 1) : '') : '';
+    if (x.kind === 'call') return who(e.from, e.fromP) + ' → ' + who(e.to, e.toP) + ' · ' + esc(e.method || t(e.mkey || 'm_call'));
+    if (x.kind === 'swap') return t('tl_swapline', who(e.from, e.fromP), x.n, amt);
+    if (x.kind === 'burn') return t('tl_burn', amt, who(e.from, e.fromP));
+    var tail = e.thorDest ? ' ⇒ ' + esc(e.thorDest.asset) + ' ' + (e.thorDest.follow ? who(e.thorDest.addr, null) : esc(short(e.thorDest.addr))) : '';
+    return amt + ' · ' + who(e.from, e.fromP) + ' → ' + who(e.to, e.toP) + tail;
+  }
+  function renderTimeline() {
+    var items = tlGroups().map(function (x) {
+      var ch = x.kind === 'launder' ? (catChip(category(x.e.toP)) || [t('ch_launder'), 'var(--mixer)']) : [t(TL_CHIP[x.kind][0]), TL_CHIP[x.kind][1]];
+      return { ts: x.ts, html: '<span class="chip" style="--c:' + ch[1] + '">' + esc(ch[0]) + '</span>' + tlText(x) + (x.kind === 'call' ? '' : '<span class="usd">' + fmtUsd(x.usd) + '</span>') };
+    });
+    NEWS.forEach(function (n) {
+      items.push({ ts: n.ts, day: n.day, html: '<span class="chip" style="--c:' + TL_CHIP.news[1] + '">' + esc(t(TL_CHIP.news[0])) + '</span>' + esc(LANG === 'en' ? n.en : n.tr) });
+    });
+    items.sort(function (a, b) { return b.ts - a.ts; });
+    var ready = false; S.wallets.forEach(function (w) { if (w.ready) ready = true; });
+    $('timeline').innerHTML = items.slice(0, 60).map(function (it) {
+      return '<li><time>' + esc(tlTime(it.ts, it.day)) + '</time><p>' + it.html + '</p></li>';
+    }).join('') + (ready ? '' : '<li><time>…</time><p>' + esc(t('tl_loading')) + '</p></li>');
+    set('tlHint', tn('tl_hint', items.length));
+  }
+  function renderAlerts() {
+    var list = [], total = 0, ready = false;
+    S.events.forEach(function (e) { if (isLaunder(e)) { list.push(e); total += usdOf(e) || 0; } });
+    S.wallets.forEach(function (w) { if (w.ready) ready = true; });
+    list.sort(function (x, y) { return y.ts - x.ts; });
+    var el = $('alerts');
+    el.parentNode.classList.toggle('hot', list.length > 0);
+    el.innerHTML = list.length ? list.slice(0, 8).map(rowHtml).join('')
+      : '<div class="empty">' + esc(ready ? t('alerts_empty') + (S.sound ? '.' : t('alerts_sound')) : t('loading')) + '</div>';
+    set('alertHint', list.length ? tn('alerts_n', list.length, fmtUsd(total)) + (list.length > 8 ? t('last8') : '') : t('alerts_hint'));
+  }
+
+  function renderMeta() {
+    var ok = S.lastOk && Date.now() - S.lastOk < 60000;
+    $('live').className = 'live' + (S.paused ? '' : ok ? ' on' : (S.reqErr ? ' err' : ''));
+    var pending = 0; S.wallets.forEach(function (w) { if (!w.ready) pending++; });
+    var status = S.paused ? t('st_paused') : document.hidden ? t('st_hidden') : pending ? t('st_loading', S.wallets.size - pending, S.wallets.size) : (!S.reqOk && S.reqErr ? t('st_offline') : t('st_live'));
+    var parts = ['<span>' + esc(status) + '</span>'];
+    if (S.ethPrice) parts.push('<span>ETH <b>$' + fmtN(S.ethPrice, 0) + '</b></span>');
+    if (S.btcPrice) parts.push('<span>BTC <b>$' + fmtN(S.btcPrice, 0) + '</b></span>');
+    if (S.lastOk) parts.push('<span>' + esc(t('last_data', clock(S.lastOk))) + '</span>');
+    parts.push('<span>' + esc(t('reqs', S.reqOk) + (S.reqErr ? t('errs', S.reqErr) : '') + (queue.length > 6 ? t('queued', queue.length) : '')) + '</span>');
+    $('meta').innerHTML = parts.join('');
+  }
+
+  function renderKpis() {
+    var drained = 0, dBy = {}, outBy = {}, outTot = 0, last10 = 0, now = Date.now();
+    S.events.forEach(function (e) {
+      if (e.spam) return;
+      var f = flow(e), u = usdOf(e) || 0;
+      if (f === 'drain') { drained += u; dBy[e.sym] = (dBy[e.sym] || 0) + u; }
+      else if (f === 'out') {
+        var c = category(e.toP);
+        if (c !== 'wallet') { outBy[c] = (outBy[c] || 0) + u; if (c !== 'burn') outTot += u; }
+      }
+      if ((f === 'out' || f === 'hop' || f === 'drain') && now - e.ts < 10 * 60000 && u >= 1000) last10++;
+    });
+    set('kDrained', drained ? fmtUsd(drained) : '—');
+    var keys = Object.keys(dBy).sort(function (x, y) { return dBy[y] - dBy[x]; });
+    set('kDrainedS', keys.length ? keys.slice(0, 3).map(function (k) { return k + ' ' + fmtUsd(dBy[k]); }).join(' · ') + tn('assets_total', keys.length) : t('loading_lc'));
+
+    var held = 0, usdtc = 0, ethBal = 0, btcBal = 0;
+    S.wallets.forEach(function (w) {
+      if (!isCluster(w)) return;
+      var h = holdUsd(w); if (h != null) held += h;
+      if (w.tokBreak) usdtc += w.tokBreak.usdtc;
+      if (w.balEth) ethBal += w.balEth;
+      if (w.balBtc) btcBal += w.balBtc;
+    });
+    set('kHeld', held ? fmtUsd(held) : '—');
+    set('kHeldS', held ? t('held_sub', fmtAmt(ethBal), fmtAmt(btcBal), fmtUsd(usdtc), fmtUsd(Math.max(0, held - usdtc))) : '');
+
+    set('kOut', fmtUsd(outTot));
+    var parts = [];
+    var sw = (outBy.dex || 0) + (outBy.contract || 0);
+    if (sw) parts.push(t('o_swap', fmtUsd(sw)));
+    if (outBy.thor) parts.push(t('o_thor', fmtUsd(outBy.thor)));
+    if (outBy.bridge) parts.push(t('o_bridge', fmtUsd(outBy.bridge)));
+    if (outBy.swapsvc) parts.push(t('o_swapsvc', fmtUsd(outBy.swapsvc)));
+    if (outBy.cex) parts.push(t('o_cex', fmtUsd(outBy.cex)));
+    if (outBy.mixer) parts.push(t('o_mixer', fmtUsd(outBy.mixer)));
+    if (outBy.burn) parts.push(t('o_burn', fmtUsd(outBy.burn)));
+    set('kOutS', parts.join(' · ') || t('none_yet'));
+
+    var cl = 0, au = 0;
+    S.wallets.forEach(function (w) { if (isCluster(w)) cl++; if (w.auto) au++; });
+    set('kW', String(cl));
+    set('kWS', (au ? t('auto_found', au) : '') + tn('last10', last10) + (S.capHit ? t('cap_hit') : ''));
+  }
+
+  function renderBars() {
+    var step = 5 * 60000, now = Date.now(), start = now - BUCKETS * step, vol = [], by = [], i;
+    for (i = 0; i < BUCKETS; i++) { vol.push(0); by.push({}); }
+    S.events.forEach(function (e) {
+      if (e.spam || e.ts < start) return;
+      var f = flow(e);
+      if (f !== 'drain' && f !== 'out' && f !== 'hop' && f !== 'in') return;
+      var u = usdOf(e) || 0; if (u < 1000) return;
+      var k = Math.min(BUCKETS - 1, Math.floor((e.ts - start) / step));
+      vol[k] += u; by[k][f] = (by[k][f] || 0) + u;
+    });
+    var max = Math.max.apply(null, vol), lmax = max > 0 ? Math.log10(max) : 4, lmin = 3, html = '';
+    for (i = 0; i < BUCKETS; i++) {
+      var v = vol[i], h = 2, best = '', bv = 0;
+      if (v > 0) h = Math.max(4, Math.min(56, Math.round(56 * (Math.log10(Math.max(v, 1000)) - lmin + 0.3) / Math.max(0.6, lmax - lmin + 0.3))));
+      Object.keys(by[i]).forEach(function (k) { if (by[i][k] > bv) { bv = by[i][k]; best = k; } });
+      html += '<i class="' + best + '" style="height:' + h + 'px" title="' + esc(hhmm(start + i * step) + ' · ' + fmtUsd(v)) + '"></i>';
+    }
+    $('bars').innerHTML = html;
+    set('sparkMax', max ? t('spark_max', fmtUsd(max)) : '');
+    set('ax0', hhmm(start));
+    set('ax1', hhmm(start + BUCKETS * step / 2));
+  }
+
+  function visible(e) {
+    if (e.spam && !S.showSpam) return false;
+    var f = flow(e);
+    if (f === 'other' || f === 'vin') return false;
+    if (f === 'call' || e.followed) return true;
+    if (f === 'in' && category(e.fromP) === 'mixer') return true;
+    var u = usdOf(e);
+    if (u == null) return S.showSpam;
+    return u >= S.minUsd;
+  }
+  function who(addr, p) {
+    if (!addr) return '<span class="who">' + esc(t('contract_creation')) + '</span>';
+    if (!ADDR_RX.test(addr)) return '<span class="who">' + esc(addr) + '</span>';
+    var w = W(addr), isEth = /^0x/i.test(addr);
+    var link = isEth ? 'https://etherscan.io/address/' + addr : 'https://mempool.space/address/' + addr;
+    var txt, style = '', tail = '';
+    if (w) { txt = wLabel(w); style = ' style="color:' + ROLE_C[w.role] + '"'; tail = ' <span class="faint">' + esc(short(addr)) + '</span>'; }
+    else if (p && ((p.tags && p.tags.length) || p.name)) { txt = (p.tags && p.tags[0]) || p.name; tail = ' <span class="faint">' + esc(short(addr)) + '</span>'; }
+    else txt = short(addr);
+    return '<a class="who" href="' + esc(link) + '" target="_blank" rel="noopener" title="' + esc(addr) + '"' + style + '>' + esc(txt) + '</a>' + tail;
+  }
+  function rowHtml(e) {
+    var f = flow(e), ch = chipOf(e, f), u = usdOf(e);
+    var amt = e.kind === 'call'
+      ? '<span>' + esc(e.method || t(e.mkey || 'm_call')) + '</span><small>' + esc(t('no_value')) + '</small>'
+      : '<span>' + fmtAmt(e.amount) + ' ' + esc(e.sym) + '</span><small>' + (u == null ? esc(t('no_price')) : fmtUsd(u)) + (e.method === 'mempool' ? esc(t('unconfirmed')) : '') + '</small>';
+    var txUrl = e.chain === 'btc' ? 'https://mempool.space/tx/' + e.tx : 'https://etherscan.io/tx/' + e.tx;
+    var cp = f === 'out' || f === 'vout' ? e.to : (f === 'in' ? e.from : '');
+    var cpP = f === 'in' ? e.fromP : e.toP;
+    var follow = cp && ADDR_RX.test(cp) && !W(cp) && (e.chain === 'btc' || category(cpP) === 'wallet') ? '<button type="button" data-follow="' + esc(cp) + '">' + esc(t('follow_btn')) + '</button>' : '';
+    var fresh = e.live && Date.now() - e.seenAt < 10 * 60000 ? '<span class="fresh">' + esc(t('live_tag')) + '</span>' : '';
+    return '<div class="row' + (e.live && !lastRendered.has(e.id) ? ' new' : '') + '" style="--c:' + ch[1] + '">' +
+      '<div class="t">' + esc(clock(e.ts)) + '<small>' + esc(ago(e.ts)) + '</small>' + fresh + '</div>' +
+      '<div><span class="chip">' + esc(ch[0]) + '</span></div>' +
+      '<div class="amt">' + amt + '</div>' +
+      '<div class="route">' + who(e.from, e.fromP) + '<span class="arrow">→</span>' + who(e.to, e.toP) +
+        (e.thorDest ? '<span class="arrow">⇒</span><span class="faint">' + esc(e.thorDest.asset) + '</span> ' + (e.thorDest.follow ? who(e.thorDest.addr, null) : '<span class="who">' + esc(short(e.thorDest.addr)) + '</span>') : '') +
+        (e.followed ? '<span class="badge">' + esc(t('followed_badge')) + '</span>' : '') + '</div>' +
+      '<div class="acts"><a href="' + esc(txUrl) + '" target="_blank" rel="noopener">tx ↗</a>' + follow + '</div></div>';
+  }
+  function renderFeed() {
+    var list = [];
+    S.events.forEach(function (e) { if (visible(e)) list.push(e); });
+    list.sort(function (x, y) { return (y.ts - x.ts) || (x.id < y.id ? 1 : -1); });
+    var total = list.length;
+    list = list.slice(0, 250);
+    var ready = false; S.wallets.forEach(function (w) { if (w.ready) ready = true; });
+    var blocked = !S.reqOk && S.reqErr > 3;
+    $('feed').innerHTML = list.length ? list.map(rowHtml).join('')
+      : '<div class="empty">' + esc(blocked ? t('feed_blocked') : ready ? t('feed_none') : t('loading')) + '</div>';
+    lastRendered = new Set(list.map(function (e) { return e.id; }));
+    set('feedHint', tn('feed_hint', total) + (total > 250 ? t('last250') : '') + t('newest'));
+  }
+  function wHtml(w) {
+    var c = ROLE_C[w.role] || ROLE_C.manual, h = holdUsd(w), isV = w.role === 'victim';
+    var bal = w.chain === 'btc' ? (w.balBtc == null ? '…' : fmtAmt(w.balBtc) + ' BTC') : (w.balEth == null ? '…' : fmtAmt(w.balEth) + ' ETH');
+    var links = w.chain === 'btc'
+      ? '<a href="https://mempool.space/address/' + esc(w.addr) + '" target="_blank" rel="noopener">mempool</a><a href="https://intel.arkm.com/explorer/address/' + esc(w.addr) + '" target="_blank" rel="noopener">Arkham</a>'
+      : '<a href="https://etherscan.io/address/' + esc(w.addr) + '" target="_blank" rel="noopener">Etherscan</a><a href="https://intel.arkm.com/explorer/address/' + esc(w.addr) + '" target="_blank" rel="noopener">Arkham</a><a href="https://eth.blockscout.com/address/' + esc(w.addr) + '" target="_blank" rel="noopener">Blockscout</a>';
+    var sub = (w.lastAct ? t('w_last', ago(w.lastAct)) : (w.ready ? t('w_none') : t('w_loading'))) + (w.err ? t('w_err') : '');
+    var brk = '';
+    if (!isV && w.tokBreak && w.tokUsd > 1e5) {
+      var b = w.tokBreak, parts = [];
+      if (b.usdtc > 1e5) parts.push(t('b_usdtc', fmtUsd(b.usdtc)));
+      if (b.eth > 1e5) parts.push(t('b_eth', fmtUsd(b.eth)));
+      if (b.stable > 1e5) parts.push(t('b_stable', fmtUsd(b.stable)));
+      if (b.other > 1e5) parts.push(t('b_other', fmtUsd(b.other)));
+      if (parts.length) brk = '<div class="full">' + esc(parts.join(' · ')) + '</div>';
+    }
+    var isNew = w.auto && Date.now() - w.addedAt < 15 * 60000;
+    return '<div class="w" style="--c:' + c + '">' +
+      '<div><div class="nm">' + esc(wLabel(w)) + (isNew ? '<span class="badge">' + esc(t('new_badge')) + '</span>' : '') + '</div>' +
+      '<div class="ad" title="' + esc(w.addr) + '">' + esc(short(w.addr)) + ' · ' + esc(t('role_' + w.role)) + (w.depth ? esc(t('hop_n', w.depth)) : '') + '</div></div>' +
+      '<div><div class="val">' + (isV ? esc(bal) : esc(fmtUsd(h))) + '</div><div class="sub">' + (isV ? '' : esc(bal)) + '</div></div>' + brk +
+      '<div class="lnk">' + links + '<button type="button" data-copy="' + esc(w.addr) + '">' + esc(t('copy')) + '</button>' +
+      (w.role === 'manual' || w.auto ? '<button type="button" data-remove="' + esc(w.key) + '">' + esc(t('remove')) + '</button>' : '') +
+      '<span class="when">' + esc(sub) + '</span></div></div>';
+  }
+  function renderWallets() {
+    var cl = [], vi = [], au = 0;
+    S.wallets.forEach(function (w) { (w.role === 'victim' ? vi : cl).push(w); if (w.auto) au++; });
+    cl.sort(function (x, y) { return (holdUsd(y) || 0) - (holdUsd(x) || 0); });
+    $('wallets').innerHTML = '<div class="grp">' + esc(t('grp_cluster', cl.length)) + '</div>' + cl.map(wHtml).join('') +
+      '<div class="grp">' + esc(t('grp_victim')) + '</div>' + vi.map(wHtml).join('');
+    set('wHint', au ? tn('w_auto', au) : t('w_grows'));
+  }
+
+  /* ---------- dil değiştirme ---------- */
+  function applyStatic() {
+    document.documentElement.lang = LANG;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-t]'), function (el) { el.textContent = t(el.getAttribute('data-t')); });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tp]'), function (el) { el.setAttribute('placeholder', t(el.getAttribute('data-tp'))); });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-ta]'), function (el) { el.setAttribute('aria-label', t(el.getAttribute('data-ta'))); });
+    var lb = $('langBtn');
+    lb.textContent = t('lang_btn'); lb.setAttribute('aria-label', t('lang_aria')); lb.setAttribute('lang', LANG === 'tr' ? 'en' : 'tr');
+    $('soundBtn').textContent = S.sound ? t('sound_on') : t('sound_off');
+    $('pauseBtn').textContent = S.paused ? t('resume') : t('pause');
+    setTitle();
+  }
+  function setLang(l, persist) {
+    LANG = l === 'en' ? 'en' : 'tr';
+    LOCALE = LANG === 'en' ? 'en-US' : 'tr-TR';
+    NF = {};
+    applyStatic();
+    if (persist) {
+      save();
+      try { var u = new URL(location.href); u.searchParams.set('lang', LANG); history.replaceState(null, '', u.toString()); } catch (x) { /* adres güncellenemezse sorun değil */ }
+    }
+    render();
+  }
+
+  /* ---------- etkileşim ---------- */
+  function addManual(v, kind) {
+    v = String(v || '').trim();
+    var eth = /^0x[0-9a-fA-F]{40}$/.test(v), btc = /^(bc1[a-z0-9]{11,71}|[13][1-9A-HJ-NP-Za-km-z]{25,34})$/.test(v);
+    if (!eth && !btc) return false;
+    S.blocked.delete(lc(v));
+    if (!W(v)) addWallet({ a: v, role: 'manual', lbl: { k: kind || 'manual' } });
+    save(); render();
+    return true;
+  }
+  $('minUsd').addEventListener('change', function () { S.minUsd = Number(this.value) || 0; save(); render(); });
+  $('showSpam').addEventListener('change', function () { S.showSpam = this.checked; save(); render(); });
+  $('pauseBtn').addEventListener('click', function () {
+    S.paused = !S.paused;
+    this.textContent = S.paused ? t('resume') : t('pause');
+    this.setAttribute('aria-pressed', String(S.paused));
+    render();
+  });
+  $('soundBtn').addEventListener('click', function () {
+    S.sound = !S.sound;
+    if (S.sound && !S.audio) { try { S.audio = new (window.AudioContext || window.webkitAudioContext)(); } catch (x) { S.audio = null; } }
+    if (S.audio && S.audio.state === 'suspended') S.audio.resume();
+    this.textContent = S.sound ? t('sound_on') : t('sound_off');
+    this.setAttribute('aria-pressed', String(S.sound));
+    if (S.sound) beep(700);
+    render();
+  });
+  $('langBtn').addEventListener('click', function () { setLang(LANG === 'tr' ? 'en' : 'tr', true); });
+  $('addForm').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var inp = $('addInput');
+    if (!addManual(inp.value)) {
+      inp.setCustomValidity(t('add_invalid'));
+      inp.reportValidity();
+      return;
+    }
+    inp.setCustomValidity(''); inp.value = '';
+  });
+  $('addInput').addEventListener('input', function () { this.setCustomValidity(''); });
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest('[data-follow],[data-copy],[data-remove]');
+    if (!b) return;
+    if (b.getAttribute('data-follow')) { addManual(b.getAttribute('data-follow'), 'followed'); return; }
+    if (b.getAttribute('data-copy')) {
+      var v = b.getAttribute('data-copy');
+      var done = function () { b.textContent = t('copied'); setTimeout(function () { b.textContent = t('copy'); }, 1500); };
+      try { navigator.clipboard.writeText(v).then(done, function () { b.textContent = v; }); } catch (x) { b.textContent = v; }
+      return;
+    }
+    if (b.getAttribute('data-remove')) {
+      var key = b.getAttribute('data-remove');
+      S.wallets.delete(key); S.blocked.add(key); save(); render();
+    }
+  });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) { S.unseen = 0; setTitle(); } scheduleRender(); });
+
+  /* ---------- başlat ---------- */
+  function pickLang(st) {
+    var q = '';
+    try { q = new URL(location.href).searchParams.get('lang') || ''; } catch (x) { q = ''; }
+    if (q === 'en' || q === 'tr') return q;
+    var forced = document.documentElement.getAttribute('data-lang');
+    if (forced === 'en' || forced === 'tr') return forced;
+    if (st.lang === 'en' || st.lang === 'tr') return st.lang;
+    return /^tr/i.test(navigator.language || '') ? 'tr' : 'en';
+  }
+  function boot() {
+    var st = load();
+    if (st.minUsd != null && $('minUsd').querySelector('option[value="' + Number(st.minUsd) + '"]')) S.minUsd = Number(st.minUsd);
+    S.showSpam = !!st.showSpam;
+    $('minUsd').value = String(S.minUsd);
+    $('showSpam').checked = S.showSpam;
+    SEED.forEach(function (s) { addWallet({ a: s.a, role: s.role, deep: s.deep, lbl: { k: 'seed', tr: s.tr, en: s.en } }); });
+    (st.manual || []).forEach(function (m) { if (m && m.a) addWallet({ a: m.a, role: 'manual', lbl: { k: (m.k === 'followed' || m.label === 'Takibe alındı') ? 'followed' : 'manual' } }); });
+    setLang(pickLang(st), false);
+    var started = false;
+    function go() { if (started) return; started = true; if (!S.ethPrice) S.ethPrice = 2275; loop(); }
+    prices().then(go, go);
+    setTimeout(go, 5000);
+    setInterval(prices, 60000);
+    setInterval(scheduleRender, 5000);
+  }
+  boot();
+})();
+</script>
+
+</body>
+</html>
