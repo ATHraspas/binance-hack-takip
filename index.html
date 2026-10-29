@@ -261,7 +261,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       lbl_hop: 'Hop {0} · {1} {2} aldı', lbl_thor: 'THORChain çıkışı · {0}', lbl_followed: 'Takibe alındı', lbl_manual: 'Elle eklendi', lbl_manual_btc: 'BTC · elle eklendi',
       k_move: 'Saldırganın elinde · hareket ettirebilir', k_frz: 'Dondurulan / kurtarılan', k_laund: 'Aklanan', k_total: 'Toplam çekilen · ETH + BTC',
       move_sub: '{0} ETH · {1} BTC · diğer token {2}', frz_sub: 'USDT {0} · USDC {1} · Tether ve Circle kara listesinde', frz_ret: ' · Binance\'e dönen {0}', frz_pct: ' · çekilene oranı %{0}',
-      frz_wait: 'kara liste kontrol ediliyor…', frz_fail: 'kara liste şu an kontrol edilemedi, yeniden denenecek', laund_none: 'henüz yok · mikser, THORChain, köprü, takas servisi ve borsaya giden sayılır', laund_pct: ' · çekilene oranı %{0}', total_sub: '{0} · Tron ve L2 hariç',
+      frz_wait: 'kara liste kontrol ediliyor…', frz_fail: 'kara liste şu an kontrol edilemedi, yeniden denenecek', laund_none: 'henüz yok · mikser, THORChain, köprü, takas servisi ve borsaya giden sayılır', laund_pct: ' · çekilene oranı %{0}', total_sub: '{0} · Tron ve L2 hariç', loading_sfx: ' · yükleniyor, sayı artabilir',
       ch_ret: 'Binance\'e geri döndü', frozen_badge: 'donduruldu', b_usdt: 'USDT {0}', b_usdc: 'USDC {0}', frz_tag: ' (donduruldu)',
       ago_now: 'şimdi', ago_min: '{0} dk önce', ago_h: '{0} sa {1} dk önce',
       u_b: ' Mr', u_m: ' Mn', u_k: ' bin'
@@ -299,7 +299,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       lbl_hop: 'Hop {0} · received {1} {2}', lbl_thor: 'THORChain exit · {0}', lbl_followed: 'Tracked', lbl_manual: 'Added manually', lbl_manual_btc: 'BTC · added manually',
       k_move: 'Still with the attacker · movable', k_frz: 'Frozen / recovered', k_laund: 'Laundered', k_total: 'Total drained · ETH + BTC',
       move_sub: '{0} ETH · {1} BTC · other tokens {2}', frz_sub: 'USDT {0} · USDC {1} · blacklisted by Tether and Circle', frz_ret: ' · returned to Binance {0}', frz_pct: ' · {0}% of drained',
-      frz_wait: 'checking blacklists…', frz_fail: 'could not check blacklists right now, retrying', laund_none: 'none yet · counts funds sent to mixers, THORChain, bridges, swap services and exchanges', laund_pct: ' · {0}% of drained', total_sub: '{0} · excl. Tron and L2s',
+      frz_wait: 'checking blacklists…', frz_fail: 'could not check blacklists right now, retrying', laund_none: 'none yet · counts funds sent to mixers, THORChain, bridges, swap services and exchanges', laund_pct: ' · {0}% of drained', total_sub: '{0} · excl. Tron and L2s', loading_sfx: ' · still loading, may rise',
       ch_ret: 'Returned to Binance', frozen_badge: 'frozen', b_usdt: 'USDT {0}', b_usdc: 'USDC {0}', frz_tag: ' (frozen)',
       alerts_n_1: '1 step · total {1}', feed_hint_1: '1 move', w_auto_1: '1 wallet auto-discovered', tl_hint_1: 'built from on-chain data · 1 event · newest first · local time',
       ago_now: 'just now', ago_min: '{0} min ago', ago_h: '{0}h {1}m ago',
@@ -1056,8 +1056,9 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       else if (f === 'ret') ret += u;
       else if (isLaunder(e)) { var c = category(e.toP); laund += u; lBy[c] = (lBy[c] || 0) + u; }
     });
-    var held = 0, fT = 0, fC = 0, ethBal = 0, btcBal = 0, any = false, rpcAny = false;
+    var held = 0, fT = 0, fC = 0, ethBal = 0, btcBal = 0, any = false, rpcAny = false, pend = 0;
     S.wallets.forEach(function (w) {
+      if (!w.ready) pend++;
       if (!isCluster(w)) return;
       var h = holdUsd(w); if (h != null) { held += h; any = true; }
       if (w.balEth) ethBal += w.balEth;
@@ -1068,7 +1069,8 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     var other = Math.max(0, move - ethBal * (S.ethPrice || 0) - btcBal * (S.btcPrice || 0));
     function pct(v) { return drained > 0 ? Math.round(100 * v / drained) : 0; }
     set('kMove', any ? fmtUsd(move) : '—');
-    set('kMoveS', any ? t('move_sub', fmtAmt(ethBal), fmtAmt(btcBal), fmtUsd(other)) : t('loading_lc'));
+    var wait = pend ? t('loading_sfx') : '';
+    set('kMoveS', any ? t('move_sub', fmtAmt(ethBal), fmtAmt(btcBal), fmtUsd(other)) + wait : t('loading_lc'));
     var hasF = rpcAny || ret > 0;
     set('kFrz', hasF ? fmtUsd(fz + ret) : '—');
     set('kFrzS', hasF ? t('frz_sub', fmtUsd(fT), fmtUsd(fC)) + (ret > 0 ? t('frz_ret', fmtUsd(ret)) : '') + (pct(fz + ret) >= 1 ? t('frz_pct', pct(fz + ret)) : '')
@@ -1079,7 +1081,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     set('kLaundS', parts.length ? parts.join(' · ') + (pct(laund) >= 1 ? t('laund_pct', pct(laund)) : '') : t('laund_none'));
     set('kDrained', drained ? fmtUsd(drained) : '—');
     var keys = Object.keys(dBy).sort(function (x, y) { return dBy[y] - dBy[x]; });
-    set('kDrainedS', keys.length ? t('total_sub', keys.slice(0, 2).map(function (k) { return k + ' ' + fmtUsd(dBy[k]); }).join(' · ')) : t('loading_lc'));
+    set('kDrainedS', keys.length ? t('total_sub', keys.slice(0, 2).map(function (k) { return k + ' ' + fmtUsd(dBy[k]); }).join(' · ')) + wait : t('loading_lc'));
   }
 
   function renderBars() {
