@@ -352,6 +352,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     { a: 'bc1qxg0l4p6xc50zuv9cl5f0l0wmaxjpg8wcy7s9ra', role: 'hacker', tr: 'BTC parça · 437,7 BTC', en: 'BTC split · 437.7 BTC' },
     { a: 'bc1q96qkjsye5qruf9yksqdqg09lzdmur7wau2ga6u', role: 'hacker', tr: 'BTC parça · 409,5 BTC', en: 'BTC split · 409.5 BTC' },
     { a: 'bc1qrsrh56k4rpal88w0xpjuul0m78ud62akcwue5e', role: 'hacker', tr: 'BTC parça · 142,7 BTC', en: 'BTC split · 142.7 BTC' },
+    { a: '0xA97bF7836F8A08F9Ed91D41453D371493FAE8d10', role: 'hacker', tr: 'Altcoin süpürme alıcısı (Binance 14\'ten 120+ token)', en: 'Altcoin sweep receiver (120+ tokens from Binance 14)', deep: true },
     { a: 'TG5iBMQPrDzJJAUM8GMVBf1hRaJ1wvzsGi', role: 'hacker', tr: 'Tron ana alıcı (612,7 Mn USDT)', en: 'Tron main receiver (612.7M USDT)' },
     { a: 'TPBkSjkCMn2ckrMuAP8n2J1jdjbw76bKN4', role: 'hacker', tr: 'Tron · 300 Mn USDT bozan', en: 'Tron · 300M USDT swapper' },
     { a: 'TRBdWqHnDVSZCVGfgHdKFLQPirQcA2PRki', role: 'hacker', tr: 'Tron · 46,4 Mn TRX', en: 'Tron · 46.4M TRX' },
@@ -788,6 +789,8 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
         if (w.role === 'victim' && !keepVictim(ev)) return;
         ev.spam = isDust(ev);
         addEvent(ev, w);
+      } else if (isCluster(w) && lc(fromP.addr) === w.key && toP && W(toP.addr) && W(toP.addr).role === 'victim' && w.role !== 'initiator') {
+        drainTx(x.hash, w);
       } else if (w.role === 'initiator' && lc(fromP.addr) === w.key) {
         addEvent({ id: 'tx:' + x.hash, kind: 'call', chain: 'eth', ts: ts, tx: x.hash, sym: '', amount: 0, from: fromP.addr, to: toP ? toP.addr : '', fromP: fromP, toP: toP, method: x.method || '', mkey: x.to ? 'm_call' : 'm_create', spam: false }, w);
         var vw = toP && W(toP.addr);
@@ -851,7 +854,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       bs('/addresses/' + a + '/transactions').then(function (j) { ingestTxs(w, j.items || []); }),
       bs('/addresses/' + a + '/token-transfers?type=ERC-20').then(function (j) {
         ingestTokens(w, j.items || []);
-        if (w.deep && !w.deepDone) return Promise.resolve(deepTokens(w, j.next_page_params, 12)).then(function () { w.deepDone = true; });
+        if (w.deep && !w.deepDone) return Promise.all([deepTokens(w, j.next_page_params, 12), deepTxs(w, null, 20)]).then(function () { w.deepDone = true; });
       })
     ]).then(function () {
       var changed = S.events.size > before, extra = [];
@@ -877,6 +880,16 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     }
     page(null, 15).then(function () { return bs('/transactions/' + h + '/internal-transactions'); }).then(function (j) { ingestInternal(w, (j && j.items) || []); DRAIN_TX[h] = 2; scheduleRender(); },
       function () { delete DRAIN_TX[h]; });
+  }
+  function deepTxs(w, np, left) {
+    if (left <= 0) return null;
+    return bs('/addresses/' + w.addr + '/transactions?filter=from' + (np ? '&' + qs(np) : '')).then(function (j) {
+      var items = j.items || [];
+      items.forEach(function (x) { var v = x && x.to && W(x.to.hash); if (v && v.role === 'victim' && x.status !== 'error') drainTx(x.hash, w); });
+      var oldest = items.length ? Date.parse(items[items.length - 1].timestamp) : 0;
+      if (!j.next_page_params || (oldest && oldest < HACK_START)) return null;
+      return deepTxs(w, j.next_page_params, left - 1);
+    });
   }
   function deepTokens(w, np, left) {
     if (!np || left <= 0) return null;
