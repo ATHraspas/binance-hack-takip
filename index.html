@@ -172,7 +172,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     <div class="kpi move"><span class="k" data-t="k_move">Saldırganın elinde · hareket ettirebilir</span><span class="v" id="kMove">—</span><span class="s" id="kMoveS" data-t="loading_lc">zincir verisi yükleniyor</span></div>
     <div class="kpi frz"><span class="k" data-t="k_frz">Dondurulan / kurtarılan</span><span class="v" id="kFrz">—</span><span class="s" id="kFrzS"></span></div>
     <div class="kpi laund"><span class="k" data-t="k_laund">Aklanan</span><span class="v" id="kLaund">—</span><span class="s" id="kLaundS"></span></div>
-    <div class="kpi total"><span class="k" data-t="k_total">Toplam çekilen · ETH + BTC</span><span class="v" id="kDrained">—</span><span class="s" id="kDrainedS"></span></div>
+    <div class="kpi total"><span class="k" data-t="k_total">Toplam çekilen · ETH, BTC, Tron, XRP</span><span class="v" id="kDrained">—</span><span class="s" id="kDrainedS"></span></div>
   </section>
 
   <section class="spark" data-ta="a_spark">
@@ -242,9 +242,9 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       alerts_sound: '; sesi açarsan ayrıca duyarsın.', alerts_n: '{0} adım · toplam {1}', last8: ' · son 8 gösteriliyor',
       tl_h: 'Olay akışı', tl_hint: 'zincir verisinden otomatik · {0} olay · en yeni üstte · yerel saat', tl_loading: 'Zincir verisi yükleniyor; olaylar geldikçe buraya eklenecek.',
       tl_more: ' + {0} varlık', tl_swapline: '{0} {1} swap işlemi yaptı · {2}', tl_burn: '{0} · {1} bakiyesinden yakıldı',
-      feed_h: 'Canlı akış', wal_h: 'Cüzdan kümesi', add_ph: '0x… veya bc1… adres ekle', add_aria: 'Takibe adres ekle', add_btn: 'Ekle',
-      add_invalid: 'Geçerli bir Ethereum (0x…) ya da Bitcoin (bc1… / 1… / 3…) adresi gir.',
-      footer: 'Bağımsız zincir takibi; Binance ile bağlantısı yoktur. Raporlara göre Tron\'da ~628 Mn $ ve Arbitrum, Optimism, Base\'de ~38 Mn $ daha çekildi; bunlar sayfada yok. Binance\'in Solana sıcak cüzdanı hack saatinde normal çalıştı. Veri: Blockscout açık API ve publicnode (Ethereum), mempool.space (Bitcoin); istekler doğrudan senin tarayıcından gider; sekme arka plandayken sorgu durur. "Dondurulan" tutar, cüzdanların Tether ve Circle kara listesinde olup olmadığına zincirden bakılarak hesaplanır; "Aklanan" yalnızca mikser, THORChain, köprü, KYC\'siz takas servisi ve borsaya gideni sayar, DEX swap\'larını saymaz. USD değerleri güncel fiyatla hesaplanır, çekildiği anki fiyatla değil. "Parayı alan" cüzdanlar otomatik bulunur ve sahibinin saldırgan olduğu anlamına gelmez. Yatırım tavsiyesi değildir.',
+      feed_h: 'Canlı akış', wal_h: 'Cüzdan kümesi', add_ph: '0x…, bc1…, T… veya r… adres ekle', add_aria: 'Takibe adres ekle', add_btn: 'Ekle',
+      add_invalid: 'Geçerli bir Ethereum (0x…), Bitcoin (bc1… / 1… / 3…), Tron (T…) ya da XRP (r…) adresi gir.',
+      footer: 'Bağımsız zincir takibi; Binance ile bağlantısı yoktur. Ethereum, Bitcoin, Tron ve XRP izleniyor; raporlara göre Arbitrum, Optimism, Base\'de ~38 Mn $ ve Avalanche\'ta ~15 Mn $ daha çekildi, bunlar sayfada yok. Binance\'in Solana sıcak cüzdanı hack saatinde normal çalıştı. Veri: Blockscout açık API ve publicnode (Ethereum), mempool.space (Bitcoin), TronGrid (Tron), XRPL Cluster (XRP), Binance (TRX/XRP fiyatı); istekler doğrudan senin tarayıcından gider; sekme arka plandayken sorgu durur. "Dondurulan" tutar, cüzdanların Tether ve Circle kara listesinde olup olmadığına zincirden bakılarak hesaplanır; "Aklanan" yalnızca mikser, THORChain, köprü, KYC\'siz takas servisi ve borsaya gideni sayar, DEX swap\'larını saymaz. USD değerleri güncel fiyatla hesaplanır, çekildiği anki fiyatla değil. "Parayı alan" cüzdanlar otomatik bulunur ve sahibinin saldırgan olduğu anlamına gelmez. Yatırım tavsiyesi değildir.',
       role_initiator: 'başlatıcı', role_hacker: 'saldırgan', role_hop: 'kümeden para aldı', role_manual: 'elle eklendi', role_victim: 'Binance',
       cat_dex: 'Swap / DEX', cat_contract: 'Kontrata', cat_bridge: 'Köprü', cat_thor: 'THORChain', cat_swapsvc: 'Takas servisi', cat_cex: 'Borsaya', cat_mixer: 'Mikser', cat_burn: 'Yakıldı', cat_wallet: 'Yeni cüzdana',
       ch_drain: 'Binance → saldırgan', ch_hop: 'Küme içi', ch_call: 'Saldırgan çağrısı', ch_out: 'Çıkış', ch_mixin: 'Mikserden giriş', ch_swapin: 'Swap dönüşü', ch_in: 'Giriş', ch_vout: 'Binance çıkışı', ch_other: 'Diğer', ch_swap: 'Swap', ch_news: 'Haber', ch_launder: 'Aklama',
@@ -260,9 +260,9 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       new_badge: 'yeni', hop_n: ' · {0}. hop', copy: 'kopyala', copied: 'kopyalandı', remove: 'çıkar',
       grp_cluster: 'Saldırgan ve parayı alan cüzdanlar · {0}', grp_victim: 'Kaynak: Binance cüzdanları', w_auto: '{0} cüzdan otomatik bulundu', w_grows: 'para izlendikçe büyür',
       lbl_hop: 'Hop {0} · {1} {2} aldı', lbl_thor: 'THORChain çıkışı · {0}', lbl_followed: 'Takibe alındı', lbl_manual: 'Elle eklendi', lbl_manual_btc: 'BTC · elle eklendi',
-      k_move: 'Saldırganın elinde · hareket ettirebilir', k_frz: 'Dondurulan / kurtarılan', k_laund: 'Aklanan', k_total: 'Toplam çekilen · ETH + BTC',
-      move_sub: '{0} ETH · {1} BTC · diğer token {2}', frz_sub: 'USDT {0} · USDC {1} · Tether ve Circle kara listesinde', frz_ret: ' · Binance\'e dönen {0}', frz_pct: ' · çekilene oranı %{0}',
-      frz_wait: 'kara liste kontrol ediliyor…', frz_fail: 'kara liste şu an kontrol edilemedi, yeniden denenecek', laund_none: 'henüz yok · mikser, THORChain, köprü, takas servisi ve borsaya giden sayılır', laund_pct: ' · çekilene oranı %{0}', total_sub: '{0} · Tron ve L2 hariç', loading_sfx: ' · yükleniyor, sayı artabilir',
+      k_move: 'Saldırganın elinde · hareket ettirebilir', k_frz: 'Dondurulan / kurtarılan', k_laund: 'Aklanan', k_total: 'Toplam çekilen · ETH, BTC, Tron, XRP',
+      move_sub: '{0} · diğer token {1}', frz_sub: 'USDT {0} · USDC {1} · Tether ve Circle kara listesinde', frz_ret: ' · Binance\'e dönen {0}', frz_pct: ' · çekilene oranı %{0}',
+      frz_wait: 'kara liste kontrol ediliyor…', frz_fail: 'kara liste şu an kontrol edilemedi, yeniden denenecek', laund_none: 'henüz yok · mikser, THORChain, köprü, takas servisi ve borsaya giden sayılır', laund_pct: ' · çekilene oranı %{0}', total_sub: '{0} · L2 ve Avalanche hariç', loading_sfx: ' · yükleniyor, sayı artabilir',
       ch_ret: 'Binance\'e geri döndü', frozen_badge: 'donduruldu', b_usdt: 'USDT {0}', b_usdc: 'USDC {0}', frz_tag: ' (donduruldu)',
       ago_now: 'şimdi', ago_min: '{0} dk önce', ago_h: '{0} sa {1} dk önce',
       u_b: ' Mr', u_m: ' Mn', u_k: ' bin'
@@ -280,9 +280,9 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       alerts_sound: '; turn on sound to hear it too.', alerts_n: '{0} steps · total {1}', last8: ' · showing last 8',
       tl_h: 'Timeline', tl_hint: 'built from on-chain data · {0} events · newest first · local time', tl_loading: 'Loading on-chain data; events will appear here as they arrive.',
       tl_more: ' + {0} more assets', tl_swapline: '{0} made {1} swaps · {2}', tl_burn: '{0} · burned from {1}',
-      feed_h: 'Live feed', wal_h: 'Wallet cluster', add_ph: 'Add a 0x… or bc1… address', add_aria: 'Add an address to track', add_btn: 'Add',
-      add_invalid: 'Enter a valid Ethereum (0x…) or Bitcoin (bc1… / 1… / 3…) address.',
-      footer: 'Independent on-chain tracking; not affiliated with Binance. Reports put another ~$628M drained on Tron and ~$38M on Arbitrum, Optimism and Base; those are not on this page. Binance\'s Solana hot wallet operated normally during the hack. Data: Blockscout public API and publicnode (Ethereum), mempool.space (Bitcoin); requests go straight from your browser and pause while the tab is in the background. "Frozen" is computed by checking on-chain whether each wallet is on the Tether and Circle blacklists; "Laundered" counts only funds sent to mixers, THORChain, bridges, no-KYC swap services and exchanges, not DEX swaps. USD values use current prices, not prices at the time of transfer. Wallets marked "received cluster funds" are found automatically and are not necessarily owned by the attacker. Not investment advice.',
+      feed_h: 'Live feed', wal_h: 'Wallet cluster', add_ph: 'Add a 0x…, bc1…, T… or r… address', add_aria: 'Add an address to track', add_btn: 'Add',
+      add_invalid: 'Enter a valid Ethereum (0x…), Bitcoin (bc1… / 1… / 3…), Tron (T…) or XRP (r…) address.',
+      footer: 'Independent on-chain tracking; not affiliated with Binance. Ethereum, Bitcoin, Tron and XRP are tracked; reports put another ~$38M drained on Arbitrum, Optimism and Base and ~$15M on Avalanche, which are not on this page. Binance\'s Solana hot wallet operated normally during the hack. Data: Blockscout public API and publicnode (Ethereum), mempool.space (Bitcoin), TronGrid (Tron), XRPL Cluster (XRP), Binance (TRX/XRP prices); requests go straight from your browser and pause while the tab is in the background. "Frozen" is computed by checking on-chain whether each wallet is on the Tether and Circle blacklists; "Laundered" counts only funds sent to mixers, THORChain, bridges, no-KYC swap services and exchanges, not DEX swaps. USD values use current prices, not prices at the time of transfer. Wallets marked "received cluster funds" are found automatically and are not necessarily owned by the attacker. Not investment advice.',
       role_initiator: 'initiator', role_hacker: 'attacker', role_hop: 'received cluster funds', role_manual: 'added manually', role_victim: 'Binance',
       cat_dex: 'Swap / DEX', cat_contract: 'To contract', cat_bridge: 'Bridge', cat_thor: 'THORChain', cat_swapsvc: 'Swap service', cat_cex: 'To exchange', cat_mixer: 'Mixer', cat_burn: 'Burned', cat_wallet: 'To new wallet',
       ch_drain: 'Binance → attacker', ch_hop: 'Within cluster', ch_call: 'Attacker call', ch_out: 'Outflow', ch_mixin: 'From mixer', ch_swapin: 'Swap proceeds', ch_in: 'Inflow', ch_vout: 'Binance outflow', ch_other: 'Other', ch_swap: 'Swap', ch_news: 'News', ch_launder: 'Laundering',
@@ -298,9 +298,9 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       new_badge: 'new', hop_n: ' · hop {0}', copy: 'copy', copied: 'copied', remove: 'remove',
       grp_cluster: 'Attacker and receiving wallets · {0}', grp_victim: 'Source: Binance wallets', w_auto: '{0} wallets auto-discovered', w_grows: 'grows as the money moves',
       lbl_hop: 'Hop {0} · received {1} {2}', lbl_thor: 'THORChain exit · {0}', lbl_followed: 'Tracked', lbl_manual: 'Added manually', lbl_manual_btc: 'BTC · added manually',
-      k_move: 'Still with the attacker · movable', k_frz: 'Frozen / recovered', k_laund: 'Laundered', k_total: 'Total drained · ETH + BTC',
-      move_sub: '{0} ETH · {1} BTC · other tokens {2}', frz_sub: 'USDT {0} · USDC {1} · blacklisted by Tether and Circle', frz_ret: ' · returned to Binance {0}', frz_pct: ' · {0}% of drained',
-      frz_wait: 'checking blacklists…', frz_fail: 'could not check blacklists right now, retrying', laund_none: 'none yet · counts funds sent to mixers, THORChain, bridges, swap services and exchanges', laund_pct: ' · {0}% of drained', total_sub: '{0} · excl. Tron and L2s', loading_sfx: ' · still loading, may rise',
+      k_move: 'Still with the attacker · movable', k_frz: 'Frozen / recovered', k_laund: 'Laundered', k_total: 'Total drained · ETH, BTC, Tron, XRP',
+      move_sub: '{0} · other tokens {1}', frz_sub: 'USDT {0} · USDC {1} · blacklisted by Tether and Circle', frz_ret: ' · returned to Binance {0}', frz_pct: ' · {0}% of drained',
+      frz_wait: 'checking blacklists…', frz_fail: 'could not check blacklists right now, retrying', laund_none: 'none yet · counts funds sent to mixers, THORChain, bridges, swap services and exchanges', laund_pct: ' · {0}% of drained', total_sub: '{0} · excl. L2s and Avalanche', loading_sfx: ' · still loading, may rise',
       ch_ret: 'Returned to Binance', frozen_badge: 'frozen', b_usdt: 'USDT {0}', b_usdc: 'USDC {0}', frz_tag: ' (frozen)',
       alerts_n_1: '1 step · total {1}', feed_hint_1: '1 move', w_auto_1: '1 wallet auto-discovered', tl_hint_1: 'built from on-chain data · 1 event · newest first · local time',
       ago_now: 'just now', ago_min: '{0} min ago', ago_h: '{0}h {1}m ago',
@@ -352,6 +352,16 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     { a: 'bc1qxg0l4p6xc50zuv9cl5f0l0wmaxjpg8wcy7s9ra', role: 'hacker', tr: 'BTC parça · 437,7 BTC', en: 'BTC split · 437.7 BTC' },
     { a: 'bc1q96qkjsye5qruf9yksqdqg09lzdmur7wau2ga6u', role: 'hacker', tr: 'BTC parça · 409,5 BTC', en: 'BTC split · 409.5 BTC' },
     { a: 'bc1qrsrh56k4rpal88w0xpjuul0m78ud62akcwue5e', role: 'hacker', tr: 'BTC parça · 142,7 BTC', en: 'BTC split · 142.7 BTC' },
+    { a: 'TG5iBMQPrDzJJAUM8GMVBf1hRaJ1wvzsGi', role: 'hacker', tr: 'Tron ana alıcı (612,7 Mn USDT)', en: 'Tron main receiver (612.7M USDT)' },
+    { a: 'TPBkSjkCMn2ckrMuAP8n2J1jdjbw76bKN4', role: 'hacker', tr: 'Tron · 300 Mn USDT bozan', en: 'Tron · 300M USDT swapper' },
+    { a: 'TRBdWqHnDVSZCVGfgHdKFLQPirQcA2PRki', role: 'hacker', tr: 'Tron · 46,4 Mn TRX', en: 'Tron · 46.4M TRX' },
+    { a: 'rK21t6nGLy4MNDqhvy3pGwcLFy25qgfzMx', role: 'hacker', tr: 'XRP alıcı (233,5 Mn XRP)', en: 'XRP receiver (233.5M XRP)' },
+    { a: 'TDqSquXBgUCLYvYC4XZgrprLK589dkhSCf', role: 'victim', tr: 'Binance Tron sıcak cüzdanı', en: 'Binance Tron hot wallet' },
+    { a: 'rNU4eAowPuixS5ZCWaRL72UUeKgxcKExpK', role: 'victim', tr: 'Binance XRP 1', en: 'Binance XRP 1' },
+    { a: 'rarG6FaeYhnzSKSS5EEPofo4gFsPn2bZKk', role: 'victim', tr: 'Binance XRP 2', en: 'Binance XRP 2' },
+    { a: 'rfQ9EcLkU6WnNmkS3EwUkFeXeN47Rk8Cvi', role: 'victim', tr: 'Binance XRP 3', en: 'Binance XRP 3' },
+    { a: 'rBtttd61FExHC68vsZ8dqmS3DfjFEceA1A', role: 'victim', tr: 'Binance XRP 4', en: 'Binance XRP 4' },
+    { a: 'rDAE53VfMvftPB4ogpWGWvzkQxfht6JPxr', role: 'victim', tr: 'Binance XRP 5', en: 'Binance XRP 5' },
     { a: 'bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h', role: 'victim', tr: 'Binance BTC sıcak cüzdanı', en: 'Binance BTC hot wallet' },
     { a: '0x28C6c06298d514Db089934071355E5743bf21d60', role: 'victim', tr: 'Binance 14', en: 'Binance 14' },
     { a: '0xDFd5293D8e347dFe59E90eFd55b2956a1343963d', role: 'victim', tr: 'Binance 16', en: 'Binance 16' },
@@ -371,7 +381,9 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     dex: /uniswap|sushi|curve|balancer|1inch|paraswap|kyber|router|liquidity pool|\bdex\b|pancake|odos|bebop|fluid|swap|cow protocol|aggregator|settlement|market maker/i,
     cex: /exchange|binance|coinbase|okx|bybit|kraken|kucoin|htx|huobi|gate\.io|bitget|mexc|bitfinex|crypto\.com|upbit|bithumb|gemini|deposit/i
   };
-  var ADDR_RX = /^(0x[0-9a-fA-F]{40}|bc1[a-z0-9]{11,71}|[13][1-9A-HJ-NP-Za-km-z]{25,34})$/;
+  var ADDR_RX = /^(0x[0-9a-fA-F]{40}|bc1[a-z0-9]{11,71}|[13][1-9A-HJ-NP-Za-km-z]{25,34}|T[1-9A-HJ-NP-Za-km-z]{33}|r[1-9A-HJ-NP-Za-km-z]{24,34})$/;
+  var TRON_RX = /^T[1-9A-HJ-NP-Za-km-z]{33}$/, XRP_RX = /^r[1-9A-HJ-NP-Za-km-z]{24,34}$/;
+  function chainOf(a) { return /^0x[0-9a-f]{40}$/i.test(a) ? 'eth' : TRON_RX.test(a) ? 'tron' : XRP_RX.test(a) ? 'xrp' : 'btc'; }
   var STABLE = /^(USDT|USDC)$/i;
   var OTHERSTABLE = /^(RLUSD|USD1|USDE|USDS|DAI|FDUSD|PYUSD|TUSD|USDP|GUSD|LUSD|CRVUSD|GHO)$/i;
   var ETHISH = /^(WETH|WBETH|STETH|WSTETH|CBETH|RETH|WEETH|EZETH|METH|OETH)$/i;
@@ -559,7 +571,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     var key = lc(o.a);
     if (S.wallets.has(key)) return S.wallets.get(key);
     var w = {
-      addr: o.a, key: key, chain: /^0x[0-9a-f]{40}$/i.test(o.a) ? 'eth' : 'btc', role: o.role, lbl: o.lbl || { k: 'addr' },
+      addr: o.a, key: key, chain: chainOf(o.a), role: o.role, lbl: o.lbl || { k: 'addr' },
       deep: !!o.deep, parent: o.parent || null, depth: o.depth || 0, auto: !!o.auto, addedAt: Date.now(),
       balEth: null, balBtc: null, tokUsd: 0, tokBreak: null, tokAt: 0, lastAct: 0, nextPoll: 0, polls: 0,
       busy: false, ready: false, err: 0
@@ -579,9 +591,13 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     return short(w.addr);
   }
   function stab(w, k) { return w.rpc ? w.rpc[k] : (w.tokBreak ? w.tokBreak[k] : 0); }
-  function frozenOf(w) { return w.rpc ? (w.rpc.usdtBL ? w.rpc.usdt : 0) + (w.rpc.usdcBL ? w.rpc.usdc : 0) : 0; }
+  function frzUsdt(w) { return w.chain === 'tron' ? (w.tBL ? w.tUsdt || 0 : 0) : (w.rpc && w.rpc.usdtBL ? w.rpc.usdt : 0); }
+  function frzUsdc(w) { return w.chain === 'eth' && w.rpc && w.rpc.usdcBL ? w.rpc.usdc : 0; }
+  function frozenOf(w) { if (w.chain === 'tron') return frzUsdt(w); return w.rpc ? (w.rpc.usdtBL ? w.rpc.usdt : 0) + (w.rpc.usdcBL ? w.rpc.usdc : 0) : 0; }
   function holdUsd(w) {
     if (w.chain === 'btc') return w.balBtc == null ? null : w.balBtc * (S.btcPrice || 0);
+    if (w.chain === 'tron') return w.balTrx == null ? null : w.balTrx * (S.trxPrice || 0) + (w.tUsdt || 0) + (w.tStable || 0);
+    if (w.chain === 'xrp') return w.balXrp == null ? null : w.balXrp * (S.xrpPrice || 0);
     if (w.balEth == null) return null;
     var b = w.tokBreak;
     return w.balEth * (S.ethPrice || 0) + (b ? b.stable + b.eth + b.other : 0) + stab(w, 'usdt') + stab(w, 'usdc');
@@ -611,6 +627,8 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
   function usdOf(e) {
     if (e.kind === 'call') return 0;
     if (e.kind === 'btc') return e.amount * (S.btcPrice || 0);
+    if (e.kind === 'trx') return S.trxPrice ? e.amount * S.trxPrice : null;
+    if (e.kind === 'xrp') return S.xrpPrice ? e.amount * S.xrpPrice : null;
     if (e.kind === 'token') return e.rate ? e.amount * e.rate : null;
     return e.amount * (S.ethPrice || 0);
   }
@@ -744,6 +762,9 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     var u = usdOf(e);
     if (e.chain === 'btc') {
       if (!(u != null && u >= 1e6)) return;
+    } else if (e.chain === 'tron' || e.chain === 'xrp') {
+      if (!(u != null && u >= FOLLOW_USD) || category(e.toP) !== 'wallet') return;
+      if (e.chain === 'tron' && TRON_KIND[e.to] !== 'acct') { tronKind(e.to); return; }
     } else {
       if (category(e.toP) !== 'wallet') return;
       if (!((u != null && u >= FOLLOW_USD) || (e.kind === 'eth' && e.amount >= FOLLOW_ETH))) return;
@@ -900,10 +921,138 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     ev2.spam = isDust(ev2);
     addEvent(ev2, w);
   }
+  /* ---------- Tron (TronGrid) ve XRP (XRPL) ---------- */
+  var TRONGRID = 'https://api.trongrid.io', XRPL = 'https://xrplcluster.com/';
+  var TRON_TOK = { TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t: 1, TEkxiTehnzSmSe2XqrBj4w32RUN966rdz8: 1, TPYmHEhy5n8TCEfYGqW2rPxsghSfzghPDn: 1 };
+  var TRON_TAGS = { TWd4WrZ9wn84f5x1hZhL4DHvk738ns5jwb: 'Binance' };
+  var TRON_KIND = {};
+  function makeQueue(gap, backoff) {
+    var q = [], active = 0, last = 0, timer = null, until = 0;
+    function run() {
+      if (timer || active || !q.length) return;
+      var now = Date.now(), wait = Math.max(last + gap - now, until - now, 0);
+      if (wait > 0) { timer = setTimeout(function () { timer = null; run(); }, wait); return; }
+      var job = q.shift(); active++; last = now;
+      fetch(job.url, job.init).then(function (r) {
+        if (r.status === 429 || r.status === 403 || r.status >= 500) { var e = new Error('HTTP ' + r.status); e.retry = true; throw e; }
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      }).then(function (j) { S.reqOk++; S.lastOk = Date.now(); job.resolve(j); }, function (e) {
+        if ((e.retry || e.name === 'TypeError') && job.tries < 2) { job.tries++; until = Date.now() + backoff * job.tries; q.unshift(job); }
+        else { S.reqErr++; job.reject(e); }
+      }).then(function () { active--; run(); });
+    }
+    return function (url, init) { return new Promise(function (resolve, reject) { q.push({ url: url, init: init, resolve: resolve, reject: reject, tries: 0 }); run(); }); };
+  }
+  var tq = makeQueue(1100, 20000), xq = makeQueue(700, 20000);
+  function post(o) { return { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(o) }; }
+  var B58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+  function tronHex40(a) { var n = 0n; for (var i = 0; i < a.length; i++) n = n * 58n + BigInt(B58.indexOf(a[i])); return n.toString(16).slice(2, 42); }
+  function tronB58(hex) {
+    if (!hex || hex.charAt(0) === 'T') return Promise.resolve(hex || '');
+    var b = new Uint8Array(hex.match(/../g).map(function (h) { return parseInt(h, 16); }));
+    return crypto.subtle.digest('SHA-256', b).then(function (h1) { return crypto.subtle.digest('SHA-256', h1); }).then(function (h2) {
+      var all = Array.prototype.slice.call(b).concat(Array.prototype.slice.call(new Uint8Array(h2), 0, 4));
+      var n = BigInt('0x' + all.map(function (x) { return (x < 16 ? '0' : '') + x.toString(16); }).join('')), s = '';
+      while (n > 0n) { s = B58[Number(n % 58n)] + s; n = n / 58n; }
+      return s;
+    });
+  }
+  function tronParty(a) { return { addr: a, tags: TRON_TAGS[a] ? [TRON_TAGS[a]] : [], contract: TRON_KIND[a] === 'contract' }; }
+  function tronKind(a) {
+    if (TRON_KIND[a]) return;
+    TRON_KIND[a] = 'pending';
+    tq(TRONGRID + '/wallet/getcontract', post({ value: a, visible: true })).then(function (j) {
+      TRON_KIND[a] = j && (j.bytecode || j.contract_address) ? 'contract' : 'acct';
+      S.events.forEach(function (e) {
+        if (e.chain !== 'tron') return;
+        if (e.to === a) { e.toP = tronParty(a); maybeFollow(e); }
+        if (e.from === a) e.fromP = tronParty(a);
+      });
+      scheduleRender();
+    }, function () { delete TRON_KIND[a]; });
+  }
+  function pollTron(w) {
+    var a = w.addr;
+    return tq(TRONGRID + '/v1/accounts/' + a).then(function (j) {
+      var d = (j && j.data && j.data[0]) || {}, usdt = 0, st = 0;
+      (d.trc20 || []).forEach(function (o) {
+        Object.keys(o).forEach(function (c) { if (TRON_TOK[c]) { var v = Number(o[c]) / (c === 'TPYmHEhy5n8TCEfYGqW2rPxsghSfzghPDn' ? 1e18 : 1e6); if (c === 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t') usdt += v; else st += v; } });
+      });
+      w.balTrx = (d.balance || 0) / 1e6; w.tUsdt = usdt; w.tStable = st;
+      var sig = d.balance + ':' + usdt + ':' + st + ':' + (d.latest_opration_time || 0);
+      if (sig === w.txSig) return null;
+      w.txSig = sig;
+      var since = '&min_timestamp=' + (HACK_START - 3600000);
+      return tq(TRONGRID + '/v1/accounts/' + a + '/transactions/trc20?limit=100' + since).then(function (r) {
+        (r.data || []).forEach(function (x) {
+          if (x.type && x.type !== 'Transfer') return;
+          var ti = x.token_info || {}, rate = TRON_TOK[ti.address] ? 1 : 0;
+          var ev = { id: 'trc:' + x.transaction_id + ':' + x.from + '>' + x.to + ':' + ti.address, kind: 'token', chain: 'tron', ts: x.block_timestamp || Date.now(), tx: x.transaction_id,
+            sym: ti.symbol || '?', rate: rate, amount: Number(x.value) / Math.pow(10, ti.decimals || 0), from: x.from, to: x.to, fromP: tronParty(x.from), toP: tronParty(x.to), method: '' };
+          if (w.role === 'victim' && !keepVictim(ev)) return;
+          ev.spam = isDust(ev);
+          addEvent(ev, w);
+        });
+        return tq(TRONGRID + '/v1/accounts/' + a + '/transactions?limit=100' + since);
+      }).then(function (r) {
+        var list = (r.data || []).filter(function (x) { var c = x.raw_data && x.raw_data.contract && x.raw_data.contract[0]; return c && c.type === 'TransferContract' && x.ret && x.ret[0] && x.ret[0].contractRet === 'SUCCESS'; });
+        return Promise.all(list.map(function (x) {
+          var v = x.raw_data.contract[0].parameter.value;
+          return Promise.all([tronB58(v.owner_address), tronB58(v.to_address)]).then(function (ab) {
+            var ev = { id: 'trx:' + x.txID, kind: 'trx', chain: 'tron', ts: x.block_timestamp || Date.now(), tx: x.txID, sym: 'TRX', amount: (v.amount || 0) / 1e6,
+              from: ab[0], to: ab[1], fromP: tronParty(ab[0]), toP: tronParty(ab[1]), method: '' };
+            if (w.role === 'victim' && !keepVictim(ev)) return;
+            ev.spam = isDust(ev);
+            addEvent(ev, w);
+          });
+        }));
+      });
+    });
+  }
+  var TFRZ = { at: 0, busy: false };
+  function checkTronFrozen() {
+    var ws = [];
+    S.wallets.forEach(function (w) { if (w.chain === 'tron' && isCluster(w)) ws.push(w); });
+    TFRZ.busy = true;
+    Promise.all(ws.map(function (w) {
+      return tq(TRONGRID + '/wallet/triggerconstantcontract', post({ owner_address: w.addr, contract_address: 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t', function_selector: 'isBlackListed(address)', parameter: ('0000000000000000000000000000000000000000' + tronHex40(w.addr)).slice(-64), visible: true }))
+        .then(function (j) { var r = j && j.constant_result && j.constant_result[0]; if (r) { w.tBL = parseInt(r.slice(-2), 16) > 0; w.tChk = true; } }, function () {});
+    })).then(function () { TFRZ.busy = false; TFRZ.at = Date.now(); scheduleRender(); });
+  }
+  function xrpRpc(method, params) { return xq(XRPL, post({ method: method, params: [params] })).then(function (j) { return (j && j.result) || {}; }); }
+  function xrpTime(d) { return (d + 946684800) * 1000; }
+  function pollXrp(w) {
+    var a = w.addr;
+    return xrpRpc('account_info', { account: a, ledger_index: 'validated' }).then(function (r) {
+      var d = r.account_data || {};
+      w.balXrp = Number(d.Balance || 0) / 1e6;
+      var sig = (d.Sequence || 0) + ':' + (d.Balance || 0);
+      if (sig === w.txSig) return null;
+      w.txSig = sig;
+      return xrpRpc('account_tx', { account: a, limit: 100, forward: false }).then(function (r2) {
+        (r2.transactions || []).forEach(function (x) {
+          var tx = x.tx || x.tx_json || {}, meta = x.meta || {};
+          if (tx.TransactionType !== 'Payment' || meta.TransactionResult !== 'tesSUCCESS') return;
+          var amt = meta.delivered_amount != null ? meta.delivered_amount : tx.Amount;
+          if (typeof amt !== 'string') return;
+          var ts = tx.date ? xrpTime(tx.date) : Date.now();
+          if (ts < HACK_START - 3600000) return;
+          var tagged = tx.DestinationTag != null;
+          var ev = { id: 'xrp:' + (tx.hash || x.hash), kind: 'xrp', chain: 'xrp', ts: ts, tx: tx.hash || x.hash, sym: 'XRP', amount: Number(amt) / 1e6, from: tx.Account, to: tx.Destination,
+            fromP: { addr: tx.Account, tags: [] }, toP: { addr: tx.Destination, tags: tagged ? ['exchange deposit · tag ' + tx.DestinationTag] : [] }, method: '' };
+          if (w.role === 'victim' && !keepVictim(ev)) return;
+          ev.spam = isDust(ev);
+          addEvent(ev, w);
+        });
+      });
+    });
+  }
   function interval(w) {
     if (w.err) return Math.min(300000, 30000 * w.err);
     var idle = Date.now() - (w.lastAct || 0);
-    if (w.role === 'victim') return w.chain === 'btc' ? 120000 : 45000;
+    if (w.role === 'victim') return w.chain === 'btc' ? 120000 : w.chain === 'eth' ? 45000 : 600000;
+    if (w.chain === 'tron' || w.chain === 'xrp') return idle < 30 * 60000 ? 60000 : 150000;
     if (w.chain === 'btc') return idle < 30 * 60000 ? 60000 : 180000;
     if (idle < 20 * 60000) return 30000;
     if (idle < 60 * 60000 || (holdUsd(w) || 0) > 1e7) return 60000;
@@ -911,25 +1060,30 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
   }
   function poll(w) {
     w.busy = true;
-    var p = w.chain === 'btc' ? pollBtc(w) : pollEth(w);
+    var p = w.chain === 'btc' ? pollBtc(w) : w.chain === 'tron' ? pollTron(w) : w.chain === 'xrp' ? pollXrp(w) : pollEth(w);
     p.then(function () { w.err = 0; }, function (e) { w.err++; w.lastErr = String((e && e.message) || e); })
       .then(function () { w.busy = false; w.ready = true; w.polls++; w.nextPoll = Date.now() + interval(w); scheduleRender(); });
   }
   function loop() {
     if (!S.paused && !document.hidden) {
-      var now = Date.now(), due = [], busy = { eth: 0, btc: 0 }, cap = { eth: 3, btc: 2 };
+      var now = Date.now(), due = [], busy = { eth: 0, btc: 0, tron: 0, xrp: 0 }, cap = { eth: 3, btc: 2, tron: 1, xrp: 1 };
       S.wallets.forEach(function (w) { if (w.busy) busy[w.chain]++; else if (w.nextPoll <= now) due.push(w); });
       due.sort(function (x, y) { return x.nextPoll - y.nextPoll; });
       due.forEach(function (w) { if (busy[w.chain] < cap[w.chain]) { busy[w.chain]++; poll(w); } });
       var since = now - FRZ.at;
       if (!FRZ.busy && (since > (FRZ.err ? Math.min(600000, 60000 * FRZ.err) : 300000) || (FRZ.dirty && since > 30000))) checkFrozen();
+      if (!TFRZ.busy && now - TFRZ.at > 300000) checkTronFrozen();
     }
     setTimeout(loop, 1000);
   }
   function prices() {
     var p1 = bs('/stats').then(function (j) { if (j && j.coin_price) S.ethPrice = Number(j.coin_price); }).catch(function () {});
     var p2 = mp('/v1/prices').then(function (j) { if (j && j.USD) S.btcPrice = Number(j.USD); }).catch(function () {});
-    return Promise.all([p1, p2]).then(scheduleRender);
+    var p3 = fetch('https://api.binance.com/api/v3/ticker/price?symbols=%5B%22TRXUSDT%22,%22XRPUSDT%22%5D').then(function (r) { if (!r.ok) throw new Error('HTTP'); return r.json(); })
+      .then(function (j) { j.forEach(function (x) { if (x.symbol === 'TRXUSDT') S.trxPrice = Number(x.price); if (x.symbol === 'XRPUSDT') S.xrpPrice = Number(x.price); }); })
+      .catch(function () { return fetch('https://api.coingecko.com/api/v3/simple/price?ids=tron,ripple&vs_currencies=usd').then(function (r) { return r.json(); })
+        .then(function (j) { if (j.tron) S.trxPrice = j.tron.usd; if (j.ripple) S.xrpPrice = j.ripple.usd; }); }).catch(function () {});
+    return Promise.all([p1, p2, p3]).then(scheduleRender);
   }
 
   /* ---------- bildirim ---------- */
@@ -1060,21 +1214,25 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       else if (f === 'ret') ret += u;
       else if (isLaunder(e)) { var c = category(e.toP); laund += u; lBy[c] = (lBy[c] || 0) + u; }
     });
-    var held = 0, fT = 0, fC = 0, ethBal = 0, btcBal = 0, any = false, rpcAny = false, pend = 0;
+    var held = 0, fT = 0, fC = 0, ethBal = 0, btcBal = 0, trxBal = 0, xrpBal = 0, any = false, rpcAny = false, pend = 0;
     S.wallets.forEach(function (w) {
       if (!w.ready) pend++;
       if (!isCluster(w)) return;
       var h = holdUsd(w); if (h != null) { held += h; any = true; }
       if (w.balEth) ethBal += w.balEth;
       if (w.balBtc) btcBal += w.balBtc;
-      if (w.rpc) { rpcAny = true; if (w.rpc.usdtBL) fT += w.rpc.usdt; if (w.rpc.usdcBL) fC += w.rpc.usdc; }
+      if (w.balTrx) trxBal += w.balTrx;
+      if (w.balXrp) xrpBal += w.balXrp;
+      if (w.rpc || w.tChk) rpcAny = true;
+      fT += frzUsdt(w); fC += frzUsdc(w);
     });
     var fz = fT + fC, move = Math.max(0, held - fz);
-    var other = Math.max(0, move - ethBal * (S.ethPrice || 0) - btcBal * (S.btcPrice || 0));
+    var other = Math.max(0, move - ethBal * (S.ethPrice || 0) - btcBal * (S.btcPrice || 0) - trxBal * (S.trxPrice || 0) - xrpBal * (S.xrpPrice || 0));
+    var coins = [[ethBal, 'ETH'], [btcBal, 'BTC'], [trxBal, 'TRX'], [xrpBal, 'XRP']].filter(function (c) { return c[0] >= 1; }).map(function (c) { return fmtAmt(c[0]) + ' ' + c[1]; }).join(' · ');
     function pct(v) { return drained > 0 ? Math.round(100 * v / drained) : 0; }
     set('kMove', any ? fmtUsd(move) : '—');
     var wait = pend ? t('loading_sfx') : '';
-    set('kMoveS', any ? t('move_sub', fmtAmt(ethBal), fmtAmt(btcBal), fmtUsd(other)) + wait : t('loading_lc'));
+    set('kMoveS', any ? t('move_sub', coins, fmtUsd(other)) + wait : t('loading_lc'));
     var hasF = rpcAny || ret > 0;
     set('kFrz', hasF ? fmtUsd(fz + ret) : '—');
     set('kFrzS', hasF ? t('frz_sub', fmtUsd(fT), fmtUsd(fC)) + (ret > 0 ? t('frz_ret', fmtUsd(ret)) : '') + (pct(fz + ret) >= 1 ? t('frz_pct', pct(fz + ret)) : '')
@@ -1126,8 +1284,8 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
   function who(addr, p) {
     if (!addr) return '<span class="who">' + esc(t('contract_creation')) + '</span>';
     if (!ADDR_RX.test(addr)) return '<span class="who">' + esc(addr) + '</span>';
-    var w = W(addr), isEth = /^0x/i.test(addr);
-    var link = isEth ? 'https://etherscan.io/address/' + addr : 'https://mempool.space/address/' + addr;
+    var w = W(addr), ch = chainOf(addr);
+    var link = ch === 'eth' ? 'https://etherscan.io/address/' + addr : ch === 'tron' ? 'https://tronscan.org/#/address/' + addr : ch === 'xrp' ? 'https://xrpscan.com/account/' + addr : 'https://mempool.space/address/' + addr;
     var txt, style = '', tail = '';
     if (w) { txt = wLabel(w); style = ' style="color:' + ROLE_C[w.role] + '"'; tail = ' <span class="faint">' + esc(short(addr)) + '</span>'; }
     else if (p && ((p.tags && p.tags.length) || p.name)) { txt = (p.tags && p.tags[0]) || p.name; tail = ' <span class="faint">' + esc(short(addr)) + '</span>'; }
@@ -1139,10 +1297,10 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     var amt = e.kind === 'call'
       ? '<span>' + esc(e.method || t(e.mkey || 'm_call')) + '</span><small>' + esc(t('no_value')) + '</small>'
       : '<span>' + fmtAmt(e.amount) + ' ' + esc(e.sym) + '</span><small>' + (u == null ? esc(t('no_price')) : fmtUsd(u)) + (e.method === 'mempool' ? esc(t('unconfirmed')) : '') + '</small>';
-    var txUrl = e.chain === 'btc' ? 'https://mempool.space/tx/' + e.tx : 'https://etherscan.io/tx/' + e.tx;
+    var txUrl = e.chain === 'btc' ? 'https://mempool.space/tx/' + e.tx : e.chain === 'tron' ? 'https://tronscan.org/#/transaction/' + e.tx : e.chain === 'xrp' ? 'https://xrpscan.com/tx/' + e.tx : 'https://etherscan.io/tx/' + e.tx;
     var cp = f === 'out' || f === 'vout' ? e.to : (f === 'in' ? e.from : '');
     var cpP = f === 'in' ? e.fromP : e.toP;
-    var follow = cp && ADDR_RX.test(cp) && !W(cp) && (e.chain === 'btc' || category(cpP) === 'wallet') ? '<button type="button" data-follow="' + esc(cp) + '">' + esc(t('follow_btn')) + '</button>' : '';
+    var follow = cp && ADDR_RX.test(cp) && !W(cp) && (e.chain !== 'eth' || category(cpP) === 'wallet') ? '<button type="button" data-follow="' + esc(cp) + '">' + esc(t('follow_btn')) + '</button>' : '';
     var fresh = e.live && Date.now() - e.seenAt < 10 * 60000 ? '<span class="fresh">' + esc(t('live_tag')) + '</span>' : '';
     return '<div class="row' + (e.live && !lastRendered.has(e.id) ? ' new' : '') + '" style="--c:' + ch[1] + '">' +
       '<div class="t">' + esc(clock(e.ts)) + '<small>' + esc(ago(e.ts)) + '</small>' + fresh + '</div>' +
@@ -1170,12 +1328,17 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
   }
   function wHtml(w) {
     var c = ROLE_C[w.role] || ROLE_C.manual, h = holdUsd(w), isV = w.role === 'victim';
-    var bal = w.chain === 'btc' ? (w.balBtc == null ? '…' : fmtAmt(w.balBtc) + ' BTC') : (w.balEth == null ? '…' : fmtAmt(w.balEth) + ' ETH');
-    var links = w.chain === 'btc'
+    var bal = w.chain === 'btc' ? (w.balBtc == null ? '…' : fmtAmt(w.balBtc) + ' BTC') : w.chain === 'tron' ? (w.balTrx == null ? '…' : fmtAmt(w.balTrx) + ' TRX')
+      : w.chain === 'xrp' ? (w.balXrp == null ? '…' : fmtAmt(w.balXrp) + ' XRP') : (w.balEth == null ? '…' : fmtAmt(w.balEth) + ' ETH');
+    var arkm = '<a href="https://intel.arkm.com/explorer/address/' + esc(w.addr) + '" target="_blank" rel="noopener">Arkham</a>';
+    var links = w.chain === 'tron' ? '<a href="https://tronscan.org/#/address/' + esc(w.addr) + '" target="_blank" rel="noopener">Tronscan</a>' + arkm
+      : w.chain === 'xrp' ? '<a href="https://xrpscan.com/account/' + esc(w.addr) + '" target="_blank" rel="noopener">XRPScan</a>' + arkm
+      : w.chain === 'btc'
       ? '<a href="https://mempool.space/address/' + esc(w.addr) + '" target="_blank" rel="noopener">mempool</a><a href="https://intel.arkm.com/explorer/address/' + esc(w.addr) + '" target="_blank" rel="noopener">Arkham</a>'
       : '<a href="https://etherscan.io/address/' + esc(w.addr) + '" target="_blank" rel="noopener">Etherscan</a><a href="https://intel.arkm.com/explorer/address/' + esc(w.addr) + '" target="_blank" rel="noopener">Arkham</a><a href="https://eth.blockscout.com/address/' + esc(w.addr) + '" target="_blank" rel="noopener">Blockscout</a>';
     var sub = (w.lastAct ? t('w_last', ago(w.lastAct)) : (w.ready ? t('w_none') : t('w_loading'))) + (w.err ? t('w_err') : '');
     var brk = '';
+    if (!isV && w.chain === 'tron' && (w.tUsdt || 0) > 1e5) brk = '<div class="full">' + esc(t('b_usdt', fmtUsd(w.tUsdt)) + (w.tBL ? t('frz_tag') : '')) + '</div>';
     if (!isV && (w.tokBreak || w.rpc)) {
       var b = w.tokBreak || { stable: 0, eth: 0, other: 0 }, parts = [], ut = stab(w, 'usdt'), uc = stab(w, 'usdc');
       if (ut > 1e5) parts.push(t('b_usdt', fmtUsd(ut)) + (w.rpc && w.rpc.usdtBL ? t('frz_tag') : ''));
@@ -1235,8 +1398,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
   /* ---------- etkileşim ---------- */
   function addManual(v, kind) {
     v = String(v || '').trim();
-    var eth = /^0x[0-9a-fA-F]{40}$/.test(v), btc = /^(bc1[a-z0-9]{11,71}|[13][1-9A-HJ-NP-Za-km-z]{25,34})$/.test(v);
-    if (!eth && !btc) return false;
+    if (!ADDR_RX.test(v)) return false;
     S.blocked.delete(lc(v));
     if (!W(v)) addWallet({ a: v, role: 'manual', lbl: { k: kind || 'manual' } });
     save(); render();
