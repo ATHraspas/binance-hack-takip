@@ -4,6 +4,8 @@ on:
     inputs:
       addr:
         required: true
+permissions:
+  contents: write
 jobs:
   p:
     runs-on: ubuntu-latest
@@ -12,6 +14,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: node .github/probe.mjs
+      - run: mkdir out && node .github/probe.mjs > out/probe.json
         env:
           ADDR: ${{ inputs.addr }}
+      - run: |
+          cd out && git init -q -b probe && git config user.name bot && git config user.email bot@users.noreply.github.com
+          git add . && git commit -q -m probe && git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" probe
