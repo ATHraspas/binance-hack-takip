@@ -11,7 +11,7 @@ let st;
 while (Date.now() - t0 < 240000) {
   await page.waitForTimeout(3000);
   st = await page.evaluate(() => window.__bhDone && window.__bhDone());
-  if (st && st.done === st.total && st.busy === 0 && st.frz !== null && st.tfrz) break;
+  if (st && st.done === st.total && st.busy === 0 && st.errs === 0 && st.drainPending === 0 && st.frz !== null && st.tfrz && Date.now() - t0 > 20000) break;
 }
 console.log('state', JSON.stringify(st), Math.round((Date.now() - t0) / 1000) + 's');
 if (!st || st.done < st.total * 0.9) { console.log('incomplete, skip'); process.exit(1); }

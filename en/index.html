@@ -790,6 +790,8 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
         addEvent(ev, w);
       } else if (w.role === 'initiator' && lc(fromP.addr) === w.key) {
         addEvent({ id: 'tx:' + x.hash, kind: 'call', chain: 'eth', ts: ts, tx: x.hash, sym: '', amount: 0, from: fromP.addr, to: toP ? toP.addr : '', fromP: fromP, toP: toP, method: x.method || '', mkey: x.to ? 'm_call' : 'm_create', spam: false }, w);
+        var vw = toP && W(toP.addr);
+        if (vw && vw.role === 'victim') drainTx(x.hash, w);
       }
     });
   }
@@ -849,7 +851,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       bs('/addresses/' + a + '/transactions').then(function (j) { ingestTxs(w, j.items || []); }),
       bs('/addresses/' + a + '/token-transfers?type=ERC-20').then(function (j) {
         ingestTokens(w, j.items || []);
-        if (first && w.deep) return deepTokens(w, j.next_page_params, 8);
+        if (w.deep && !w.deepDone) return Promise.resolve(deepTokens(w, j.next_page_params, 12)).then(function () { w.deepDone = true; });
       })
     ]).then(function () {
       var changed = S.events.size > before, extra = [];
@@ -862,6 +864,19 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       }
       return extra.length ? settle(extra) : 0;
     });
+  }
+  var DRAIN_TX = {};
+  function drainTx(h, w) {
+    if (DRAIN_TX[h]) return;
+    DRAIN_TX[h] = 1;
+    function page(np, left) {
+      return bs('/transactions/' + h + '/token-transfers' + (np ? '?' + qs(np) : '')).then(function (j) {
+        ingestTokens(w, j.items || []);
+        if (j.next_page_params && left > 0) return page(j.next_page_params, left - 1);
+      });
+    }
+    page(null, 15).then(function () { return bs('/transactions/' + h + '/internal-transactions'); }).then(function (j) { ingestInternal(w, (j && j.items) || []); DRAIN_TX[h] = 2; scheduleRender(); },
+      function () { delete DRAIN_TX[h]; });
   }
   function deepTokens(w, np, left) {
     if (!np || left <= 0) return null;
@@ -1469,7 +1484,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
   }
   /* ---------- hızlı açılış: son kayıt (snapshot.json + tarayıcı önbelleği) ---------- */
   var SNAP_KEY = 'bh-snap-v1';
-  var WF = ['balEth', 'balBtc', 'balTrx', 'balXrp', 'tokUsd', 'tokBreak', 'tokAt', 'rpc', 'tUsdt', 'tStable', 'tBL', 'tChk', 'lastAct'];
+  var WF = ['deepDone', 'balEth', 'balBtc', 'balTrx', 'balXrp', 'tokUsd', 'tokBreak', 'tokAt', 'rpc', 'tUsdt', 'tStable', 'tBL', 'tChk', 'lastAct'];
   function dump() {
     var ws = [], es = [];
     S.wallets.forEach(function (w) {
@@ -1484,13 +1499,14 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       Object.keys(e).forEach(function (k) { if (k !== 'live' && k !== 'seenAt') o[k] = e[k]; });
       es.push(o);
     });
-    return { v: 1, at: Date.now(), prices: { eth: S.ethPrice, btc: S.btcPrice, trx: S.trxPrice, xrp: S.xrpPrice }, tron: TRON_KIND, wallets: ws, events: es };
+    return { v: 1, at: Date.now(), prices: { eth: S.ethPrice, btc: S.btcPrice, trx: S.trxPrice, xrp: S.xrpPrice }, tron: TRON_KIND, drained: Object.keys(DRAIN_TX).filter(function (h) { return DRAIN_TX[h] === 2; }), wallets: ws, events: es };
   }
   window.__bhDump = dump;
-  window.__bhDone = function () { var n = 0, b = 0; S.wallets.forEach(function (w) { if (w.polls > 0) n++; if (w.busy) b++; }); return { done: n, total: S.wallets.size, busy: b, frz: FRZ.ok, tfrz: TFRZ.at > 0 }; };
+  window.__bhDone = function () { var n = 0, b = 0, er = 0, dp = 0; S.wallets.forEach(function (w) { if (w.polls > 0) n++; if (w.busy) b++; if (w.err) er++; }); Object.keys(DRAIN_TX).forEach(function (h) { if (DRAIN_TX[h] === 1) dp++; }); return { done: n, total: S.wallets.size, busy: b, errs: er, drainPending: dp, drained: Object.keys(DRAIN_TX).length, frz: FRZ.ok, tfrz: TFRZ.at > 0, kpi: document.getElementById('kDrained').textContent }; };
   function hydrate(d) {
     if (!d || d.v !== 1 || !d.wallets || Date.now() - d.at > 12 * 3600000) return false;
     if (d.prices) { S.ethPrice = S.ethPrice || d.prices.eth; S.btcPrice = S.btcPrice || d.prices.btc; S.trxPrice = S.trxPrice || d.prices.trx; S.xrpPrice = S.xrpPrice || d.prices.xrp; }
+    (d.drained || []).forEach(function (h) { DRAIN_TX[h] = 2; });
     if (d.tron) Object.keys(d.tron).forEach(function (k) { if (d.tron[k] !== 'pending') TRON_KIND[k] = d.tron[k]; });
     d.wallets.forEach(function (o) {
       if (S.blocked.has(lc(o.a))) return;
