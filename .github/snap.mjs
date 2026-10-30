@@ -15,6 +15,8 @@ while (Date.now() - t0 < 240000) {
 }
 console.log('state', JSON.stringify(st), Math.round((Date.now() - t0) / 1000) + 's');
 if (!st || st.done < st.total * 0.9) { console.log('incomplete, skip'); process.exit(1); }
+const added = await page.evaluate(() => window.__bhHistory().catch(e => 'err ' + e));
+console.log('history added', added);
 await page.waitForTimeout(3000);
 const d = await page.evaluate(() => window.__bhDump());
 writeFileSync('snapshot.json', JSON.stringify(d));

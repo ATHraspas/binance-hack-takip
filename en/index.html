@@ -1515,6 +1515,48 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     return { v: 1, at: Date.now(), prices: { eth: S.ethPrice, btc: S.btcPrice, trx: S.trxPrice, xrp: S.xrpPrice }, tron: TRON_KIND, drained: Object.keys(DRAIN_TX).filter(function (h) { return DRAIN_TX[h] === 2; }), wallets: ws, events: es };
   }
   window.__bhDump = dump;
+  /* geçmiş: Binance cüzdanlarından kümeye giden tüm transferler (Etherscan uyumlu uç, blok aralığıyla) */
+  window.__bhHistory = function () {
+    var ES = 'https://eth.blockscout.com/api?', V = {}, rates = {}, added = 0;
+    S.wallets.forEach(function (w) { if (w.chain === 'eth' && w.role === 'victim') V[w.key] = w; });
+    function es(q) { return fetch(ES + q).then(function (r) { return r.json(); }).then(function (j) { return j && j.result; }); }
+    function rate(c) { if (rates[c] !== undefined) return Promise.resolve(rates[c]); return bs('/tokens/' + c).then(function (j) { rates[c] = j && j.exchange_rate ? Number(j.exchange_rate) : 0; return rates[c]; }, function () { rates[c] = 0; return 0; }); }
+    var cl = []; S.wallets.forEach(function (w) { if (w.chain === 'eth' && isCluster(w) && !w.auto) cl.push(w); });
+    return es('module=block&action=getblocknobytime&timestamp=' + Math.floor(HACK_START / 1000) + '&closest=after').then(function (r) {
+      var sb = (r && r.blockNumber) || 0, chain = Promise.resolve();
+      cl.forEach(function (w) {
+        chain = chain.then(function () {
+          function tok(page) {
+            return es('module=account&action=tokentx&address=' + w.addr + '&startblock=' + sb + '&sort=asc&page=' + page + '&offset=1000').then(function (rows) {
+              rows = Array.isArray(rows) ? rows : [];
+              var mine = rows.filter(function (x) { return V[lc(x.from)] && lc(x.to) === w.key; });
+              return mine.reduce(function (p, x) {
+                return p.then(function () { return rate(lc(x.contractAddress)); }).then(function (rt) {
+                  var e = { id: 'tt:' + x.hash + ':' + Number(x.logIndex), kind: 'token', chain: 'eth', ts: Number(x.timeStamp) * 1000, tx: x.hash, sym: x.tokenSymbol || '?', rate: rt, scam: false,
+                    amount: units(x.value, x.tokenDecimal), from: x.from, to: x.to, fromP: { addr: x.from, tags: [], name: '', contract: false }, toP: { addr: x.to, tags: [], name: '', contract: false }, method: '' };
+                  e.spam = isDust(e);
+                  if (addEvent(e, null)) added++;
+                });
+              }, Promise.resolve()).then(function () { if (rows.length === 1000 && page < 10) return tok(page + 1); });
+            });
+          }
+          function eth(action) {
+            return es('module=account&action=' + action + '&address=' + w.addr + '&startblock=' + sb + '&sort=asc&page=1&offset=1000').then(function (rows) {
+              (Array.isArray(rows) ? rows : []).forEach(function (x, i) {
+                if (!V[lc(x.from)] || lc(x.to) !== w.key || !(Number(x.value) > 0) || x.isError === '1') return;
+                var e = { id: (action === 'txlist' ? 'tx:' + x.hash : 'it:' + x.hash + ':h' + i), kind: 'eth', chain: 'eth', ts: Number(x.timeStamp) * 1000, tx: x.hash, sym: 'ETH', amount: units(x.value, 18),
+                  from: x.from, to: x.to, fromP: { addr: x.from, tags: [] }, toP: { addr: x.to, tags: [] }, method: '' };
+                e.spam = isDust(e);
+                if (addEvent(e, null)) added++;
+              });
+            });
+          }
+          return tok(1).then(function () { return eth('txlist'); }).then(function () { return eth('txlistinternal'); }).catch(function () {});
+        });
+      });
+      return chain.then(function () { scheduleRender(); return added; });
+    });
+  };
   window.__bhDone = function () { var n = 0, b = 0, er = 0, dp = 0; S.wallets.forEach(function (w) { if (w.polls > 0) n++; if (w.busy) b++; if (w.err) er++; }); Object.keys(DRAIN_TX).forEach(function (h) { if (DRAIN_TX[h] === 1) dp++; }); return { done: n, total: S.wallets.size, busy: b, errs: er, drainPending: dp, drained: Object.keys(DRAIN_TX).length, frz: FRZ.ok, tfrz: TFRZ.at > 0, kpi: document.getElementById('kDrained').textContent }; };
   function hydrate(d) {
     if (!d || d.v !== 1 || !d.wallets || Date.now() - d.at > 12 * 3600000) return false;
