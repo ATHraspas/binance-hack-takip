@@ -1,0 +1,10 @@
+const API = 'https://eth.blockscout.com/api/v2';
+const j = async (p) => { const r = await fetch(API + p); return r.json(); };
+const out = {};
+const A = process.env.ADDR;
+out.info = await j('/addresses/' + A);
+out.txs = (await j('/addresses/0x5227f603C1eE34CE3C06eFe6477003BDfCCB2f8c/transactions?filter=from')).items?.slice(0, 50).map(x => [x.hash.slice(0, 12), x.to?.hash?.slice(0, 10), x.method, x.timestamp]);
+const tt = await j('/addresses/' + A + '/token-transfers?type=ERC-20&filter=to');
+out.att = (tt.items || []).slice(0, 15).map(x => [x.from.hash.slice(0, 10), x.token.symbol, x.total.value, x.timestamp]);
+out.attOut = ((await j('/addresses/' + A + '/token-transfers?type=ERC-20&filter=from')).items || []).slice(0, 15).map(x => [x.to.hash.slice(0, 10), x.token.symbol, x.total.value, x.timestamp]);
+console.log(JSON.stringify({ info: { name: out.info.name, contract: out.info.is_contract, bal: out.info.coin_balance, tags: out.info.metadata, impl: out.info.implementations }, txs: out.txs, att: out.att, attOut: out.attOut }, null, 0));
