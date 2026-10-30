@@ -248,7 +248,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       role_initiator: 'başlatıcı', role_hacker: 'saldırgan', role_hop: 'kümeden para aldı', role_manual: 'elle eklendi', role_victim: 'Binance',
       cat_dex: 'Swap / DEX', cat_contract: 'Kontrata', cat_bridge: 'Köprü', cat_thor: 'THORChain', cat_swapsvc: 'Takas servisi', cat_cex: 'Borsaya', cat_mixer: 'Mikser', cat_burn: 'Yakıldı', cat_wallet: 'Yeni cüzdana',
       ch_drain: 'Binance → saldırgan', ch_hop: 'Küme içi', ch_call: 'Saldırgan çağrısı', ch_out: 'Çıkış', ch_mixin: 'Mikserden giriş', ch_swapin: 'Swap dönüşü', ch_in: 'Giriş', ch_vout: 'Binance çıkışı', ch_other: 'Diğer', ch_swap: 'Swap', ch_news: 'Haber', ch_launder: 'Aklama',
-      st_paused: 'Duraklatıldı', st_hidden: 'Sekme arka planda, sorgular durdu', st_loading: 'Yükleniyor {0}/{1}', st_offline: 'Bağlantı yok', st_live: 'Canlı',
+      st_paused: 'Duraklatıldı', st_hidden: 'Sekme arka planda, sorgular durdu', st_loading: 'Yükleniyor {0}/{1}', st_offline: 'Bağlantı yok', st_live: 'Canlı', st_snap: 'Son kayıt {0} · güncelleniyor {1}/{2}',
       last_data: 'son veri {0}', reqs: '{0} istek', errs: ' · {0} hata', queued: ' · sırada {0}',
       o_thor: 'THORChain {0}', o_bridge: 'köprü {0}', o_swapsvc: 'takas servisi {0}', o_cex: 'borsa {0}', o_mixer: 'mikser {0}', cap_hit: ' · otomatik takip sınırı doldu', spark_max: 'en yüksek dilim {0}',
       feed_blocked: 'Bu pencere internete bağlanamıyor; büyük ihtimalle bir uygulamanın dosya önizlemesinde açıldı. Dosyayı indirip Chrome, Safari ya da Edge ile aç.',
@@ -286,7 +286,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       role_initiator: 'initiator', role_hacker: 'attacker', role_hop: 'received cluster funds', role_manual: 'added manually', role_victim: 'Binance',
       cat_dex: 'Swap / DEX', cat_contract: 'To contract', cat_bridge: 'Bridge', cat_thor: 'THORChain', cat_swapsvc: 'Swap service', cat_cex: 'To exchange', cat_mixer: 'Mixer', cat_burn: 'Burned', cat_wallet: 'To new wallet',
       ch_drain: 'Binance → attacker', ch_hop: 'Within cluster', ch_call: 'Attacker call', ch_out: 'Outflow', ch_mixin: 'From mixer', ch_swapin: 'Swap proceeds', ch_in: 'Inflow', ch_vout: 'Binance outflow', ch_other: 'Other', ch_swap: 'Swap', ch_news: 'News', ch_launder: 'Laundering',
-      st_paused: 'Paused', st_hidden: 'Tab in background, polling paused', st_loading: 'Loading {0}/{1}', st_offline: 'No connection', st_live: 'Live',
+      st_paused: 'Paused', st_hidden: 'Tab in background, polling paused', st_loading: 'Loading {0}/{1}', st_offline: 'No connection', st_live: 'Live', st_snap: 'Saved data from {0} · refreshing {1}/{2}',
       last_data: 'last data {0}', reqs: '{0} requests', errs: ' · {0} errors', queued: ' · {0} queued',
       o_thor: 'THORChain {0}', o_bridge: 'bridge {0}', o_swapsvc: 'swap service {0}', o_cex: 'exchange {0}', o_mixer: 'mixer {0}', cap_hit: ' · auto-follow limit reached', spark_max: 'peak bucket {0}',
       feed_blocked: 'This window cannot reach the internet; it was probably opened in an app\'s file preview. Download the file and open it in Chrome, Safari or Edge.',
@@ -742,7 +742,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
   function addEvent(e, w) {
     if (S.events.has(e.id)) return null;
     e.seenAt = Date.now();
-    e.live = !!(w && w.ready);
+    e.live = !!(w && w.ready && w.polls > 0);
     S.events.set(e.id, e);
     if (!e.spam && (e.kind === 'call' || (usdOf(e) || 0) >= 100)) {
       var fw = W(e.from), tw = W(e.to);
@@ -1196,7 +1196,9 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     var ok = S.lastOk && Date.now() - S.lastOk < 60000;
     $('live').className = 'live' + (S.paused ? '' : ok ? ' on' : (S.reqErr ? ' err' : ''));
     var pending = 0; S.wallets.forEach(function (w) { if (!w.ready) pending++; });
-    var status = S.paused ? t('st_paused') : document.hidden ? t('st_hidden') : pending ? t('st_loading', S.wallets.size - pending, S.wallets.size) : (!S.reqOk && S.reqErr ? t('st_offline') : t('st_live'));
+    var fresh = 0; S.wallets.forEach(function (w) { if (w.polls > 0) fresh++; });
+    var status = S.paused ? t('st_paused') : document.hidden ? t('st_hidden') : pending ? t('st_loading', S.wallets.size - pending, S.wallets.size)
+      : (S.snapAt && fresh < S.wallets.size) ? t('st_snap', ago(S.snapAt), fresh, S.wallets.size) : (!S.reqOk && S.reqErr ? t('st_offline') : t('st_live'));
     var parts = ['<span>' + esc(status) + '</span>'];
     if (S.ethPrice) parts.push('<span>ETH <b>$' + fmtN(S.ethPrice, 0) + '</b></span>');
     if (S.btcPrice) parts.push('<span>BTC <b>$' + fmtN(S.btcPrice, 0) + '</b></span>');
@@ -1465,6 +1467,57 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (x) { tz = ''; }
     return /(^|,)tr/i.test(langs) || tz === 'Europe/Istanbul' ? 'tr' : 'en';
   }
+  /* ---------- hızlı açılış: son kayıt (snapshot.json + tarayıcı önbelleği) ---------- */
+  var SNAP_KEY = 'bh-snap-v1';
+  var WF = ['balEth', 'balBtc', 'balTrx', 'balXrp', 'tokUsd', 'tokBreak', 'tokAt', 'rpc', 'tUsdt', 'tStable', 'tBL', 'tChk', 'lastAct'];
+  function dump() {
+    var ws = [], es = [];
+    S.wallets.forEach(function (w) {
+      if (w.role === 'manual') return;
+      var o = { a: w.addr, role: w.role, lbl: w.lbl, deep: w.deep, parent: w.parent, depth: w.depth, auto: w.auto, addedAt: w.addedAt };
+      WF.forEach(function (k) { if (w[k] != null) o[k] = w[k]; });
+      ws.push(o);
+    });
+    S.events.forEach(function (e) {
+      if (e.spam) return;
+      var o = {};
+      Object.keys(e).forEach(function (k) { if (k !== 'live' && k !== 'seenAt') o[k] = e[k]; });
+      es.push(o);
+    });
+    return { v: 1, at: Date.now(), prices: { eth: S.ethPrice, btc: S.btcPrice, trx: S.trxPrice, xrp: S.xrpPrice }, tron: TRON_KIND, wallets: ws, events: es };
+  }
+  window.__bhDump = dump;
+  window.__bhDone = function () { var n = 0, b = 0; S.wallets.forEach(function (w) { if (w.polls > 0) n++; if (w.busy) b++; }); return { done: n, total: S.wallets.size, busy: b, frz: FRZ.ok, tfrz: TFRZ.at > 0 }; };
+  function hydrate(d) {
+    if (!d || d.v !== 1 || !d.wallets || Date.now() - d.at > 12 * 3600000) return false;
+    if (d.prices) { S.ethPrice = S.ethPrice || d.prices.eth; S.btcPrice = S.btcPrice || d.prices.btc; S.trxPrice = S.trxPrice || d.prices.trx; S.xrpPrice = S.xrpPrice || d.prices.xrp; }
+    if (d.tron) Object.keys(d.tron).forEach(function (k) { if (d.tron[k] !== 'pending') TRON_KIND[k] = d.tron[k]; });
+    d.wallets.forEach(function (o) {
+      if (S.blocked.has(lc(o.a))) return;
+      var w = addWallet({ a: o.a, role: o.role, lbl: o.lbl, deep: o.deep, parent: o.parent, depth: o.depth, auto: o.auto });
+      WF.forEach(function (k) { if (o[k] != null) w[k] = o[k]; });
+      if (o.addedAt) w.addedAt = o.addedAt;
+      w.ready = true;
+    });
+    (d.events || []).forEach(function (e) { if (!S.events.has(e.id)) { e.live = false; e.seenAt = d.at; S.events.set(e.id, e); } });
+    if (d.wallets.some(function (o) { return o.rpc; })) FRZ.ok = true;
+    S.snapAt = d.at;
+    return true;
+  }
+  function saveSnap() {
+    var n = 0; S.wallets.forEach(function (w) { if (w.polls > 0) n++; });
+    if (n < S.wallets.size) return;
+    try { localStorage.setItem(SNAP_KEY, JSON.stringify(dump())); } catch (x) { /* yer yoksa geç */ }
+  }
+  function loadSnap() {
+    var local = null;
+    try { local = JSON.parse(localStorage.getItem(SNAP_KEY) || 'null'); } catch (x) { local = null; }
+    var ctl = window.AbortController ? new AbortController() : null;
+    var to = setTimeout(function () { if (ctl) ctl.abort(); }, 2500);
+    return fetch('https://raw.githubusercontent.com/ATHraspas/binance-hack-takip/data/snapshot.json?t=' + Math.floor(Date.now() / 60000), ctl ? { signal: ctl.signal } : {}).then(function (r) { return r.ok ? r.json() : null; })
+      .catch(function () { return null; })
+      .then(function (remote) { clearTimeout(to); var best = remote && (!local || remote.at > local.at) ? remote : local; return hydrate(best); });
+  }
   function boot() {
     var st = load();
     if (st.minUsd != null && $('minUsd').querySelector('option[value="' + Number(st.minUsd) + '"]')) S.minUsd = Number(st.minUsd);
@@ -1474,12 +1527,17 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     SEED.forEach(function (s) { addWallet({ a: s.a, role: s.role, deep: s.deep, lbl: { k: 'seed', tr: s.tr, en: s.en } }); });
     (st.manual || []).forEach(function (m) { if (m && m.a) addWallet({ a: m.a, role: 'manual', lbl: { k: (m.k === 'followed' || m.label === 'Takibe alındı') ? 'followed' : 'manual' } }); });
     setLang(pickLang(st), false);
+    loadSnap().then(function () { render(); start(); }, start);
+  }
+  function start() {
+    if (start.done) return; start.done = true;
     var started = false;
     function go() { if (started) return; started = true; if (!S.ethPrice) S.ethPrice = 2275; loop(); }
     prices().then(go, go);
     setTimeout(go, 5000);
     setInterval(prices, 60000);
     setInterval(scheduleRender, 5000);
+    setInterval(saveSnap, 60000);
   }
   boot();
 })();
