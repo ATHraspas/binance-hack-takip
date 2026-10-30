@@ -126,6 +126,7 @@ form.add input{flex:1;min-width:0;font-family:var(--f-mono)}
 @media (max-width:900px){.ctx{grid-template-columns:1fr}}
 .tlpanel{margin-top:12px}
 .tlpanel .tl{max-height:460px;overflow:auto}
+button.more{display:block;width:calc(100% - 28px);margin:10px 14px 14px;padding:11px 10px;color:var(--muted)}
 .tl .chip{margin-right:6px;vertical-align:1px}
 .tl .usd{color:var(--muted);font-family:var(--f-mono);font-size:12px;margin-left:6px}
 .tl{list-style:none;margin:0;padding:6px 14px 12px}
@@ -251,7 +252,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       last_data: 'son veri {0}', reqs: '{0} istek', errs: ' · {0} hata', queued: ' · sırada {0}',
       o_thor: 'THORChain {0}', o_bridge: 'köprü {0}', o_swapsvc: 'takas servisi {0}', o_cex: 'borsa {0}', o_mixer: 'mikser {0}', cap_hit: ' · otomatik takip sınırı doldu', spark_max: 'en yüksek dilim {0}',
       feed_blocked: 'Bu pencere internete bağlanamıyor; büyük ihtimalle bir uygulamanın dosya önizlemesinde açıldı. Dosyayı indirip Chrome, Safari ya da Edge ile aç.',
-      feed_none: "Bu filtreyle gösterilecek hareket yok. Min. tutarı düşür ya da spam/toz'u aç.", feed_hint: '{0} hareket', last250: ' · son 250 gösteriliyor', newest: ' · en yeni üstte',
+      feed_none: "Bu filtreyle gösterilecek hareket yok. Min. tutarı düşür ya da spam/toz'u aç.", feed_hint: '{0} hareket', last250: ' · son 250 gösteriliyor', last_n: ' · son {0} gösteriliyor', more_feed: 'Daha fazla göster · {0} hareket daha', more_wal: 'Tüm cüzdanları göster · {0} cüzdan daha', newest: ' · en yeni üstte',
       contract_creation: 'kontrat oluşturma', m_call: 'çağrı', m_create: 'kontrat oluşturdu',
       no_value: 'değer transferi yok', no_price: 'fiyat yok', unconfirmed: ' · onaysız', follow_btn: '+ takip', live_tag: 'canlı', followed_badge: 'takibe alındı',
       w_last: 'son hareket {0}', w_none: 'hareket yok', w_loading: 'yükleniyor…', w_err: ' · bağlantı hatası, yeniden deneniyor',
@@ -289,7 +290,7 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
       last_data: 'last data {0}', reqs: '{0} requests', errs: ' · {0} errors', queued: ' · {0} queued',
       o_thor: 'THORChain {0}', o_bridge: 'bridge {0}', o_swapsvc: 'swap service {0}', o_cex: 'exchange {0}', o_mixer: 'mixer {0}', cap_hit: ' · auto-follow limit reached', spark_max: 'peak bucket {0}',
       feed_blocked: 'This window cannot reach the internet; it was probably opened in an app\'s file preview. Download the file and open it in Chrome, Safari or Edge.',
-      feed_none: 'No moves match this filter. Lower the minimum amount or turn on spam/dust.', feed_hint: '{0} moves', last250: ' · showing last 250', newest: ' · newest first',
+      feed_none: 'No moves match this filter. Lower the minimum amount or turn on spam/dust.', feed_hint: '{0} moves', last250: ' · showing last 250', last_n: ' · showing last {0}', more_feed: 'Show more · {0} more moves', more_wal: 'Show all wallets · {0} more', newest: ' · newest first',
       contract_creation: 'contract creation', m_call: 'call', m_create: 'created contract',
       no_value: 'no value transfer', no_price: 'no price', unconfirmed: ' · unconfirmed', follow_btn: '+ track', live_tag: 'live', followed_badge: 'now tracked',
       w_last: 'last move {0}', w_none: 'no moves', w_loading: 'loading…', w_err: ' · connection error, retrying',
@@ -382,6 +383,9 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     reqOk: 0, reqErr: 0, lastOk: 0, backoffUntil: 0, unseen: 0, capHit: false
   };
   var lastRendered = new Set();
+  S.feedN = 12; S.walOpen = false;
+  var NARROW = window.matchMedia ? window.matchMedia('(max-width: 1100px)') : { matches: false };
+  if (NARROW.addEventListener) NARROW.addEventListener('change', function () { scheduleRender(); });
 
   /* ---------- yardımcılar ---------- */
   function $(id) { return document.getElementById(id); }
@@ -1154,13 +1158,15 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     S.events.forEach(function (e) { if (visible(e)) list.push(e); });
     list.sort(function (x, y) { return (y.ts - x.ts) || (x.id < y.id ? 1 : -1); });
     var total = list.length;
-    list = list.slice(0, 250);
+    var lim = NARROW.matches ? S.feedN : 250;
+    list = list.slice(0, lim);
     var ready = false; S.wallets.forEach(function (w) { if (w.ready) ready = true; });
     var blocked = !S.reqOk && S.reqErr > 3;
     $('feed').innerHTML = list.length ? list.map(rowHtml).join('')
       : '<div class="empty">' + esc(blocked ? t('feed_blocked') : ready ? t('feed_none') : t('loading')) + '</div>';
+    if (total > lim && lim < 250) $('feed').insertAdjacentHTML('beforeend', '<button type="button" class="more" data-more="feed">' + esc(t('more_feed', total - lim)) + '</button>');
     lastRendered = new Set(list.map(function (e) { return e.id; }));
-    set('feedHint', tn('feed_hint', total) + (total > 250 ? t('last250') : '') + t('newest'));
+    set('feedHint', tn('feed_hint', total) + (total > lim ? t('last_n', lim) : '') + t('newest'));
   }
   function wHtml(w) {
     var c = ROLE_C[w.role] || ROLE_C.manual, h = holdUsd(w), isV = w.role === 'victim';
@@ -1192,7 +1198,9 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
     var cl = [], vi = [], au = 0;
     S.wallets.forEach(function (w) { (w.role === 'victim' ? vi : cl).push(w); if (w.auto) au++; });
     cl.sort(function (x, y) { return (holdUsd(y) || 0) - (holdUsd(x) || 0); });
-    $('wallets').innerHTML = '<div class="grp">' + esc(t('grp_cluster', cl.length)) + '</div>' + cl.map(wHtml).join('') +
+    var shown = NARROW.matches && !S.walOpen ? cl.slice(0, 6) : cl;
+    $('wallets').innerHTML = '<div class="grp">' + esc(t('grp_cluster', cl.length)) + '</div>' + shown.map(wHtml).join('') +
+      (shown.length < cl.length ? '<button type="button" class="more" data-more="wal">' + esc(t('more_wal', cl.length - shown.length)) + '</button>' : '') +
       '<div class="grp">' + brand(t('grp_victim')) + '</div>' + vi.map(wHtml).join('');
     set('wHint', (au ? tn('w_auto', au) : t('w_grows')) + (S.capHit ? t('cap_hit') : ''));
   }
@@ -1264,8 +1272,10 @@ footer{color:var(--faint);font-size:12px;padding-block:18px 28px;max-width:90ch}
   });
   $('addInput').addEventListener('input', function () { this.setCustomValidity(''); });
   document.addEventListener('click', function (ev) {
-    var b = ev.target.closest('[data-follow],[data-copy],[data-remove]');
+    var b = ev.target.closest('[data-follow],[data-copy],[data-remove],[data-more]');
     if (!b) return;
+    if (b.getAttribute('data-more') === 'feed') { S.feedN += 20; renderFeed(); return; }
+    if (b.getAttribute('data-more') === 'wal') { S.walOpen = true; renderWallets(); return; }
     if (b.getAttribute('data-follow')) { addManual(b.getAttribute('data-follow'), 'followed'); return; }
     if (b.getAttribute('data-copy')) {
       var v = b.getAttribute('data-copy');
